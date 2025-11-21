@@ -268,25 +268,28 @@
             font-weight: 500;
             background: rgba(12, 44, 71, 0.5);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
+            color: white !important; /* Ensures white text */
         }
-        
-        /* FIXED: White placeholder text */
+
+        /* White placeholder text */
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.7) !important;
         }
-        
+
         .form-control:focus {
             outline: none;
             border-color: var(--accent-color);
             box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
             transform: translateY(-2px);
             background: rgba(12, 44, 71, 0.7);
+            color: white !important; /* Ensures white text on focus */
         }
-        
+
         .form-control:hover {
             border-color: rgba(20, 203, 244, 0.5);
             transform: translateY(-1px);
+            color: white !important; /* Ensures white text on hover */
+
         }
         
         .form-control:focus + .input-focus-border {
