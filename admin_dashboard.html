@@ -1061,8 +1061,7 @@ document.getElementById('create-user-form').addEventListener('submit', async fun
     }
 });
 
-// FIXED DELETE FUNCTION WITH DEBUGGING
-// FIXED DELETE FUNCTION - HANDLES HTML RESPONSES
+// FIXED DELETE FUNCTION - HANDLES 500 ERRORS
 async function deleteUser(userId, userName) {
     if (!confirm(`Are you sure you want to delete ${userName}? This action cannot be undone.`)) {
         return;
@@ -1071,7 +1070,6 @@ async function deleteUser(userId, userName) {
     try {
         console.log('🚨 DELETE FUNCTION CALLED');
         console.log('Deleting user ID:', userId);
-        console.log('User name:', userName);
         console.log('API URL:', `${API_BASE_URL}/admin/users/${userId}`);
         
         const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
@@ -1084,30 +1082,23 @@ async function deleteUser(userId, userName) {
         
         console.log('✅ DELETE REQUEST SENT');
         console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
         
-        // FIX: Get raw text first instead of parsing JSON immediately
+        // Get raw response
         const responseText = await response.text();
         console.log('📄 Raw response (first 500 chars):', responseText.substring(0, 500));
         
         let data;
         
-        // Check if response is JSON or HTML
+        // Check if response is JSON
         if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
-            // It's JSON - parse it
             data = JSON.parse(responseText);
             console.log('📦 Parsed JSON data:', data);
         } else {
-            // It's HTML or other content
-            console.log('❌ Server returned HTML instead of JSON');
+            // It's HTML - server error
+            console.log('❌ Server returned HTML (500 error)');
             
-            if (response.ok) {
-                // If status is OK but response is HTML, assume success
-                console.log('✅ Assuming success (status OK)');
-                alert('✓ User deleted successfully!');
-                loadUsers();
-                loadUserDropdowns();
-                return;
+            if (response.status === 500) {
+                throw new Error('Server Error 500: The backend server encountered an error while deleting the user. Check the PythonAnywhere error logs.');
             } else {
                 throw new Error(`Server returned HTML with status: ${response.status}`);
             }
@@ -1121,19 +1112,14 @@ async function deleteUser(userId, userName) {
         } else {
             console.log('❌ Delete failed:', data.message);
             alert('✗ Error: ' + data.message);
-            if (data.message.includes('Not authenticated') || data.message.includes('Not authorized')) {
-                window.location.href = 'login.html';
-            }
         }
     } catch (error) {
         console.error('💥 DELETE ERROR:', error);
-        console.error('Error name:', error.name);
-        console.error('Error message:', error.message);
         
-        if (error.message.includes('JSON') || error.message.includes('HTML')) {
-            alert('❌ Server Configuration Error: The server is not returning valid JSON. This is usually a CORS or authentication issue.');
+        if (error.message.includes('500')) {
+            alert('❌ Server Error: The backend encountered an error while deleting the user.\n\nThis is usually caused by:\n• Database relationship issues\n• Foreign key constraints\n• Session problems\n\nCheck your PythonAnywhere error logs for details.');
         } else {
-            alert('❌ Network error: ' + error.message);
+            alert('❌ Error: ' + error.message);
         }
     }
 }
