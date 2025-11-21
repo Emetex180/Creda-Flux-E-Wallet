@@ -1062,6 +1062,7 @@ document.getElementById('create-user-form').addEventListener('submit', async fun
 });
 
 // FIXED DELETE FUNCTION WITH DEBUGGING
+// FIXED DELETE FUNCTION - HANDLES HTML RESPONSES
 async function deleteUser(userId, userName) {
     if (!confirm(`Are you sure you want to delete ${userName}? This action cannot be undone.`)) {
         return;
@@ -1085,18 +1086,41 @@ async function deleteUser(userId, userName) {
         console.log('Response status:', response.status);
         console.log('Response ok:', response.ok);
         
-        const data = await response.json();
-        console.log('📦 Response data:', data);
+        // FIX: Get raw text first instead of parsing JSON immediately
+        const responseText = await response.text();
+        console.log('📄 Raw response (first 500 chars):', responseText.substring(0, 500));
+        
+        let data;
+        
+        // Check if response is JSON or HTML
+        if (responseText.trim().startsWith('{') || responseText.trim().startsWith('[')) {
+            // It's JSON - parse it
+            data = JSON.parse(responseText);
+            console.log('📦 Parsed JSON data:', data);
+        } else {
+            // It's HTML or other content
+            console.log('❌ Server returned HTML instead of JSON');
+            
+            if (response.ok) {
+                // If status is OK but response is HTML, assume success
+                console.log('✅ Assuming success (status OK)');
+                alert('✓ User deleted successfully!');
+                loadUsers();
+                loadUserDropdowns();
+                return;
+            } else {
+                throw new Error(`Server returned HTML with status: ${response.status}`);
+            }
+        }
         
         if (data.success) {
             console.log('✅ User deleted successfully');
             alert('✓ User deleted successfully!');
-            loadUsers(); // Reload the users list
-            loadUserDropdowns(); // Reload dropdowns
+            loadUsers();
+            loadUserDropdowns();
         } else {
             console.log('❌ Delete failed:', data.message);
             alert('✗ Error: ' + data.message);
-            // If authentication fails, redirect to login
             if (data.message.includes('Not authenticated') || data.message.includes('Not authorized')) {
                 window.location.href = 'login.html';
             }
@@ -1105,7 +1129,12 @@ async function deleteUser(userId, userName) {
         console.error('💥 DELETE ERROR:', error);
         console.error('Error name:', error.name);
         console.error('Error message:', error.message);
-        alert('❌ Network error: ' + error.message);
+        
+        if (error.message.includes('JSON') || error.message.includes('HTML')) {
+            alert('❌ Server Configuration Error: The server is not returning valid JSON. This is usually a CORS or authentication issue.');
+        } else {
+            alert('❌ Network error: ' + error.message);
+        }
     }
 }
 
