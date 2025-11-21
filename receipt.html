@@ -517,8 +517,8 @@
                             <span class="fee-value" id="transactionAmount">0.00 USD</span>
                         </div>
                         <div class="fee-row">
-                            <span class="fee-label">VAT</span>
-                            <span class="fee-value" id="serviceCharge">EXTERNSL FEES</span>
+                            <span class="fee-label">External Fees:</span>
+                            <span class="fee-value" id="externalFees">INCLUDED</span>
                         </div>
                         <div class="fee-row" style="border-top: 1px solid rgba(20, 203, 244, 0.2); padding-top: 10px; margin-top: 8px; font-weight: 700;">
                             <span class="fee-label">Total Amount:</span>
@@ -626,43 +626,52 @@
         
         // Display receipt data
         function displayReceipt(transaction) {
-            document.getElementById('transactionId').textContent = transaction.transaction_id || transaction.id || 'N/A';
-            document.getElementById('referenceNo').textContent = transaction.reference_number || `TRW-${transaction.id || 'N/A'}`;
-            document.getElementById('transactionDate').textContent = formatDate(transaction.created_at);
+            // Safely set text content with null checks
+            const safeSetText = (elementId, text) => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = text || '-';
+                }
+            };
+            
+            safeSetText('transactionId', transaction.transaction_id || transaction.id || 'N/A');
+            safeSetText('referenceNo', transaction.reference_number || `TRW-${transaction.id || 'N/A'}`);
+            safeSetText('transactionDate', formatDate(transaction.created_at));
             
             // Set status with appropriate styling
             const statusElement = document.getElementById('transactionStatus');
-            const status = transaction.status || 'Completed';
-            statusElement.textContent = status;
-            statusElement.className = 'status-badge';
-            
-            // Apply appropriate status class
-            if (status.toLowerCase() === 'completed' || status.toLowerCase() === 'success') {
-                statusElement.classList.add('completed');
-            } else if (status.toLowerCase() === 'failed' || status.toLowerCase() === 'error') {
-                statusElement.classList.add('failed');
-            } else if (status.toLowerCase() === 'pending') {
-                statusElement.classList.add('pending');
-            } else {
-                statusElement.classList.add('completed'); // Default to completed
+            if (statusElement) {
+                const status = transaction.status || 'Completed';
+                statusElement.textContent = status;
+                statusElement.className = 'status-badge';
+                
+                // Apply appropriate status class
+                if (status.toLowerCase() === 'completed' || status.toLowerCase() === 'success') {
+                    statusElement.classList.add('completed');
+                } else if (status.toLowerCase() === 'failed' || status.toLowerCase() === 'error') {
+                    statusElement.classList.add('failed');
+                } else if (status.toLowerCase() === 'pending') {
+                    statusElement.classList.add('pending');
+                } else {
+                    statusElement.classList.add('completed'); // Default to completed
+                }
             }
             
-            document.getElementById('senderName').textContent = transaction.sender_name || transaction.sender?.name || 'Unknown';
-            document.getElementById('senderAccount').textContent = `Account: ${transaction.sender_account || transaction.sender?.account_number || 'N/A'}`;
+            safeSetText('senderName', transaction.sender_name || transaction.sender?.name || 'Unknown');
+            safeSetText('senderAccount', `Account: ${transaction.sender_account || transaction.sender?.account_number || 'N/A'}`);
             
-            document.getElementById('receiverName').textContent = transaction.receiver_name || transaction.receiver?.name || 'Unknown';
-            document.getElementById('receiverAccount').textContent = `Account: ${transaction.receiver_account || transaction.receiver?.account_number || 'N/A'}`;
+            safeSetText('receiverName', transaction.receiver_name || transaction.receiver?.name || 'Unknown');
+            safeSetText('receiverAccount', `Account: ${transaction.receiver_account || transaction.receiver?.account_number || 'N/A'}`);
             
             const amount = parseFloat(transaction.amount || 0);
             const currency = transaction.currency || 'USD';
-            document.getElementById('amount').textContent = amount.toFixed(2);
-            document.getElementById('currency').textContent = currency;
+            safeSetText('amount', amount.toFixed(2));
+            safeSetText('currency', currency);
             
-            // Display fees as "INCLUDED" instead of calculated values
-            document.getElementById('transactionAmount').textContent = formatCurrency(amount, currency);
-            document.getElementById('externalFees').textContent = 'INCLUDED';
-            document.getElementById('serviceCharge').textContent = 'INCLUDED';
-            document.getElementById('totalAmount').textContent = formatCurrency(amount, currency);
+            // Display fees
+            safeSetText('transactionAmount', formatCurrency(amount, currency));
+            safeSetText('externalFees', 'INCLUDED');
+            safeSetText('totalAmount', formatCurrency(amount, currency));
             
             // Show receipt content
             document.getElementById('loadingState').classList.add('hidden');
@@ -684,7 +693,7 @@
                 window.close();
             }
         }
-        
+       
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadTransaction();
