@@ -503,8 +503,8 @@
                             <span class="fee-value" id="transactionAmount">0.00 USD</span>
                         </div>
                         <div class="fee-row">
-                            <span class="fee-label">VAT:</span>
-                            <span class="fee-value" id="externalFees">EXTERNAL</span>
+                            <span class="fee-label">FEE:</span>
+                            <span class="fee-value" id="externalFees">SERVICE AND VAT EXTERNAL</span>
                         </div>
                         <div class="fee-row" style="border-top: 1px solid #aaa; padding-top: 10px; margin-top: 8px; font-weight: 700;">
                             <span class="fee-label">Total Amount:</span>
@@ -656,7 +656,7 @@
             
             // Display fees
             safeSetText('transactionAmount', formatCurrency(amount, currency));
-            safeSetText('externalFees', 'EXTERNAL');
+            safeSetText('externalFees', 'SERVICE AND VAT EXTERNAL');
             safeSetText('totalAmount', formatCurrency(amount, currency));
             
             // Show receipt content

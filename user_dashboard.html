@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Creda Flux E-Wallet E-wallet</title>
+    <title>Dashboard - Creda Flux E-Wallet</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
@@ -109,6 +109,7 @@
 
         .bank-input-group {
             display: flex;
+            flex-direction: column;
             gap: 1rem;
             margin-bottom: 1rem;
         }
@@ -136,6 +137,7 @@
         }
 
         .transfer-now-btn {
+            width: 100%;
             background: var(--gradient-primary);
             border: none;
             border-radius: 12px;
@@ -149,11 +151,13 @@
             align-items: center;
             gap: 0.5rem;
             justify-content: center;
+            text-decoration: none;
         }
 
         .transfer-now-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
         }
 
         .transfer-now-btn:disabled {
@@ -161,28 +165,6 @@
             cursor: not-allowed;
             transform: none;
         }
-
-        /* Transaction Receipt Button - REMOVED */
-        /* .receipt-btn {
-            background: rgba(57, 210, 2, 0.2);
-            border: 1px solid rgba(57, 210, 2, 0.3);
-            color: var(--light-color);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .receipt-btn:hover {
-            background: rgba(57, 210, 2, 0.3);
-            transform: translateY(-2px);
-            color: var(--light-color);
-        } */
 
         /* Rest of your existing styles remain the same */
         .dashboard-header {
@@ -865,30 +847,24 @@
 
         /* Logo Styles */
         .logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            overflow: hidden;
+            width: 80px;
+            height: 80px;
+            background: rgba(20, 203, 244, 0.2);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease;
-            background: var(--gradient-primary);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            margin: 0 auto 1rem;
+            overflow: hidden;
         }
 
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-inner {
+        .logo img {
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-color);
-            font-weight: bold;
-            font-size: 1.2rem;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         /* Footer Styles */
@@ -1071,10 +1047,6 @@
                 height: 60px;
                 font-size: 1.25rem;
             }
-
-            .bank-input-group {
-                flex-direction: column;
-            }
         }
 
         @media (max-width: 576px) {
@@ -1117,116 +1089,6 @@
             }
         }
     </style>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website</title>
-    
-    <!-- Google Translate Widget Styles -->
-    <style>
-    .goog-te-gadget-simple {
-        border: 1px solid #358a9f !important;
-        border-radius: 6px !important;
-        padding: 8px 12px !important;
-        background: white !important;
-        font-family: 'Segoe UI', sans-serif !important;
-        font-size: 14px !important;
-        min-width: 140px !important;
-    }
-    .goog-te-gadget-simple:hover {
-        background: #f8f9fa !important;
-        border-color: #2f7a8f !important;
-    }
-    .goog-te-menu-value span {
-        color: #358a9f !important;
-        font-weight: 500 !important;
-    }
-    .goog-te-menu-value span:hover {
-        color: #2f2f30 !important;
-    }
-    .goog-te-banner-frame { 
-        display: none !important; 
-    }
-    body { 
-        top: 0px !important; 
-    }
-
-    /* Make dropdown cleaner */
-    .goog-te-menu-frame {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        border-radius: 8px !important;
-        border: 1px solid #ddd !important;
-        margin-top: 5px !important;
-    }
-
-    /* Style the dropdown options */
-    .goog-te-menu2 {
-        border-radius: 6px !important;
-        overflow: hidden !important;
-    }
-
-    .goog-te-menu2-item {
-        padding: 8px 12px !important;
-        border-bottom: 1px solid #f0f0f0 !important;
-    }
-
-    .goog-te-menu2-item:hover {
-        background: #358a9f !important;
-        color: white !important;
-    }
-
-    .goog-te-menu2-item div {
-        color: #2f2f30 !important;
-        font-family: 'Segoe UI', sans-serif !important;
-    }
-
-    .goog-te-menu2-item:hover div {
-        color: white !important;
-    }
-    .logo {
-    width: 80px;
-    height: 80px;
-    background: rgba(20, 203, 244, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(20, 203, 244, 0.3);
-    margin: 0 auto 1rem;
-    overflow: hidden;
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
-    </style>
-</head>
-<body>
-    <!-- Your website content here -->
-    
-    <!-- Google Translate Widget -->
-    <div id="google_translate_element" style="position: fixed; top: 100px; right: 20px; z-index: 1000; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px;"></div>
-
-    <!-- Google Translate Script -->
-    <script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-        {
-            pageLanguage: 'en'
-        },
-        'google_translate_element'
-        );
-    }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
-</html>
 </head>
 <body>
     <div class="user-dashboard">
@@ -1237,7 +1099,7 @@
                     <div class="col-md-6">
                         <div class="brand-container">
                             <div class="logo">
-                                <img src="./image/logo.jpeg" alt="TradeWavee Logo">
+                                <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo">
                             </div>
                             <div class="brand-text">
                                 <h1>Creda Flux E-Wallet</h1>
@@ -1249,7 +1111,7 @@
                         <div class="user-menu">
                             <div class="user-welcome">
                                 <i class="fas fa-user-circle"></i>
-                                Welcome to Creda Flux E-Wallet E-wallet
+                                Welcome to Creda Flux E-Wallet
                             </div>
                             <a href="#" class="logout-btn" onclick="logout()">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -1306,6 +1168,8 @@
                                     Bank Transfer
                                 </div>
                                 <div class="bank-input-group">
+                                    <input type="text" class="bank-input" id="bankName" 
+                                           placeholder="Enter bank name" maxlength="50">
                                     <input type="text" class="bank-input" id="bankAccountNumber" 
                                            placeholder="Enter account number" maxlength="20">
                                     <input type="number" class="bank-input" id="bankAmount" 
@@ -1654,7 +1518,7 @@
         document.getElementById('userBalance').textContent = userData.balance?.toFixed(2) || '0.00';
         document.getElementById('userCurrency').textContent = userData.currency || 'USD';
         document.getElementById('userAccountNumber').textContent = userData.account_number || 'Loading...';
-        document.getElementById('userBankName').textContent = userData.bank_name || 'TradeWavee Bank';
+        document.getElementById('userBankName').textContent = userData.bank_name || 'Creda Flux E-Wallet Bank';
         document.getElementById('userCurrencyBadge').textContent = userData.currency || 'USD';
         document.getElementById('currency-label').textContent = userData.currency || 'USD';
         document.getElementById('available-balance').textContent = userData.balance?.toFixed(2) || '0.00';
@@ -1683,7 +1547,7 @@
         }
     }
 
-    // Display transactions - REMOVED RECEIPT BUTTON
+    // Display transactions
     function displayTransactions(transactions) {
         const container = document.getElementById('transactionsList');
         
@@ -1745,21 +1609,7 @@
 
     // Show error message
     function showError(message) {
-        const flashContainer = document.getElementById('flashContainer');
-        const alertDiv = document.createElement('div');
-        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-        alertDiv.innerHTML = `
-            <i class="fas fa-exclamation-triangle me-2"></i>
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-        flashContainer.appendChild(alertDiv);
-        
-        setTimeout(() => {
-            if (alertDiv.parentElement) {
-                alertDiv.remove();
-            }
-        }, 5000);
+        alert(message);
     }
 
     // Logout function
@@ -1775,107 +1625,6 @@
         }
     }
 
-    // Bank Transfer Function
-    async function processBankTransfer() {
-        const accountNumber = document.getElementById('bankAccountNumber').value.trim();
-        const amount = document.getElementById('bankAmount').value;
-        const transferBtn = document.querySelector('.transfer-now-btn');
-        
-        if (!accountNumber) {
-            alert('Please enter account number');
-            return;
-        }
-        
-        if (!amount || amount <= 0) {
-            alert('Please enter a valid amount');
-            return;
-        }
-        
-        if (parseFloat(amount) > (userData.balance || 0)) {
-            alert('Insufficient balance');
-            return;
-        }
-
-        const originalText = transferBtn.innerHTML;
-        transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        transferBtn.disabled = true;
-
-        try {
-            // First search for the account
-            const searchResponse = await fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(accountNumber)}`, {
-                credentials: 'include'
-            });
-            
-            if (!searchResponse.ok) {
-                throw new Error('Failed to search accounts');
-            }
-            
-            const accounts = await searchResponse.json();
-            let receiverId = null;
-            
-            if (accounts && accounts.length > 0) {
-                // Account found in system
-                const account = accounts[0];
-                receiverId = account.id;
-                
-                // Show PIN modal for confirmation
-                const pin = prompt('Please enter your 4-digit PIN to confirm transfer:');
-                if (!pin || pin.length !== 4) {
-                    alert('Invalid PIN. Transfer cancelled.');
-                    transferBtn.innerHTML = originalText;
-                    transferBtn.disabled = false;
-                    return;
-                }
-
-                // Process the transfer
-                const transferResponse = await fetch(`${API_BASE_URL}/make_transaction`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        receiver_id: receiverId,
-                        amount: parseFloat(amount),
-                        pin: pin
-                    })
-                });
-
-                const result = await transferResponse.json();
-                
-                if (result.success) {
-                    alert('Transfer completed successfully!');
-                    // Clear form
-                    document.getElementById('bankAccountNumber').value = '';
-                    document.getElementById('bankAmount').value = '';
-                    // Reload data
-                    await loadUserData();
-                    await loadTransactions();
-                } else {
-                    throw new Error(result.message || 'Transfer failed');
-                }
-            } else {
-                // Account not found - show support option
-                const needSupport = confirm(`Account number ${accountNumber} not found in our system.\n\nWould you like to contact support for assistance?`);
-                if (needSupport) {
-                    const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-                    supportModal.show();
-                }
-            }
-        } catch (error) {
-            console.error('Bank transfer error:', error);
-            const needSupport = confirm(`Transfer failed: ${error.message}\n\nWould you like to contact support?`);
-            if (needSupport) {
-                const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-                supportModal.show();
-            }
-        } finally {
-            transferBtn.innerHTML = originalText;
-            transferBtn.disabled = false;
-        }
-    }
-
     // Support functions
     function contactSupport(method) {
         const modal = bootstrap.Modal.getInstance(document.getElementById('supportModal'));
@@ -1884,10 +1633,10 @@
         let message = '';
         switch(method) {
             case 'email':
-                message = 'Please email us at credafluxewallet@gmail.comfor assistance.';
+                message = 'Please email us at credafluxewallet@gmail.com for assistance.';
                 break;
             case 'phone':
-                message = 'Call our support team at +1 (555) 123-4567 for immediate help.';
+                message = 'Call our support team at +1 579 391 9724 for immediate help.';
                 break;
             case 'chat':
                 message = 'Our live chat support will be available shortly. Thank you for your patience.';
@@ -2177,284 +1926,6 @@
         document.getElementById('recipient-info').style.display = 'none';
         clearPin();
     });
-// Display transactions - KEEP RECEIPT BUTTON BUT REMOVE IT FROM VISUAL DISPLAY
-function displayTransactions(transactions) {
-    const container = document.getElementById('transactionsList');
-    
-    if (!transactions || transactions.length === 0) {
-        container.innerHTML = `
-            <div class="no-transactions">
-                <i class="fas fa-receipt"></i>
-                <h4>No transactions yet</h4>
-                <p>Your transaction history will appear here</p>
-            </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = transactions.map(transaction => {
-        const isSender = transaction.sender_id === userData.id;
-        const isReceiver = transaction.receiver_id === userData.id;
-        
-        let transactionType, amountDisplay, amountClass;
-        
-        if (isSender) {
-            transactionType = `<i class="fas fa-arrow-up text-danger"></i>Sent to ${transaction.receiver_name || 'Unknown'}`;
-            amountDisplay = `-${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
-            amountClass = 'amount-sent';
-        } else if (isReceiver) {
-            transactionType = `<i class="fas fa-arrow-down text-success"></i>Received from ${transaction.sender_name || 'Unknown'}`;
-            amountDisplay = `+${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
-            amountClass = 'amount-received';
-        } else {
-            transactionType = `<i class="fas fa-exchange-alt text-warning"></i>Transaction`;
-            amountDisplay = `${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
-            amountClass = '';
-        }
-
-        // Get transaction ID - try multiple possible fields
-        const transactionId = transaction.id || transaction.transaction_id;
-        
-        if (!transactionId) {
-            console.warn('Transaction missing ID:', transaction);
-            return ''; // Skip transactions without IDs
-        }
-
-        return `
-        <div class="transaction-item">
-            <div class="transaction-info">
-                <div class="transaction-type">
-                    ${transactionType}
-                </div>
-                <div class="transaction-date">
-                    ${new Date(transaction.created_at).toLocaleString()}
-                </div>
-            </div>
-            <div class="transaction-details">
-                <span class="transaction-amount ${amountClass}">
-                    ${amountDisplay}
-                </span>
-                <div class="d-flex align-items-center gap-2">
-                    <span class="status-badge status-${(transaction.status || 'completed').toLowerCase()}">
-                        ${transaction.status || 'Completed'}
-                    </span>
-                    <!-- RECEIPT BUTTON ADDED BACK BUT HIDDEN -->
-                    <button class="receipt-btn" onclick="viewReceipt('${transactionId}')" style="display: none;">
-                        <i class="fas fa-receipt"></i>
-                        Receipt
-                    </button>
-                </div>
-            </div>
-        </div>
-        `;
-    }).join('');
-}
-
-// View receipt function - ADD THIS BACK
-function viewReceipt(transactionId) {
-    if (!transactionId) {
-        alert('Transaction ID not available');
-        return;
-    }
-    
-    console.log('Viewing receipt for transaction:', transactionId);
-    
-    // Store in session storage as backup
-    sessionStorage.setItem('lastTransactionId', transactionId);
-    
-    // Navigate to receipt page
-    window.location.href = `receipt.html?id=${transactionId}`;
-}
-
-// Bank Transfer Function - ADD RECEIPT OPTION BACK
-async function processBankTransfer() {
-    const accountNumber = document.getElementById('bankAccountNumber').value.trim();
-    const amount = document.getElementById('bankAmount').value;
-    const transferBtn = document.querySelector('.transfer-now-btn');
-    
-    if (!accountNumber) {
-        alert('Please enter account number');
-        return;
-    }
-    
-    if (!amount || amount <= 0) {
-        alert('Please enter a valid amount');
-        return;
-    }
-    
-    if (parseFloat(amount) > (userData.balance || 0)) {
-        alert('Insufficient balance');
-        return;
-    }
-
-    const originalText = transferBtn.innerHTML;
-    transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    transferBtn.disabled = true;
-
-    try {
-        // First search for the account
-        const searchResponse = await fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(accountNumber)}`, {
-            credentials: 'include'
-        });
-        
-        if (!searchResponse.ok) {
-            throw new Error('Failed to search accounts');
-        }
-        
-        const accounts = await searchResponse.json();
-        let receiverId = null;
-        
-        if (accounts && accounts.length > 0) {
-            // Account found in system
-            const account = accounts[0];
-            receiverId = account.id;
-            
-            // Show PIN modal for confirmation
-            const pin = prompt('Please enter your 4-digit PIN to confirm transfer:');
-            if (!pin || pin.length !== 4) {
-                alert('Invalid PIN. Transfer cancelled.');
-                transferBtn.innerHTML = originalText;
-                transferBtn.disabled = false;
-                return;
-            }
-
-            // Process the transfer
-            const transferResponse = await fetch(`${API_BASE_URL}/make_transaction`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                'Accept': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    receiver_id: receiverId,
-                    amount: parseFloat(amount),
-                    pin: pin
-                })
-            });
-
-            const result = await transferResponse.json();
-            
-            if (result.success) {
-                alert('Transfer completed successfully!');
-                // Clear form
-                document.getElementById('bankAccountNumber').value = '';
-                document.getElementById('bankAmount').value = '';
-                // Reload data
-                await loadUserData();
-                await loadTransactions();
-                
-                // Get transaction ID from response - try multiple possible fields
-                const transactionId = result.transaction_id || result.id || result.transaction?.id;
-                
-                if (transactionId) {
-                    // Offer to view receipt
-                    const viewReceipt = confirm('Would you like to view the receipt?');
-                    if (viewReceipt) {
-                        window.location.href = `receipt.html?id=${transactionId}`;
-                    }
-                }
-            } else {
-                throw new Error(result.message || 'Transfer failed');
-            }
-        } else {
-            // Account not found - show support option
-            const needSupport = confirm(`Account number ${accountNumber} not found in our system.\n\nWould you like to contact support for assistance?`);
-            if (needSupport) {
-                const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-                supportModal.show();
-            }
-        }
-    } catch (error) {
-        console.error('Bank transfer error:', error);
-        const needSupport = confirm(`Transfer failed: ${error.message}\n\nWould you like to contact support?`);
-        if (needSupport) {
-            const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-            supportModal.show();
-        }
-    } finally {
-        transferBtn.innerHTML = originalText;
-        transferBtn.disabled = false;
-    }
-}
-
-// Process transfer - ADD RECEIPT OPTION BACK
-async function processTransfer() {
-    const pin = document.getElementById('pin').value;
-    
-    if (pin.length !== 4) {
-        alert('Please enter your 4-digit PIN');
-        return;
-    }
-    
-    const submitBtn = document.getElementById('next-btn');
-    const originalText = submitBtn.innerHTML;
-    
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-    submitBtn.disabled = true;
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/make_transaction`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-                },
-            credentials: 'include',
-            body: JSON.stringify({
-                receiver_id: transferData.receiver_id,
-                amount: parseFloat(transferData.amount),
-                pin: pin
-            })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
-            modal.hide();
-            
-            // Reload user data and transactions
-            await loadUserData();
-            await loadTransactions();
-            
-            // Get transaction ID from response - try multiple possible fields
-            const transactionId = data.transaction_id || data.id || data.transaction?.id;
-            
-            if (transactionId) {
-                // Show success message with receipt option
-                const success = confirm('Transfer completed successfully! Would you like to view the receipt?');
-                if (success) {
-                    window.location.href = `receipt.html?id=${transactionId}`;
-                }
-            } else {
-                alert('Transfer completed successfully!');
-            }
-        } else {
-            // Show appropriate error message with support option
-            if (data.message.includes('not found') || data.message.includes('Invalid') || data.message.includes('recipient')) {
-                const needSupport = confirm(`Error: ${data.message}\n\nWould you like to contact support for assistance?`);
-                if (needSupport) {
-                    const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-                    supportModal.show();
-                }
-            } else {
-                alert('Error: ' + data.message);
-            }
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    } catch (error) {
-        console.error('Transfer error:', error);
-        const needSupport = confirm('Network error processing transaction. Would you like to contact support?');
-        if (needSupport) {
-            const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
-            supportModal.show();
-        }
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
 </script>
 </body>
 </html>
