@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creda Flux E-Wallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        /* Updated color scheme using your colors */
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background-color: var(--light-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        .logo-inner {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .bank-name {
+            color: var(--light-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .bank-tagline {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .loading-container {
+            width: 200px;
+            margin-top: 2rem;
+        }
+
+        .loading-text {
+            color: var(--light-color);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .loading-bar {
+            height: 4px;
+            background-color: rgba(238, 239, 240, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+            transition: width 30s linear;
+        }
+
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        .security-badge {
+            position: absolute;
+            bottom: 2rem;
+            display: flex;
+            align-items: center;
+            color: rgba(238, 239, 240, 0.7);
+            font-size: 0.8rem;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { 
+                transform: scale(0);
+            } 40% { 
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            position: relative;
+            text-indent: -9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Pulse animation effect */
+        .logo-inner::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .logo {
+    width: 80px;
+    height: 80px;
+    background: rgba(20, 203, 244, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(20, 203, 244, 0.3);
+    margin: 0 auto 1rem;
+    overflow: hidden;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+    </style>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    
+    <!-- Google Translate Widget Styles -->
+    <style>
+    .goog-te-gadget-simple {
+        border: 1px solid #358a9f !important;
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        background: white !important;
+        font-family: 'Segoe UI', sans-serif !important;
+        font-size: 14px !important;
+        min-width: 140px !important;
+    }
+    .goog-te-gadget-simple:hover {
+        background: #f8f9fa !important;
+        border-color: #2f7a8f !important;
+    }
+    .goog-te-menu-value span {
+        color: #358a9f !important;
+        font-weight: 500 !important;
+    }
+    .goog-te-menu-value span:hover {
+        color: #2f2f30 !important;
+    }
+    .goog-te-banner-frame { 
+        display: none !important; 
+    }
+    body { 
+        top: 0px !important; 
+    }
+
+    /* Make dropdown cleaner */
+    .goog-te-menu-frame {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        border-radius: 8px !important;
+        border: 1px solid #ddd !important;
+        margin-top: 5px !important;
+    }
+
+    /* Style the dropdown options */
+    .goog-te-menu2 {
+        border-radius: 6px !important;
+        overflow: hidden !important;
+    }
+
+    .goog-te-menu2-item {
+        padding: 8px 12px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .goog-te-menu2-item:hover {
+        background: #358a9f !important;
+        color: white !important;
+    }
+
+    .goog-te-menu2-item div {
+        color: #2f2f30 !important;
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    .goog-te-menu2-item:hover div {
+        color: white !important;
+    }
+    </style>
+</head>
+<body>
+    <!-- Your website content here -->
+    
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" style="position: fixed; top: 100px; right: 20px; z-index: 1000; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px;"></div>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en'
+        },
+        'google_translate_element'
+        );
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="logo-container">
+                    <div class="logo">
+                        <img src="./image/logo.jpeg" alt="TradeWavee Logo">
+                    </div>
+            <h1 class="bank-name">Creda Flux E-Wallet</h1>
+            <p class="bank-tagline">Your Secure E-Wallet Solution</p>
+        </div>
+        
+        <div class="loading-container">
+            <div class="loading-text">Loading secure e-wallet environment</div>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        
+        <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>256-bit SSL Encrypted</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const splashScreen = document.getElementById('splashScreen');
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            // Start the loading progress animation
+            loadingProgress.style.width = '100%';
+            
+            // Redirect to login page after 5 seconds (reduced from 30 for better UX)
+            setTimeout(function() {
+                splashScreen.classList.add('hidden');
+                
+                setTimeout(function() {
+                    // Redirect to login page
+                    window.location.href = 'login.html';
+                }, 1000);
+            }, 5000); // 5 seconds (reduced from 30)
+            
+            // Simulate loading messages
+            const loadingText = document.querySelector('.loading-text');
+            const messages = [
+                "Loading secure e-wallet environment",
+                "Initializing security protocols",
+                "Connecting to secure servers",
+                "Verifying system integrity",
+                "Almost ready..."
+            ];
+            
+            let messageIndex = 0;
+            const messageInterval = setInterval(function() {
+                loadingText.textContent = messages[messageIndex];
+                messageIndex = (messageIndex + 1) % messages.length;
+            }, 1000); // Change message every 1 second
+            
+            // Clear interval when splash screen is hidden
+            setTimeout(function() {
+                clearInterval(messageInterval);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

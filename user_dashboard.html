@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Creda Flux E-Wallet E-wallet</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --success-color: #14cbf4;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-dark: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+        }
+
+        .user-dashboard {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--dark-bg) 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            color: var(--light-color);
+        }
+
+        /* Support Button Styles */
+        .support-section {
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .support-btn {
+            background: rgba(20, 203, 244, 0.2);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            margin: 0.5rem;
+        }
+
+        .support-btn:hover {
+            background: rgba(20, 203, 244, 0.3);
+            transform: translateY(-2px);
+            color: var(--light-color);
+        }
+
+        .support-modal .modal-content {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .support-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .support-option {
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .support-option:hover {
+            background: rgba(20, 203, 244, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .support-option i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Bank Transfer Styles */
+        .bank-transfer-section {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .bank-transfer-title {
+            color: var(--light-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bank-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .bank-input {
+            flex: 1;
+            background: rgba(12, 44, 71, 0.5);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--light-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .bank-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
+            background: rgba(12, 44, 71, 0.7);
+            outline: none;
+        }
+
+        .bank-input::placeholder {
+            color: rgba(238, 239, 240, 0.6);
+        }
+
+        .transfer-now-btn {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: var(--light-color);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .transfer-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+        }
+
+        .transfer-now-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Transaction Receipt Button - REMOVED */
+        /* .receipt-btn {
+            background: rgba(57, 210, 2, 0.2);
+            border: 1px solid rgba(57, 210, 2, 0.3);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .receipt-btn:hover {
+            background: rgba(57, 210, 2, 0.3);
+            transform: translateY(-2px);
+            color: var(--light-color);
+        } */
+
+        /* Rest of your existing styles remain the same */
+        .dashboard-header {
+            background: var(--gradient-dark);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(20, 203, 244, 0.15);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(20, 203, 244, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(20, 203, 244, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .brand-logo i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        .brand-text h1 {
+            color: var(--light-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand-text p {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-welcome {
+            color: var(--light-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(20, 203, 244, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .logout-btn {
+            background: rgba(20, 203, 244, 0.2);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: rgba(20, 203, 244, 0.3);
+            transform: translateY(-2px);
+            color: var(--light-color);
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            padding: 2rem 0;
+        }
+
+        /* Account Summary Cards */
+        .account-summary {
+            margin-bottom: 2rem;
+        }
+
+        .balance-card {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 10px 40px rgba(20, 203, 244, 0.1),
+                0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .balance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 60px rgba(20, 203, 244, 0.2),
+                0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+        }
+
+        .balance-display {
+            text-align: left;
+        }
+
+        .balance-label {
+            color: var(--light-color);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .balance-currency {
+            color: var(--light-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .transfer-btn {
+            border: none;
+            border-radius: 16px;
+            padding: 1.25rem 2rem;
+            color: var(--light-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            justify-content: center;
+            background: var(--gradient-primary);
+            box-shadow: 0 8px 32px rgba(20, 203, 244, 0.3);
+        }
+
+        .transfer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .transfer-btn:hover::before {
+            left: 100%;
+        }
+
+        .transfer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(20, 203, 244, 0.4);
+        }
+
+        .account-details-card {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 
+                0 8px 32px rgba(20, 203, 244, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            height: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .account-details-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .account-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+
+        .bank-name {
+            color: var(--light-color);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .currency-badge {
+            background: var(--gradient-primary);
+            color: var(--light-color);
+            padding: 0.5rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* Transactions Section */
+        .transactions-section {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: 24px;
+            box-shadow: 
+                0 10px 40px rgba(20, 203, 244, 0.1),
+                0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, rgba(20, 203, 244, 0.1), rgba(12, 44, 71, 0.2));
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--light-color);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .transaction-list {
+            padding: 0;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .transaction-item:hover {
+            background: rgba(20, 203, 244, 0.05);
+            transform: translateX(5px);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            color: var(--light-color);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .transaction-date {
+            color: var(--light-color);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .transaction-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .transaction-amount {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .amount-sent {
+            color: #ef4444;
+        }
+
+        .amount-received {
+            color: var(--accent-color);
+        }
+
+        .status-badge {
+            padding: 0.375rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .status-processing {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .no-transactions {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--light-color);
+            opacity: 0.7;
+        }
+
+        .no-transactions i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Modern Modal */
+        .modal-content {
+            border-radius: 24px;
+            border: none;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            background: rgba(1, 7, 17, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            color: var(--light-color);
+        }
+
+        .modal-header {
+            background: var(--gradient-dark);
+            color: var(--light-color);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .modal-title {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-close-white {
+            filter: brightness(0) invert(1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(12, 44, 71, 0.5);
+            color: var(--light-color);
+        }
+
+        .form-control::placeholder {
+            color: rgba(238, 239, 240, 0.6);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
+            transform: translateY(-2px);
+            background: rgba(12, 44, 71, 0.7);
+            color: var(--light-color);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(1, 7, 17, 0.95);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--light-color);
+        }
+
+        .search-result-item:hover {
+            background: rgba(20, 203, 244, 0.1);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .recipient-info {
+            background: rgba(20, 203, 244, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 2px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--light-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
+        }
+
+        .btn-secondary {
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--light-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(20, 203, 244, 0.2);
+            color: var(--light-color);
+        }
+
+        /* PIN Modal Styles */
+        .pin-modal .modal-content {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .pin-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .pin-input {
+            width: 60px;
+            height: 70px;
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            background: rgba(12, 44, 71, 0.5);
+            color: var(--light-color);
+        }
+
+        .pin-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
+            transform: scale(1.05);
+            background: rgba(12, 44, 71, 0.7);
+        }
+
+        .transfer-summary {
+            background: rgba(20, 203, 244, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--light-color);
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .summary-value {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-active {
+            background: var(--gradient-primary);
+            color: var(--light-color);
+            box-shadow: 0 4px 12px rgba(20, 203, 244, 0.3);
+        }
+
+        .step-inactive {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--light-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .step-completed {
+            background: var(--gradient-primary);
+            color: var(--light-color);
+        }
+
+        .step-line {
+            flex: 1;
+            height: 3px;
+            background: rgba(20, 203, 244, 0.3);
+            margin: 0 0.5rem;
+        }
+
+        .step-line.active {
+            background: var(--gradient-primary);
+        }
+
+        .step-line.completed {
+            background: var(--gradient-primary);
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--light-color);
+            opacity: 0.7;
+        }
+
+        .step-active .step-label {
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        .step-completed .step-label {
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Logo Styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            background: var(--gradient-primary);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-inner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Footer Styles */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(1, 7, 17, 0.95);
+            border-top: 1px solid rgba(20, 203, 244, 0.2);
+            padding: 1rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: var(--light-color);
+        }
+
+        .nav-item:hover {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--light-color);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.25rem;
+            font-size: 1.25rem;
+            color: var(--light-color);
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .nav-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--light-color);
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        /* Active State */
+        .nav-item.active .nav-icon {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+            opacity: 1;
+        }
+
+        .nav-item.active .nav-text {
+            color: var(--accent-color);
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            border: 2px solid var(--dark-bg);
+            animation: pulse 2s infinite;
+        }
+
+        /* Active Indicator */
+        .active-indicator {
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            position: absolute;
+            bottom: -8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active .active-indicator {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40%, 43% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .nav-item.active .nav-icon {
+            animation: bounce 0.5s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .balance-amount {
+                font-size: 2.5rem;
+            }
+            
+            .balance-card,
+            .account-details-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .transfer-btn {
+                min-width: auto;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .transaction-item {
+                padding: 1.25rem 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .transaction-details {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .user-menu {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-end;
+            }
+
+            .pin-input-container {
+                gap: 0.25rem;
+            }
+
+            .pin-input {
+                width: 50px;
+                height: 60px;
+                font-size: 1.25rem;
+            }
+
+            .bank-input-group {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-content {
+                padding: 1rem 0;
+            }
+            
+            .balance-amount {
+                font-size: 2rem;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .footer {
+                padding: 0.75rem 0;
+            }
+            
+            .nav-item {
+                padding: 0.5rem;
+            }
+            
+            .nav-icon {
+                font-size: 1.1rem;
+            }
+            
+            .nav-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .footer-nav {
+                max-width: 500px;
+            }
+            
+            .nav-item {
+                padding: 0.75rem 1.5rem;
+            }
+        }
+    </style>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    
+    <!-- Google Translate Widget Styles -->
+    <style>
+    .goog-te-gadget-simple {
+        border: 1px solid #358a9f !important;
+        border-radius: 6px !important;
+        padding: 8px 12px !important;
+        background: white !important;
+        font-family: 'Segoe UI', sans-serif !important;
+        font-size: 14px !important;
+        min-width: 140px !important;
+    }
+    .goog-te-gadget-simple:hover {
+        background: #f8f9fa !important;
+        border-color: #2f7a8f !important;
+    }
+    .goog-te-menu-value span {
+        color: #358a9f !important;
+        font-weight: 500 !important;
+    }
+    .goog-te-menu-value span:hover {
+        color: #2f2f30 !important;
+    }
+    .goog-te-banner-frame { 
+        display: none !important; 
+    }
+    body { 
+        top: 0px !important; 
+    }
+
+    /* Make dropdown cleaner */
+    .goog-te-menu-frame {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        border-radius: 8px !important;
+        border: 1px solid #ddd !important;
+        margin-top: 5px !important;
+    }
+
+    /* Style the dropdown options */
+    .goog-te-menu2 {
+        border-radius: 6px !important;
+        overflow: hidden !important;
+    }
+
+    .goog-te-menu2-item {
+        padding: 8px 12px !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+    }
+
+    .goog-te-menu2-item:hover {
+        background: #358a9f !important;
+        color: white !important;
+    }
+
+    .goog-te-menu2-item div {
+        color: #2f2f30 !important;
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    .goog-te-menu2-item:hover div {
+        color: white !important;
+    }
+    .logo {
+    width: 80px;
+    height: 80px;
+    background: rgba(20, 203, 244, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(20, 203, 244, 0.3);
+    margin: 0 auto 1rem;
+    overflow: hidden;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+    </style>
+</head>
+<body>
+    <!-- Your website content here -->
+    
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" style="position: fixed; top: 100px; right: 20px; z-index: 1000; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px;"></div>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+        {
+            pageLanguage: 'en'
+        },
+        'google_translate_element'
+        );
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
+</head>
+<body>
+    <div class="user-dashboard">
+        <!-- Modern Header -->
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="brand-container">
+                            <div class="logo">
+                                <img src="./image/logo.jpeg" alt="TradeWavee Logo">
+                            </div>
+                            <div class="brand-text">
+                                <h1>Creda Flux E-Wallet</h1>
+                                <p>Secure E-Wallet Solution</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="user-menu">
+                            <div class="user-welcome">
+                                <i class="fas fa-user-circle"></i>
+                                Welcome to Creda Flux E-Wallet E-wallet
+                            </div>
+                            <a href="#" class="logout-btn" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Support Section -->
+                <div class="support-section">
+                    <button class="support-btn" data-bs-toggle="modal" data-bs-target="#supportModal">
+                        <i class="fas fa-headset"></i>
+                        Contact Support
+                    </button>
+                </div>
+
+                <!-- Account Summary -->
+                <div class="account-summary">
+                    <div class="row g-4">
+                        <div class="col-lg-8">
+                            <div class="balance-card">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="balance-display">
+                                            <div class="balance-label">
+                                                <i class="fas fa-wallet"></i>
+                                                Available Balance
+                                            </div>
+                                            <span class="balance-amount" id="userBalance">0.00</span>
+                                            <span class="balance-currency" id="userCurrency">USD</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <div class="action-buttons">
+                                            <button class="transfer-btn" data-bs-toggle="modal" data-bs-target="#transferModal">
+                                                <i class="fas fa-paper-plane"></i>
+                                                Transfer Money
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bank Transfer Section -->
+                            <div class="bank-transfer-section">
+                                <div class="bank-transfer-title">
+                                    <i class="fas fa-university"></i>
+                                    Bank Transfer
+                                </div>
+                                <div class="bank-input-group">
+                                    <input type="text" class="bank-input" id="bankAccountNumber" 
+                                           placeholder="Enter account number" maxlength="20">
+                                    <input type="number" class="bank-input" id="bankAmount" 
+                                           placeholder="Amount" min="0.01" step="0.01">
+                                </div>
+                               <a href="./demo.html">  <button class="transfer-now-btn">
+                                   <i class="fas fa-paper-plane"></i>
+                                    Transfer Now
+                                </button></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="account-details-card">
+                                <h5 class="mb-3">
+                                    <i class="fas fa-credit-card me-2"></i>Account Details
+                                </h5>
+                                <div class="account-number" id="userAccountNumber">Loading...</div>
+                                <div class="bank-name" id="userBankName">Creda Flux E-Wallet Bank</div>
+                                <div class="currency-badge">
+                                    <span id="userCurrencyBadge">USD</span> Account
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-history"></i>
+                            Recent Transactions
+                        </h2>
+                    </div>
+                    <div class="transaction-list" id="transactionsList">
+                        <div class="no-transactions">
+                            <i class="fas fa-receipt"></i>
+                            <h4>Loading transactions...</h4>
+                            <p>Please wait while we load your transaction history</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-paper-plane me-2"></i>Transfer Money
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Step Indicator -->
+                    <div class="step-indicator">
+                        <div class="step">
+                            <div class="step-circle step-active">1</div>
+                            <div class="step-label">Details</div>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <div class="step-circle step-inactive">2</div>
+                            <div class="step-label">Confirm</div>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <div class="step-circle step-inactive">3</div>
+                            <div class="step-label">PIN</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Transfer Details -->
+                    <div id="step1">
+                        <form id="transfer-form">
+                            <div class="mb-4">
+                                <label for="recipient-search" class="form-label">Recipient Account</label>
+                                <input type="text" class="form-control" id="recipient-search" 
+                                       placeholder="Search by account number or name...">
+                                <div id="search-results" class="search-results"></div>
+                                <input type="hidden" id="receiver_id" name="receiver_id">
+                            </div>
+                            
+                            <div id="recipient-info" class="recipient-info" style="display: none;">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-user-check me-2"></i>Recipient Information
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Name:</strong> <span id="recipient-name"></span>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Account:</strong> <span id="recipient-account"></span>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Bank:</strong> <span id="recipient-bank"></span>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <strong>Currency:</strong> <span id="recipient-currency"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="amount" class="form-label">Amount (<span id="currency-label">USD</span>)</label>
+                                <input type="number" class="form-control" id="amount" name="amount" 
+                                       min="0.01" step="0.01" required>
+                                <div class="form-text">
+                                    Available balance: <span id="available-balance">0.00</span> <span id="available-currency">USD</span>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info border-0" style="background: rgba(20, 203, 244, 0.1); border: 1px solid rgba(20, 203, 244, 0.2);">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Transactions are processed instantly. Cross-currency transfers use live exchange rates.
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Confirmation -->
+                    <div id="step2" style="display: none;">
+                        <div class="transfer-summary">
+                            <h6 class="mb-3 text-center">
+                                <i class="fas fa-check-circle me-2" style="color: var(--accent-color);"></i>
+                                Confirm Transfer Details
+                            </h6>
+                            <div class="summary-item">
+                                <span class="summary-label">Recipient:</span>
+                                <span class="summary-value" id="confirm-recipient-name"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Account Number:</span>
+                                <span class="summary-value" id="confirm-recipient-account"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Bank:</span>
+                                <span class="summary-value" id="confirm-recipient-bank"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Amount:</span>
+                                <span class="summary-value" id="confirm-amount"></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Fee:</span>
+                                <span class="summary-value">0.00 <span id="confirm-fee-currency">USD</span></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Total:</span>
+                                <span class="summary-value" id="confirm-total"></span>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning border-0" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3);">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Please review the details carefully before proceeding.
+                        </div>
+                    </div>
+
+                    <!-- Step 3: PIN Entry -->
+                    <div id="step3" style="display: none;">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-lock fa-3x mb-3" style="color: var(--accent-color);"></i>
+                            <h5>Enter Your PIN to Confirm</h5>
+                            <p class="text-muted">Enter your 4-digit security PIN to authorize this transaction</p>
+                        </div>
+                        
+                        <div class="pin-input-container">
+                            <input type="password" class="pin-input" maxlength="1" oninput="moveToNext(this, 1)">
+                            <input type="password" class="pin-input" maxlength="1" oninput="moveToNext(this, 2)">
+                            <input type="password" class="pin-input" maxlength="1" oninput="moveToNext(this, 3)">
+                            <input type="password" class="pin-input" maxlength="1" oninput="moveToNext(this, 4)">
+                        </div>
+                        <input type="hidden" id="pin" name="pin">
+                        
+                        <div class="text-center">
+                            <button type="button" class="btn btn-link" style="color: var(--light-color); opacity: 0.7;" onclick="clearPin()">
+                                <i class="fas fa-redo me-1"></i>Clear PIN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="prev-btn" style="display: none;" onclick="previousStep()">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="next-btn" onclick="nextStep()">
+                        Continue <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal fade support-modal" id="supportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-headset me-2"></i>Contact Support
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-life-ring fa-3x mb-3" style="color: var(--accent-color);"></i>
+                        <h4>How can we help you?</h4>
+                        <p class="text-muted">Choose your preferred support option</p>
+                    </div>
+                    
+                    <div class="support-options">
+                        <div class="support-option" onclick="contactSupport('email')">
+                            <i class="fas fa-envelope"></i>
+                            <h6>Email Support</h6>
+                            <p class="small mb-0">Get help via email</p>
+                            <small class="text-muted">credafluxewallet@gmail.com</small>
+                        </div>
+                        
+                        <div class="support-option" onclick="contactSupport('phone')">
+                            <i class="fas fa-phone"></i>
+                            <h6>Phone Support</h6>
+                            <p class="small mb-0">Call our support team</p>
+                            <small class="text-muted">+1 579 391 9724</small>
+                        </div>
+                        
+                        <div class="support-option" onclick="contactSupport('chat')">
+                            <i class="fas fa-comments"></i>
+                            <h6>Live Chat</h6>
+                            <p class="small mb-0">Chat with us instantly</p>
+                            <small class="text-muted">Available 24/7</small>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info border-0 mt-3" style="background: rgba(20, 203, 244, 0.1); border: 1px solid rgba(20, 203, 244, 0.2);">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Our support team is available 24/7 to assist you with any issues.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="footer">
+        <nav class="footer-nav">
+            <a href="user_dashboard.html" class="nav-item active" onclick="setActive(this)">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span class="nav-text">Home</span>
+                <div class="active-indicator"></div>
+            </a>
+
+            <a href="#" class="nav-item" data-bs-toggle="modal" data-bs-target="#transferModal" onclick="setActive(this)">
+                <div class="nav-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <span class="nav-text">Transfer</span>
+                <div class="active-indicator"></div>
+            </a>
+
+            <a href="#" class="nav-item" onclick="setActive(this)">
+                <div class="nav-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <span class="nav-text">Card</span>
+                <div class="active-indicator"></div>
+            </a>
+
+            <a href="#" class="nav-item" data-bs-toggle="modal" data-bs-target="#supportModal" onclick="setActive(this)">
+                <div class="nav-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <span class="nav-text">Support</span>
+                <div class="active-indicator"></div>
+            </a>
+        </nav>
+    </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
+    let currentStep = 1;
+    let transferData = {};
+    let userData = {};
+
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        checkAuth();
+        loadUserData();
+        loadTransactions();
+    });
+
+    // Authentication check
+    async function checkAuth() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/check_auth`, {
+                credentials: 'include'
+            });
+            
+            if (!response.ok) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const data = await response.json();
+            if (!data.success) {
+                window.location.href = 'login.html';
+            }
+        } catch (error) {
+            console.error('Auth check failed:', error);
+            window.location.href = 'login.html';
+        }
+    }
+
+    // Load user data
+    async function loadUserData() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    userData = data.user;
+                    updateUserInterface();
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load user data:', error);
+            showError('Failed to load user data. Please refresh the page.');
+        }
+    }
+
+    // Update UI with user data
+    function updateUserInterface() {
+        if (!userData) return;
+        
+        document.getElementById('userBalance').textContent = userData.balance?.toFixed(2) || '0.00';
+        document.getElementById('userCurrency').textContent = userData.currency || 'USD';
+        document.getElementById('userAccountNumber').textContent = userData.account_number || 'Loading...';
+        document.getElementById('userBankName').textContent = userData.bank_name || 'TradeWavee Bank';
+        document.getElementById('userCurrencyBadge').textContent = userData.currency || 'USD';
+        document.getElementById('currency-label').textContent = userData.currency || 'USD';
+        document.getElementById('available-balance').textContent = userData.balance?.toFixed(2) || '0.00';
+        document.getElementById('available-currency').textContent = userData.currency || 'USD';
+        document.getElementById('confirm-fee-currency').textContent = userData.currency || 'USD';
+    }
+
+    // Load transactions
+    async function loadTransactions() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
+                credentials: 'include'
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.transactions) {
+                    displayTransactions(data.transactions);
+                } else {
+                    displayTransactions([]);
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load transactions:', error);
+            displayTransactions([]);
+        }
+    }
+
+    // Display transactions - REMOVED RECEIPT BUTTON
+    function displayTransactions(transactions) {
+        const container = document.getElementById('transactionsList');
+        
+        if (!transactions || transactions.length === 0) {
+            container.innerHTML = `
+                <div class="no-transactions">
+                    <i class="fas fa-receipt"></i>
+                    <h4>No transactions yet</h4>
+                    <p>Your transaction history will appear here</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = transactions.map(transaction => {
+            const isSender = transaction.sender_id === userData.id;
+            const isReceiver = transaction.receiver_id === userData.id;
+            
+            let transactionType, amountDisplay, amountClass;
+            
+            if (isSender) {
+                transactionType = `<i class="fas fa-arrow-up text-danger"></i>Sent to ${transaction.receiver_name || 'Unknown'}`;
+                amountDisplay = `-${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountClass = 'amount-sent';
+            } else if (isReceiver) {
+                transactionType = `<i class="fas fa-arrow-down text-success"></i>Received from ${transaction.sender_name || 'Unknown'}`;
+                amountDisplay = `+${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountClass = 'amount-received';
+            } else {
+                transactionType = `<i class="fas fa-exchange-alt text-warning"></i>Transaction`;
+                amountDisplay = `${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountClass = '';
+            }
+
+            return `
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <div class="transaction-type">
+                        ${transactionType}
+                    </div>
+                    <div class="transaction-date">
+                        ${new Date(transaction.created_at).toLocaleString()}
+                    </div>
+                </div>
+                <div class="transaction-details">
+                    <span class="transaction-amount ${amountClass}">
+                        ${amountDisplay}
+                    </span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="status-badge status-${(transaction.status || 'completed').toLowerCase()}">
+                            ${transaction.status || 'Completed'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+    }
+
+    // Show error message
+    function showError(message) {
+        const flashContainer = document.getElementById('flashContainer');
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        flashContainer.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentElement) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Logout function
+    async function logout() {
+        try {
+            await fetch(`${API_BASE_URL}/logout`, {
+                credentials: 'include'
+            });
+            window.location.href = 'login.html';
+        } catch (error) {
+            console.error('Logout failed:', error);
+            window.location.href = 'login.html';
+        }
+    }
+
+    // Bank Transfer Function
+    async function processBankTransfer() {
+        const accountNumber = document.getElementById('bankAccountNumber').value.trim();
+        const amount = document.getElementById('bankAmount').value;
+        const transferBtn = document.querySelector('.transfer-now-btn');
+        
+        if (!accountNumber) {
+            alert('Please enter account number');
+            return;
+        }
+        
+        if (!amount || amount <= 0) {
+            alert('Please enter a valid amount');
+            return;
+        }
+        
+        if (parseFloat(amount) > (userData.balance || 0)) {
+            alert('Insufficient balance');
+            return;
+        }
+
+        const originalText = transferBtn.innerHTML;
+        transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        transferBtn.disabled = true;
+
+        try {
+            // First search for the account
+            const searchResponse = await fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(accountNumber)}`, {
+                credentials: 'include'
+            });
+            
+            if (!searchResponse.ok) {
+                throw new Error('Failed to search accounts');
+            }
+            
+            const accounts = await searchResponse.json();
+            let receiverId = null;
+            
+            if (accounts && accounts.length > 0) {
+                // Account found in system
+                const account = accounts[0];
+                receiverId = account.id;
+                
+                // Show PIN modal for confirmation
+                const pin = prompt('Please enter your 4-digit PIN to confirm transfer:');
+                if (!pin || pin.length !== 4) {
+                    alert('Invalid PIN. Transfer cancelled.');
+                    transferBtn.innerHTML = originalText;
+                    transferBtn.disabled = false;
+                    return;
+                }
+
+                // Process the transfer
+                const transferResponse = await fetch(`${API_BASE_URL}/make_transaction`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        receiver_id: receiverId,
+                        amount: parseFloat(amount),
+                        pin: pin
+                    })
+                });
+
+                const result = await transferResponse.json();
+                
+                if (result.success) {
+                    alert('Transfer completed successfully!');
+                    // Clear form
+                    document.getElementById('bankAccountNumber').value = '';
+                    document.getElementById('bankAmount').value = '';
+                    // Reload data
+                    await loadUserData();
+                    await loadTransactions();
+                } else {
+                    throw new Error(result.message || 'Transfer failed');
+                }
+            } else {
+                // Account not found - show support option
+                const needSupport = confirm(`Account number ${accountNumber} not found in our system.\n\nWould you like to contact support for assistance?`);
+                if (needSupport) {
+                    const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                    supportModal.show();
+                }
+            }
+        } catch (error) {
+            console.error('Bank transfer error:', error);
+            const needSupport = confirm(`Transfer failed: ${error.message}\n\nWould you like to contact support?`);
+            if (needSupport) {
+                const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                supportModal.show();
+            }
+        } finally {
+            transferBtn.innerHTML = originalText;
+            transferBtn.disabled = false;
+        }
+    }
+
+    // Support functions
+    function contactSupport(method) {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('supportModal'));
+        modal.hide();
+        
+        let message = '';
+        switch(method) {
+            case 'email':
+                message = 'Please email us at credafluxewallet@gmail.comfor assistance.';
+                break;
+            case 'phone':
+                message = 'Call our support team at +1 (555) 123-4567 for immediate help.';
+                break;
+            case 'chat':
+                message = 'Our live chat support will be available shortly. Thank you for your patience.';
+                break;
+        }
+        
+        alert(message);
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('recipient-search');
+    const searchResults = document.getElementById('search-results');
+    const receiverIdInput = document.getElementById('receiver_id');
+    const recipientInfo = document.getElementById('recipient-info');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        if (query.length < 2) {
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+            recipientInfo.style.display = 'none';
+            return;
+        }
+        
+        fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(query)}`, {
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Search failed');
+                return response.json();
+            })
+            .then(data => {
+                searchResults.innerHTML = '';
+                
+                if (!data || data.length === 0) {
+                    searchResults.innerHTML = '<div class="search-result-item">No accounts found</div>';
+                    searchResults.style.display = 'block';
+                    return;
+                }
+                
+                data.forEach(account => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    div.innerHTML = `
+                        <div class="fw-bold">${account.name || 'Unknown'}</div>
+                        <div class="small">${account.account_number || 'N/A'} - ${account.bank_name || 'Unknown Bank'}</div>
+                        <div class="small" style="opacity: 0.7;">${account.currency || 'USD'}</div>
+                    `;
+                    div.addEventListener('click', function() {
+                        searchInput.value = account.account_number;
+                        receiverIdInput.value = account.id;
+                        
+                        document.getElementById('recipient-name').textContent = account.name || 'Unknown';
+                        document.getElementById('recipient-account').textContent = account.account_number || 'N/A';
+                        document.getElementById('recipient-bank').textContent = account.bank_name || 'Unknown Bank';
+                        document.getElementById('recipient-currency').textContent = account.currency || 'USD';
+                        recipientInfo.style.display = 'block';
+                        
+                        searchResults.style.display = 'none';
+                    });
+                    searchResults.appendChild(div);
+                });
+                
+                searchResults.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Search error:', error);
+                searchResults.innerHTML = '<div class="search-result-item">Error searching accounts</div>';
+                searchResults.style.display = 'block';
+            });
+    });
+
+    // Navigation active state
+    function setActive(clickedItem) {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        clickedItem.classList.add('active');
+    }
+
+    // Multi-step transfer process
+    function nextStep() {
+        if (currentStep === 1) {
+            if (!receiverIdInput.value) {
+                alert('Please select a recipient first');
+                return;
+            }
+            
+            const amount = document.getElementById('amount').value;
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            if (parseFloat(amount) > (userData.balance || 0)) {
+                alert('Insufficient balance');
+                return;
+            }
+            
+            // Store transfer data
+            transferData = {
+                receiver_id: receiverIdInput.value,
+                amount: amount,
+                recipient_name: document.getElementById('recipient-name').textContent,
+                recipient_account: document.getElementById('recipient-account').textContent,
+                recipient_bank: document.getElementById('recipient-bank').textContent,
+                recipient_currency: document.getElementById('recipient-currency').textContent
+            };
+            
+            // Update confirmation step
+            document.getElementById('confirm-recipient-name').textContent = transferData.recipient_name;
+            document.getElementById('confirm-recipient-account').textContent = transferData.recipient_account;
+            document.getElementById('confirm-recipient-bank').textContent = transferData.recipient_bank;
+            document.getElementById('confirm-amount').textContent = `${parseFloat(transferData.amount).toFixed(2)} ${userData.currency || 'USD'}`;
+            document.getElementById('confirm-total').textContent = `${parseFloat(transferData.amount).toFixed(2)} ${userData.currency || 'USD'}`;
+            
+            showStep(2);
+        } else if (currentStep === 2) {
+            showStep(3);
+        } else if (currentStep === 3) {
+            processTransfer();
+        }
+    }
+
+    function previousStep() {
+        showStep(currentStep - 1);
+    }
+
+    function showStep(step) {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'none';
+        
+        document.getElementById(`step${step}`).style.display = 'block';
+        
+        updateStepIndicator(step);
+        
+        document.getElementById('prev-btn').style.display = step > 1 ? 'inline-block' : 'none';
+        
+        if (step === 3) {
+            document.getElementById('next-btn').innerHTML = '<i class="fas fa-lock me-2"></i>Confirm Transfer';
+            document.getElementById('next-btn').classList.add('btn-success');
+            document.getElementById('next-btn').classList.remove('btn-primary');
+        } else {
+            document.getElementById('next-btn').innerHTML = step === 2 ? 'Enter PIN <i class="fas fa-arrow-right ms-2"></i>' : 'Continue <i class="fas fa-arrow-right ms-2"></i>';
+            document.getElementById('next-btn').classList.remove('btn-success');
+            document.getElementById('next-btn').classList.add('btn-primary');
+        }
+        
+        currentStep = step;
+    }
+
+    function updateStepIndicator(step) {
+        const steps = document.querySelectorAll('.step-circle');
+        const lines = document.querySelectorAll('.step-line');
+        
+        steps.forEach((circle, index) => {
+            circle.classList.remove('step-active', 'step-completed');
+            if (index + 1 === step) {
+                circle.classList.add('step-active');
+            } else if (index + 1 < step) {
+                circle.classList.add('step-completed');
+            } else {
+                circle.classList.add('step-inactive');
+            }
+        });
+        
+        lines.forEach((line, index) => {
+            line.classList.remove('active', 'completed');
+            if (index + 1 < step) {
+                line.classList.add('completed');
+            } else if (index + 1 === step - 1) {
+                line.classList.add('active');
+            }
+        });
+    }
+
+    // PIN functionality
+    function moveToNext(input, nextIndex) {
+        const pinInputs = document.querySelectorAll('.pin-input');
+        
+        if (input.value.length === 1 && nextIndex < pinInputs.length) {
+            pinInputs[nextIndex].focus();
+        }
+        
+        updatePinValue();
+    }
+
+    function clearPin() {
+        const pinInputs = document.querySelectorAll('.pin-input');
+        pinInputs.forEach(input => {
+            input.value = '';
+        });
+        pinInputs[0].focus();
+        updatePinValue();
+    }
+
+    function updatePinValue() {
+        const pinInputs = document.querySelectorAll('.pin-input');
+        let pin = '';
+        pinInputs.forEach(input => {
+            pin += input.value;
+        });
+        document.getElementById('pin').value = pin;
+    }
+
+    // Process transfer
+    async function processTransfer() {
+        const pin = document.getElementById('pin').value;
+        
+        if (pin.length !== 4) {
+            alert('Please enter your 4-digit PIN');
+            return;
+        }
+        
+        const submitBtn = document.getElementById('next-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/make_transaction`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    },
+                credentials: 'include',
+                body: JSON.stringify({
+                    receiver_id: transferData.receiver_id,
+                    amount: parseFloat(transferData.amount),
+                    pin: pin
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
+                modal.hide();
+                
+                // Reload user data and transactions
+                await loadUserData();
+                await loadTransactions();
+                
+                alert('Transfer completed successfully!');
+            } else {
+                // Show appropriate error message with support option
+                if (data.message.includes('not found') || data.message.includes('Invalid') || data.message.includes('recipient')) {
+                    const needSupport = confirm(`Error: ${data.message}\n\nWould you like to contact support for assistance?`);
+                    if (needSupport) {
+                        const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                        supportModal.show();
+                    }
+                } else {
+                    alert('Error: ' + data.message);
+                }
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Transfer error:', error);
+            const needSupport = confirm('Network error processing transaction. Would you like to contact support?');
+            if (needSupport) {
+                const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                supportModal.show();
+            }
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Close search results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.style.display = 'none';
+        }
+    });
+
+    // Reset modal when closed
+    document.getElementById('transferModal').addEventListener('hidden.bs.modal', function() {
+        currentStep = 1;
+        showStep(1);
+        document.getElementById('transfer-form').reset();
+        document.getElementById('recipient-info').style.display = 'none';
+        clearPin();
+    });
+// Display transactions - KEEP RECEIPT BUTTON BUT REMOVE IT FROM VISUAL DISPLAY
+function displayTransactions(transactions) {
+    const container = document.getElementById('transactionsList');
+    
+    if (!transactions || transactions.length === 0) {
+        container.innerHTML = `
+            <div class="no-transactions">
+                <i class="fas fa-receipt"></i>
+                <h4>No transactions yet</h4>
+                <p>Your transaction history will appear here</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = transactions.map(transaction => {
+        const isSender = transaction.sender_id === userData.id;
+        const isReceiver = transaction.receiver_id === userData.id;
+        
+        let transactionType, amountDisplay, amountClass;
+        
+        if (isSender) {
+            transactionType = `<i class="fas fa-arrow-up text-danger"></i>Sent to ${transaction.receiver_name || 'Unknown'}`;
+            amountDisplay = `-${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+            amountClass = 'amount-sent';
+        } else if (isReceiver) {
+            transactionType = `<i class="fas fa-arrow-down text-success"></i>Received from ${transaction.sender_name || 'Unknown'}`;
+            amountDisplay = `+${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+            amountClass = 'amount-received';
+        } else {
+            transactionType = `<i class="fas fa-exchange-alt text-warning"></i>Transaction`;
+            amountDisplay = `${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+            amountClass = '';
+        }
+
+        // Get transaction ID - try multiple possible fields
+        const transactionId = transaction.id || transaction.transaction_id;
+        
+        if (!transactionId) {
+            console.warn('Transaction missing ID:', transaction);
+            return ''; // Skip transactions without IDs
+        }
+
+        return `
+        <div class="transaction-item">
+            <div class="transaction-info">
+                <div class="transaction-type">
+                    ${transactionType}
+                </div>
+                <div class="transaction-date">
+                    ${new Date(transaction.created_at).toLocaleString()}
+                </div>
+            </div>
+            <div class="transaction-details">
+                <span class="transaction-amount ${amountClass}">
+                    ${amountDisplay}
+                </span>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="status-badge status-${(transaction.status || 'completed').toLowerCase()}">
+                        ${transaction.status || 'Completed'}
+                    </span>
+                    <!-- RECEIPT BUTTON ADDED BACK BUT HIDDEN -->
+                    <button class="receipt-btn" onclick="viewReceipt('${transactionId}')" style="display: none;">
+                        <i class="fas fa-receipt"></i>
+                        Receipt
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+// View receipt function - ADD THIS BACK
+function viewReceipt(transactionId) {
+    if (!transactionId) {
+        alert('Transaction ID not available');
+        return;
+    }
+    
+    console.log('Viewing receipt for transaction:', transactionId);
+    
+    // Store in session storage as backup
+    sessionStorage.setItem('lastTransactionId', transactionId);
+    
+    // Navigate to receipt page
+    window.location.href = `receipt.html?id=${transactionId}`;
+}
+
+// Bank Transfer Function - ADD RECEIPT OPTION BACK
+async function processBankTransfer() {
+    const accountNumber = document.getElementById('bankAccountNumber').value.trim();
+    const amount = document.getElementById('bankAmount').value;
+    const transferBtn = document.querySelector('.transfer-now-btn');
+    
+    if (!accountNumber) {
+        alert('Please enter account number');
+        return;
+    }
+    
+    if (!amount || amount <= 0) {
+        alert('Please enter a valid amount');
+        return;
+    }
+    
+    if (parseFloat(amount) > (userData.balance || 0)) {
+        alert('Insufficient balance');
+        return;
+    }
+
+    const originalText = transferBtn.innerHTML;
+    transferBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    transferBtn.disabled = true;
+
+    try {
+        // First search for the account
+        const searchResponse = await fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(accountNumber)}`, {
+            credentials: 'include'
+        });
+        
+        if (!searchResponse.ok) {
+            throw new Error('Failed to search accounts');
+        }
+        
+        const accounts = await searchResponse.json();
+        let receiverId = null;
+        
+        if (accounts && accounts.length > 0) {
+            // Account found in system
+            const account = accounts[0];
+            receiverId = account.id;
+            
+            // Show PIN modal for confirmation
+            const pin = prompt('Please enter your 4-digit PIN to confirm transfer:');
+            if (!pin || pin.length !== 4) {
+                alert('Invalid PIN. Transfer cancelled.');
+                transferBtn.innerHTML = originalText;
+                transferBtn.disabled = false;
+                return;
+            }
+
+            // Process the transfer
+            const transferResponse = await fetch(`${API_BASE_URL}/make_transaction`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    receiver_id: receiverId,
+                    amount: parseFloat(amount),
+                    pin: pin
+                })
+            });
+
+            const result = await transferResponse.json();
+            
+            if (result.success) {
+                alert('Transfer completed successfully!');
+                // Clear form
+                document.getElementById('bankAccountNumber').value = '';
+                document.getElementById('bankAmount').value = '';
+                // Reload data
+                await loadUserData();
+                await loadTransactions();
+                
+                // Get transaction ID from response - try multiple possible fields
+                const transactionId = result.transaction_id || result.id || result.transaction?.id;
+                
+                if (transactionId) {
+                    // Offer to view receipt
+                    const viewReceipt = confirm('Would you like to view the receipt?');
+                    if (viewReceipt) {
+                        window.location.href = `receipt.html?id=${transactionId}`;
+                    }
+                }
+            } else {
+                throw new Error(result.message || 'Transfer failed');
+            }
+        } else {
+            // Account not found - show support option
+            const needSupport = confirm(`Account number ${accountNumber} not found in our system.\n\nWould you like to contact support for assistance?`);
+            if (needSupport) {
+                const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                supportModal.show();
+            }
+        }
+    } catch (error) {
+        console.error('Bank transfer error:', error);
+        const needSupport = confirm(`Transfer failed: ${error.message}\n\nWould you like to contact support?`);
+        if (needSupport) {
+            const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+            supportModal.show();
+        }
+    } finally {
+        transferBtn.innerHTML = originalText;
+        transferBtn.disabled = false;
+    }
+}
+
+// Process transfer - ADD RECEIPT OPTION BACK
+async function processTransfer() {
+    const pin = document.getElementById('pin').value;
+    
+    if (pin.length !== 4) {
+        alert('Please enter your 4-digit PIN');
+        return;
+    }
+    
+    const submitBtn = document.getElementById('next-btn');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/make_transaction`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+                },
+            credentials: 'include',
+            body: JSON.stringify({
+                receiver_id: transferData.receiver_id,
+                amount: parseFloat(transferData.amount),
+                pin: pin
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
+            modal.hide();
+            
+            // Reload user data and transactions
+            await loadUserData();
+            await loadTransactions();
+            
+            // Get transaction ID from response - try multiple possible fields
+            const transactionId = data.transaction_id || data.id || data.transaction?.id;
+            
+            if (transactionId) {
+                // Show success message with receipt option
+                const success = confirm('Transfer completed successfully! Would you like to view the receipt?');
+                if (success) {
+                    window.location.href = `receipt.html?id=${transactionId}`;
+                }
+            } else {
+                alert('Transfer completed successfully!');
+            }
+        } else {
+            // Show appropriate error message with support option
+            if (data.message.includes('not found') || data.message.includes('Invalid') || data.message.includes('recipient')) {
+                const needSupport = confirm(`Error: ${data.message}\n\nWould you like to contact support for assistance?`);
+                if (needSupport) {
+                    const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+                    supportModal.show();
+                }
+            } else {
+                alert('Error: ' + data.message);
+            }
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Transfer error:', error);
+        const needSupport = confirm('Network error processing transaction. Would you like to contact support?');
+        if (needSupport) {
+            const supportModal = new bootstrap.Modal(document.getElementById('supportModal'));
+            supportModal.show();
+        }
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+</script>
+</body>
+</html>

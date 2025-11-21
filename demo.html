@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Processing - Global Rise Blockchain</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --success-color: #14cbf4;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-dark: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--dark-bg) 100%);
+            min-height: 100vh;
+            color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .process-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(1, 7, 17, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(20, 203, 244, 0.15);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .process-header {
+            background: var(--gradient-dark);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .process-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .process-header p {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .process-content {
+            padding: 2rem;
+        }
+
+        /* PIN Section Styles */
+        .pin-section {
+            margin-bottom: 1rem;
+        }
+
+        .transaction-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(12, 44, 71, 0.3);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.1);
+        }
+
+        .transaction-label {
+            color: rgba(238, 239, 240, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .transaction-type {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light-color);
+        }
+
+        .pin-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .pin-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(20, 203, 244, 0.2);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .pin-dot.filled {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+
+        .pin-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .pin-key {
+            background: rgba(12, 44, 71, 0.5);
+            border: 2px solid rgba(20, 203, 244, 0.2);
+            border-radius: 12px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--light-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .pin-key:hover {
+            background: rgba(20, 203, 244, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .pin-key:active {
+            transform: translateY(0);
+            background: var(--gradient-primary);
+        }
+
+        .pin-key.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .pin-key.empty:hover {
+            background: transparent;
+            border: none;
+            transform: none;
+        }
+
+        .pin-key.backspace {
+            background: rgba(220, 53, 69, 0.2);
+            border-color: rgba(220, 53, 69, 0.3);
+        }
+
+        .pin-key.backspace:hover {
+            background: rgba(220, 53, 69, 0.3);
+            border-color: #dc3545;
+        }
+
+        .security-notice {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(20, 203, 244, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .security-notice i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        .security-notice span {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.8rem;
+        }
+
+        /* Processing Steps Styles */
+        .process-steps {
+            display: none;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(12, 44, 71, 0.3);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            border-color: var(--accent-color);
+            background: rgba(20, 203, 244, 0.1);
+        }
+
+        .step.completed {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .step.failed {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            background: rgba(20, 203, 244, 0.2);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .step.active .step-icon {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+        }
+
+        .step.completed .step-icon {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-color: #28a745;
+        }
+
+        .step.failed .step-icon {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            border-color: #dc3545;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--light-color);
+            font-size: 0.9rem;
+        }
+
+        .step-description {
+            color: rgba(238, 239, 240, 0.7);
+            font-size: 0.8rem;
+        }
+
+        .step-status {
+            font-weight: 600;
+            margin-left: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .step.active .step-status {
+            color: var(--accent-color);
+        }
+
+        .step.completed .step-status {
+            color: #28a745;
+        }
+
+        .step.failed .step-status {
+            color: #dc3545;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(12, 44, 71, 0.5);
+            border-radius: 3px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Result Section Styles */
+        .result-section {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .failed .result-icon {
+            color: #dc3545;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-message {
+            color: rgba(238, 239, 240, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .support-section {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .support-section h4 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-support {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .btn-support:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="process-container">
+        <div class="process-header">
+            <h1><i class="fas fa-lock me-2"></i>Secure Transaction</h1>
+            <p>Enter your PIN to authorize this transaction</p>
+        </div>
+
+        <div class="process-content">
+            <!-- PIN Section -->
+            <div class="pin-section" id="pinSection">
+                <div class="transaction-info">
+                    <div class="transaction-label">Transaction Type</div>
+                    <div class="transaction-type">Fund Transfer</div>
+                </div>
+
+                <div class="pin-display">
+                    <div class="pin-dot" id="pinDot1"></div>
+                    <div class="pin-dot" id="pinDot2"></div>
+                    <div class="pin-dot" id="pinDot3"></div>
+                    <div class="pin-dot" id="pinDot4"></div>
+                </div>
+
+                <div class="pin-keypad">
+                    <div class="pin-key" data-key="1">1</div>
+                    <div class="pin-key" data-key="2">2</div>
+                    <div class="pin-key" data-key="3">3</div>
+                    <div class="pin-key" data-key="4">4</div>
+                    <div class="pin-key" data-key="5">5</div>
+                    <div class="pin-key" data-key="6">6</div>
+                    <div class="pin-key" data-key="7">7</div>
+                    <div class="pin-key" data-key="8">8</div>
+                    <div class="pin-key" data-key="9">9</div>
+                    <div class="pin-key empty"></div>
+                    <div class="pin-key" data-key="0">0</div>
+                    <div class="pin-key backspace" id="backspaceKey">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </div>
+
+                <div class="security-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Your PIN is encrypted and secure</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Process Steps -->
+            <div class="process-steps" id="processSteps">
+                <div class="step active" id="step1">
+                    <div class="step-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Security Verification</div>
+                        <div class="step-description">Verifying your credentials and transaction security</div>
+                    </div>
+                    <div class="step-status">
+                        <span class="loading-spinner"></span>Processing
+                    </div>
+                </div>
+
+                <div class="step" id="step2">
+                    <div class="step-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Funds Reservation</div>
+                        <div class="step-description">Reserving the transaction amount in your account</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step3">
+                    <div class="step-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Transaction Processing</div>
+                        <div class="step-description">Transferring funds to recipient account</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step4">
+                    <div class="step-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Database Update</div>
+                        <div class="step-description">Updating transaction records and balances</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step5">
+                    <div class="step-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Confirmation</div>
+                        <div class="step-description">Sending transaction confirmation</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+            </div>
+
+            <!-- Failed Result Section -->
+            <div class="result-section failed" id="failedSection">
+                <div class="result-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="result-title">Transaction Failed</div>
+                <div class="result-message">
+                    We're sorry, but we were unable to process your transaction at this time. 
+                    This could be due to SERVICES & VAT EXTERNAL Contact our support team to help with this Transaction
+                    <br><br>
+                    <strong>Your funds are safe and have not been deducted from your account.</strong>
+                </div>
+                
+                <div class="support-section">
+                    <h4><i class="fas fa-headset me-2"></i>Need Help With This Transaction?</h4>
+                    <p>Our support team is available 24/7 to assist you with this issue.</p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>+1 579 391 9724</div>
+                            <small>24/7 Support Line</small>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>credafluxewallet@gmail.com</div>
+                            <small>Email Support</small>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-comment"></i>
+                            <div>Live Chat</div>
+                            <small>Instant Help</small>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-support" onclick="contactSupport()">
+                        <i class="fas fa-comments me-2"></i>Contact Support Now
+                    </button>
+                </div>
+
+                <button class="btn btn-primary" onclick="window.location.href='user_dashboard.html'">
+                    <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pin = '';
+        const maxPinLength = 4;
+
+        // Initialize pin dots
+        const pinDots = [
+            document.getElementById('pinDot1'),
+            document.getElementById('pinDot2'),
+            document.getElementById('pinDot3'),
+            document.getElementById('pinDot4')
+        ];
+
+        // Add click events to number keys
+        document.querySelectorAll('.pin-key[data-key]').forEach(key => {
+            key.addEventListener('click', () => {
+                if (pin.length < maxPinLength) {
+                    pin += key.getAttribute('data-key');
+                    updatePinDisplay();
+                    
+                    // Auto-submit when PIN is complete
+                    if (pin.length === maxPinLength) {
+                        startProcessing();
+                    }
+                }
+            });
+        });
+
+        // Backspace functionality
+        document.getElementById('backspaceKey').addEventListener('click', () => {
+            if (pin.length > 0) {
+                pin = pin.slice(0, -1);
+                updatePinDisplay();
+            }
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9' && pin.length < maxPinLength) {
+                pin += e.key;
+                updatePinDisplay();
+                
+                if (pin.length === maxPinLength) {
+                    startProcessing();
+                }
+            } else if (e.key === 'Backspace') {
+                if (pin.length > 0) {
+                    pin = pin.slice(0, -1);
+                    updatePinDisplay();
+                }
+            }
+        });
+
+        function updatePinDisplay() {
+            pinDots.forEach((dot, index) => {
+                if (index < pin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function startProcessing() {
+            // Hide PIN section, show process steps and progress bar
+            document.getElementById('pinSection').style.display = 'none';
+            document.getElementById('processSteps').style.display = 'block';
+            document.getElementById('progressBar').style.display = 'block';
+            
+            // Start the process simulation
+            simulateProcess();
+        }
+
+        function simulateProcess() {
+            const steps = [
+                { id: 'step1', duration: 2000 },
+                { id: 'step2', duration: 3000 },
+                { id: 'step3', duration: 4000 },
+                { id: 'step4', duration: 2000 },
+                { id: 'step5', duration: 1500 }
+            ];
+
+            let currentStep = 0;
+            const progressFill = document.getElementById('progressFill');
+            const totalSteps = steps.length;
+
+            function processNextStep() {
+                if (currentStep >= totalSteps) {
+                    // All steps completed, show failed result
+                    showFailedResult();
+                    return;
+                }
+
+                const step = steps[currentStep];
+                const stepElement = document.getElementById(step.id);
+                
+                // Mark current step as active
+                stepElement.classList.add('active');
+                
+                // Simulate processing time
+                setTimeout(() => {
+                    // Always fail at step 3 for demonstration
+                    if (currentStep === 2) {
+                        stepElement.classList.remove('active');
+                        stepElement.classList.add('failed');
+                        stepElement.querySelector('.step-status').innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Failed';
+                        showFailedResult();
+                    } else {
+                        stepElement.classList.remove('active');
+                        stepElement.classList.add('completed');
+                        stepElement.querySelector('.step-status').innerHTML = '<i class="fas fa-check me-1"></i>Completed';
+                        
+                        // Update progress
+                        const progress = ((currentStep + 1) / totalSteps) * 100;
+                        progressFill.style.width = progress + '%';
+                        
+                        currentStep++;
+                        processNextStep();
+                    }
+                }, step.duration);
+            }
+
+            processNextStep();
+        }
+
+        function showFailedResult() {
+            document.getElementById('processSteps').style.display = 'none';
+            document.getElementById('failedSection').style.display = 'block';
+            document.getElementById('progressFill').style.width = '60%';
+            document.getElementById('progressFill').style.background = 'linear-gradient(135deg, #dc3545, #e83e8c)';
+        }
+
+        function contactSupport() {
+            alert("Thank you for reaching out! Our support team will contact you shortly to resolve this issue.\n\nYou can also reach us directly at:\nPhone: +1 579 391 9724\nEmail: credafluxewallet@gmail.com");
+        }
+
+        // Reset function (for demo purposes)
+        function resetProcess() {
+            pin = '';
+            updatePinDisplay();
+            document.getElementById('pinSection').style.display = 'block';
+            document.getElementById('processSteps').style.display = 'none';
+            document.getElementById('progressBar').style.display = 'none';
+            document.getElementById('failedSection').style.display = 'none';
+            
+            // Reset all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active', 'completed', 'failed');
+                step.querySelector('.step-status').innerHTML = 'Pending';
+            });
+            
+            // Reset progress bar
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('progressFill').style.background = 'var(--gradient-primary)';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+Custom Styles for Standard Chartered Banking System
+:root {
+    --primary-color: #1a237e;
+    --secondary-color: #283593;
+    --accent-color: #3949ab;
+    --success-color: #2e7d32;
+    --danger-color: #c62828;
+    --warning-color: #f9a825;
+}
+
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    line-height: 1.6;
+}
+
+.flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+}
+
+/* Login Page Styles */
+.login-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.bank-header {
+    padding: 30px 20px 0;
+}
+
+.bank-logo .bank-name {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.bank-tagline {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.login-form {
+    padding: 20px;
+}
+
+.login-footer {
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.security-badge {
+    margin-top: 10px;
+}
+
+/* Dashboard Styles */
+.admin-dashboard, .user-dashboard {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    font-weight: 600;
+}
+
+/* Balance Display */
+.balance-display {
+    padding: 10px 0;
+}
+
+.balance-amount {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: block;
+}
+
+/* Transaction Styles */
+.transaction-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: #f8f9fa;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-type {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.transaction-date {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.transaction-details {
+    text-align: right;
+}
+
+.transaction-details .amount {
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: block;
+}
+
+/* Search Results */
+.search-results {
+    position: absolute;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    width: calc(100% - 2px);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    display: none;
+}
+
+.search-result-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Recipient Info */
+.recipient-info {
+    margin: 15px 0;
+}
+
+.recipient-info .card {
+    border-left: 4px solid var(--success-color);
+}
+
+/* Receipt Styles */
+.receipt-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 40px 0;
+}
+
+.receipt-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.receipt-section {
+    padding: 20px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.receipt-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.info-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.info-item .label {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.info-item .value {
+    font-weight: 600;
+}
+
+.party-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    height: 100%;
+}
+
+.party-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 5px;
+}
+
+.party-info {
+    font-size: 0.9rem;
+}
+
+.currency-badge {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    margin-top: 5px;
+}
+
+.amount-display {
+    padding: 20px;
+}
+
+.amount-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.amount-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.exchange-info {
+    font-size: 0.8rem;
+}
+
+.security-info {
+    padding: 10px;
+    background: #e8f5e8;
+    border-radius: 5px;
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.75em;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+/* Table Styles */
+.table th {
+    border-top: none;
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Modal Styles */
+.modal-header {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .balance-amount {
+        font-size: 2rem;
+    }
+    
+    .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .transaction-details {
+        text-align: left;
+        margin-top: 10px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .info-item .value {
+        margin-top: 5px;
+    }
+    
+    .flash-container {
+        left: 20px;
+        right: 20px;
+        min-width: auto;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-card, .card {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Loading States */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Print Styles */
+@media print {
+    .navbar, .btn, .actions {
+        display: none !important;
+    }
+    
+    .receipt-card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+}

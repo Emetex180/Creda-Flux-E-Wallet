@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TradeWavee</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --success-color: #14cbf4;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-dark: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--dark-bg) 100%);
+            min-height: 100vh;
+            color: var(--light-color);
+        }
+
+        .admin-dashboard {
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .admin-header {
+            background: var(--gradient-dark);
+            color: var(--light-color);
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(20, 203, 244, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .logo-inner {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .admin-brand-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--light-color);
+        }
+
+        .admin-brand-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+            color: rgba(238, 239, 240, 0.8);
+        }
+
+        .admin-user-menu {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1.5rem;
+        }
+
+        .admin-welcome {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            background: rgba(20, 203, 244, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .admin-logout-btn {
+            background: rgba(20, 203, 244, 0.2);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-logout-btn:hover {
+            background: rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .admin-content {
+            padding: 2rem 0;
+        }
+
+        /* Statistics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(1, 7, 17, 0.8);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(20, 203, 244, 0.1), 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(20, 203, 244, 0.2), 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(238, 239, 240, 0.8);
+            font-weight: 500;
+        }
+
+        /* Create User Card */
+        .create-user-card {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(20, 203, 244, 0.1), 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .create-user-header {
+            background: var(--gradient-dark);
+            color: var(--light-color);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .create-user-title {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .create-user-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            background: rgba(12, 44, 71, 0.5);
+            color: var(--light-color);
+        }
+
+        .form-control::placeholder {
+            color: rgba(238, 239, 240, 0.6);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
+            background: rgba(12, 44, 71, 0.7);
+            color: var(--light-color);
+        }
+
+        .create-user-btn {
+            background: var(--gradient-primary);
+            color: var(--light-color);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .create-user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+        }
+
+        .create-user-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Users Table Card */
+        .users-table-card {
+            background: rgba(1, 7, 17, 0.8);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(20, 203, 244, 0.1), 0 2px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .users-table-header {
+            background: linear-gradient(135deg, rgba(20, 203, 244, 0.1), rgba(12, 44, 71, 0.2));
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .users-table-title {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--light-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .users-table-body {
+            padding: 0;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modern-table th {
+            background: rgba(12, 44, 71, 0.5);
+            color: var(--light-color);
+            font-weight: 600;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .modern-table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+            vertical-align: middle;
+            color: var(--light-color);
+        }
+
+        .modern-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .modern-table tbody tr:hover {
+            background-color: rgba(20, 203, 244, 0.05);
+        }
+
+        .account-number {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .currency-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .currency-huf {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .currency-usd {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .balance-amount {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .username-text {
+            color: rgba(238, 239, 240, 0.7);
+            font-style: italic;
+        }
+
+        .delete-btn {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--light-color);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: rgba(220, 53, 69, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Fund Management Styles */
+        .fund-action-card {
+            background: rgba(12, 44, 71, 0.3);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            height: 100%;
+        }
+
+        .btn-success {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #ff8c00);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--dark-bg);
+        }
+
+        .btn-success:hover, .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .text-success {
+            color: #14cbf4 !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, #14cbf4, #1c77a2) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 1rem 0;
+            }
+
+            .admin-brand {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .admin-user-menu {
+                justify-content: center;
+                margin-top: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .admin-content {
+                padding: 1rem 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .create-user-body {
+                padding: 1rem;
+            }
+
+            .users-table-header {
+                padding: 1rem;
+            }
+
+            .modern-table th,
+            .modern-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Loading Animation */
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border: none;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #ff6b6b;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        /* Animation for header shine effect */
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(20, 203, 244, 0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+<div class="admin-dashboard">
+    <!-- Modern Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="admin-brand">
+                        <div class="logo">
+                            <div class="logo-inner">TW</div>
+                        </div>
+                        <div class="admin-brand-text">
+                            <h1>TradeWavee</h1>
+                            <p>Administrator Panel</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="admin-user-menu">
+                        <div class="admin-welcome">
+                            <i class="fas fa-user-shield"></i>
+                            Welcome, System Administrator
+                        </div>
+                        <a href="#" id="logout-btn" class="admin-logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <div class="container">
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="total-users">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value" id="total-balance">0</div>
+                    <div class="stat-label">Total Balance</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-value" id="total-deposits">0</div>
+                    <div class="stat-label">Total Deposits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div class="stat-value" id="total-withdrawals">0</div>
+                    <div class="stat-label">Total Withdrawals</div>
+                </div>
+            </div>
+
+            <!-- Create User Card -->
+            <div class="create-user-card">
+                <div class="create-user-header">
+                    <h2 class="create-user-title">
+                        <i class="fas fa-user-plus"></i>
+                        Create New User Account
+                    </h2>
+                </div>
+                <div class="create-user-body">
+                    <form id="create-user-form">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Enter full name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="username" class="form-label">
+                                    <i class="fas fa-at"></i>Username
+                                </label>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       placeholder="Choose username" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock"></i>Password
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Set password" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pin" class="form-label">
+                                    <i class="fas fa-key"></i>4-digit PIN
+                                </label>
+                                <input type="text" class="form-control" id="pin" name="pin" maxlength="4" 
+                                       pattern="\d{4}" title="4-digit PIN required" 
+                                       placeholder="0000" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="currency" class="form-label">
+                                    <i class="fas fa-money-bill-wave"></i>Currency
+                                </label>
+                                <select class="form-select" id="currency" name="currency" required>
+                                    <option value="HUF">HUF - Hungarian Forint</option>
+                                    <option value="USD">USD - US Dollar</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bank_name" class="form-label">
+                                    <i class="fas fa-landmark"></i>Wallet Name
+                                </label>
+                                <input type="text" class="form-control" id="bank_name" name="bank_name" 
+                                       placeholder="Enter bank name" required>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <button type="submit" class="create-user-btn">
+                                <i class="fas fa-user-plus"></i>
+                                Create User Account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Fund Management Card -->
+            <div class="create-user-card">
+                <div class="create-user-header">
+                    <h2 class="create-user-title">
+                        <i class="fas fa-money-check-alt"></i>
+                        Fund Management
+                    </h2>
+                </div>
+                <div class="create-user-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="fund-action-card">
+                                <h4 class="text-success mb-3">
+                                    <i class="fas fa-arrow-down me-2"></i>Deposit Funds
+                                </h4>
+                                <form id="deposit-form">
+                                    <div class="mb-3">
+                                        <label class="form-label">Select User</label>
+                                        <select class="form-select" id="deposit-user" required>
+                                            <option value="">Choose user...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Amount</label>
+                                        <input type="number" class="form-control" id="deposit-amount" 
+                                               step="0.01" min="0.01" placeholder="0.00" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Description (Optional)</label>
+                                        <input type="text" class="form-control" id="deposit-description" 
+                                               placeholder="Deposit reason...">
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-plus-circle me-2"></i>Deposit Funds
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fund-action-card">
+                                <h4 class="text-warning mb-3">
+                                    <i class="fas fa-arrow-up me-2"></i>Withdraw Funds
+                                </h4>
+                                <form id="withdraw-form">
+                                    <div class="mb-3">
+                                        <label class="form-label">Select User</label>
+                                        <select class="form-select" id="withdraw-user" required>
+                                            <option value="">Choose user...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Amount</label>
+                                        <input type="number" class="form-control" id="withdraw-amount" 
+                                               step="0.01" min="0.01" placeholder="0.00" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Description (Optional)</label>
+                                        <input type="text" class="form-control" id="withdraw-description" 
+                                               placeholder="Withdrawal reason...">
+                                    </div>
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        <i class="fas fa-minus-circle me-2"></i>Withdraw Funds
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="users-table-card">
+                <div class="users-table-header">
+                    <h2 class="users-table-title">
+                        <i class="fas fa-users"></i>
+                        Registered Users (<span id="users-count">0</span>)
+                    </h2>
+                </div>
+                <div class="users-table-body">
+                    <div class="table-responsive">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Account Number</th>
+                                    <th>Bank</th>
+                                    <th>Currency</th>
+                                    <th>Balance</th>
+                                    <th>Username</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Users will be loaded here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions History Card -->
+            <div class="users-table-card">
+                <div class="users-table-header">
+                    <h2 class="users-table-title">
+                        <i class="fas fa-history"></i>
+                        Admin Transactions History
+                    </h2>
+                </div>
+                <div class="users-table-body">
+                    <div class="table-responsive">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Type</th>
+                                    <th>User</th>
+                                    <th>Account</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-table-body">
+                                <!-- Transactions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Configuration - UPDATED WITH CORRECT URL
+const API_BASE_URL = 'https://SCBanking.pythonanywhere.com/api';
+
+// Check authentication on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuthentication();
+});
+
+// Check if user is authenticated and is admin
+async function checkAuthentication() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/check_auth`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.user.is_admin) {
+            // User is authenticated and is admin, load all data
+            loadUsers();
+            loadUserDropdowns();
+            loadAdminTransactions();
+        } else {
+            // Redirect to login if not authenticated or not admin
+            alert('Access denied. Please log in as administrator.');
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        console.error('Auth check error:', error);
+        alert('Error checking authentication. Please try again.');
+        window.location.href = 'login.html';
+    }
+}
+
+async function loadUsers() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/users`, {
+            credentials: 'include' // Important for sessions
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayUsers(data.users);
+            updateStats(data.users);
+        } else {
+            alert('Error loading users: ' + data.message);
+            // Redirect to login if not authorized
+            if (data.message.includes('Not authenticated') || data.message.includes('Not authorized')) {
+                window.location.href = 'login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error loading users. Please check your connection.');
+    }
+}
+
+function displayUsers(users) {
+    const tbody = document.getElementById('users-table-body');
+    tbody.innerHTML = '';
+    
+    if (users.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4 text-muted">
+                    <i class="fas fa-users fa-2x mb-3"></i><br>
+                    No users found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${user.name}</strong></td>
+            <td><span class="account-number">${user.account_number}</span></td>
+            <td>${user.bank_name}</td>
+            <td>
+                <span class="currency-badge currency-${user.currency.toLowerCase()}">
+                    ${user.currency}
+                </span>
+            </td>
+            <td>
+                <span class="balance-amount">
+                    ${user.balance.toFixed(2)} ${user.currency}
+                </span>
+            </td>
+            <td>
+                <span class="username-text">${user.username}</span>
+            </td>
+            <td>
+                <button class="delete-btn" onclick="deleteUser(${user.id}, '${user.name}')">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    
+    document.getElementById('users-count').textContent = users.length;
+}
+
+function updateStats(users) {
+    document.getElementById('total-users').textContent = users.length;
+    
+    const totalBalance = users.reduce((sum, user) => sum + user.balance, 0);
+    document.getElementById('total-balance').textContent = Math.round(totalBalance).toLocaleString();
+    
+    // For now, we'll set these to 0 - you can update them when you have actual transaction data
+    document.getElementById('total-deposits').textContent = '0';
+    document.getElementById('total-withdrawals').textContent = '0';
+}
+
+// Load users for dropdowns
+async function loadUserDropdowns() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/users`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const depositSelect = document.getElementById('deposit-user');
+            const withdrawSelect = document.getElementById('withdraw-user');
+            
+            depositSelect.innerHTML = '<option value="">Choose user...</option>';
+            withdrawSelect.innerHTML = '<option value="">Choose user...</option>';
+            
+            data.users.forEach(user => {
+                const option = `<option value="${user.id}">${user.name} (${user.account_number}) - ${user.balance} ${user.currency}</option>`;
+                depositSelect.innerHTML += option;
+                withdrawSelect.innerHTML += option;
+            });
+        }
+    } catch (error) {
+        console.error('Error loading user dropdowns:', error);
+    }
+}
+
+// Load admin transactions
+async function loadAdminTransactions() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/transactions`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayTransactions(data.transactions);
+        }
+    } catch (error) {
+        console.error('Error loading transactions:', error);
+    }
+}
+
+// Display transactions
+function displayTransactions(transactions) {
+    const tbody = document.getElementById('transactions-table-body');
+    tbody.innerHTML = '';
+    
+    if (transactions.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4 text-muted">
+                    <i class="fas fa-receipt fa-2x mb-3"></i><br>
+                    No transactions found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    transactions.forEach(transaction => {
+        const row = document.createElement('tr');
+        const typeClass = transaction.type === 'Deposit' ? 'text-success' : 'text-warning';
+        const typeIcon = transaction.type === 'Deposit' ? 'fa-arrow-down' : 'fa-arrow-up';
+        
+        row.innerHTML = `
+            <td><small>${transaction.transaction_id}</small></td>
+            <td><span class="${typeClass}"><i class="fas ${typeIcon} me-1"></i>${transaction.type}</span></td>
+            <td>${transaction.target_user}</td>
+            <td><small>${transaction.target_account}</small></td>
+            <td><strong>${transaction.amount} ${transaction.currency}</strong></td>
+            <td><small>${new Date(transaction.created_at).toLocaleString()}</small></td>
+            <td><span class="badge bg-success">${transaction.status}</span></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Create user form
+document.getElementById('create-user-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        currency: document.getElementById('currency').value,
+        bank_name: document.getElementById('bank_name').value,
+        pin: document.getElementById('pin').value
+    };
+    
+    // Validate PIN
+    if (!/^\d{4}$/.test(formData.pin)) {
+        alert('Please enter a valid 4-digit PIN');
+        return;
+    }
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('User account created successfully!');
+            this.reset();
+            loadUsers(); // Reload the users list
+            loadUserDropdowns(); // Reload dropdowns
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error creating user: ' + error);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Delete user
+async function deleteUser(userId, userName) {
+    if (!confirm(`Are you sure you want to delete ${userName}? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('User deleted successfully!');
+            loadUsers(); // Reload the users list
+            loadUserDropdowns(); // Reload dropdowns
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error deleting user: ' + error);
+    }
+}
+
+// Deposit form handler
+document.getElementById('deposit-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const userId = document.getElementById('deposit-user').value;
+    const amount = parseFloat(document.getElementById('deposit-amount').value);
+    const description = document.getElementById('deposit-description').value;
+    
+    if (!userId || !amount) {
+        alert('Please select a user and enter amount');
+        return;
+    }
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/deposit`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                user_id: userId,
+                amount: amount,
+                description: description
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert(data.message);
+            this.reset();
+            loadUsers(); // Reload users to update balances
+            loadUserDropdowns(); // Reload dropdowns with updated balances
+            loadAdminTransactions(); // Reload transaction history
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error processing deposit: ' + error);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Withdraw form handler
+document.getElementById('withdraw-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const userId = document.getElementById('withdraw-user').value;
+    const amount = parseFloat(document.getElementById('withdraw-amount').value);
+    const description = document.getElementById('withdraw-description').value;
+    
+    if (!userId || !amount) {
+        alert('Please select a user and enter amount');
+        return;
+    }
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/withdraw`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                user_id: userId,
+                amount: amount,
+                description: description
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert(data.message);
+            this.reset();
+            loadUsers(); // Reload users to update balances
+            loadUserDropdowns(); // Reload dropdowns with updated balances
+            loadAdminTransactions(); // Reload transaction history
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error processing withdrawal: ' + error);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', async function(e) {
+    e.preventDefault();
+    
+    if (!confirm('Are you sure you want to logout?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/logout`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = 'login.html';
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = 'login.html';
+    }
+});
+
+// PIN validation
+document.getElementById('pin').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length > 4) {
+        this.value = this.value.slice(0, 4);
+    }
+});
+</script>
+</body>
+</html>

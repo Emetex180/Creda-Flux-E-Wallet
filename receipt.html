@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Receipt - Creda Flux E-Wallet</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-dark: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --error-color: #e74c3c;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: var(--light-color);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .receipt-container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(1, 7, 17, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            font-weight: 900;
+            color: rgba(20, 203, 244, 0.03);
+            white-space: nowrap;
+            z-index: 0;
+        }
+        
+        .header {
+            background: var(--gradient-dark);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            position: relative;
+        }
+        
+        .company-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .logo-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .logo {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .logo-placeholder {
+            color: var(--light-color);
+            font-size: 24px;
+        }
+        
+        .company-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--light-color);
+            margin: 0;
+        }
+        
+        .tagline {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .receipt-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin: 15px 0 0 0;
+        }
+        
+        .content {
+            padding: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section {
+            margin-bottom: 24px;
+            padding: 15px;
+            background: rgba(12, 44, 71, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(20, 203, 244, 0.1);
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
+            padding-bottom: 8px;
+        }
+        
+        .info-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            font-weight: 600;
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 14px;
+        }
+        
+        .value {
+            font-weight: 600;
+            color: var(--light-color);
+            font-size: 14px;
+            text-align: right;
+        }
+        
+        .parties {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .party-card {
+            background: rgba(12, 44, 71, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(20, 203, 244, 0.15);
+        }
+        
+        .party-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .party-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--light-color);
+            margin-bottom: 5px;
+        }
+        
+        .party-detail {
+            font-size: 13px;
+            color: rgba(238, 239, 240, 0.8);
+            margin-bottom: 3px;
+        }
+        
+        .amount-section {
+            text-align: center;
+            padding: 20px;
+            background: rgba(20, 203, 244, 0.05);
+            border-radius: 12px;
+            border: 2px dashed rgba(20, 203, 244, 0.3);
+            margin: 20px 0;
+        }
+        
+        .amount-label {
+            font-size: 14px;
+            color: rgba(238, 239, 240, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .amount {
+            font-size: 32px;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .currency {
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .fee-breakdown {
+            background: rgba(12, 44, 71, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .fee-label {
+            color: rgba(238, 239, 240, 0.8);
+        }
+        
+        .fee-value {
+            font-weight: 600;
+            color: var(--light-color);
+        }
+        
+        .security {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            background: rgba(20, 203, 244, 0.08);
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+        
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(20, 203, 244, 0.2);
+            margin-top: 20px;
+        }
+        
+        .footer-note {
+            font-size: 12px;
+            color: rgba(238, 239, 240, 0.6);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--light-color);
+        }
+        
+        .btn-secondary {
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--light-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.completed {
+            background: rgba(39, 174, 96, 0.2);
+            color: var(--success-color);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+        
+        .status-badge.failed {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--error-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .status-badge.pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .receipt-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                margin: 0;
+                max-width: 100%;
+            }
+            
+            .actions {
+                display: none;
+            }
+            
+            .watermark {
+                color: rgba(0, 0, 0, 0.03);
+            }
+        }
+        
+        /* Loading states */
+        .loading {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(20, 203, 244, 0.3);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <!-- Watermark -->
+        <div class="watermark">Creda Flux E-Wallet</div>
+        
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading receipt...</p>
+        </div>
+        
+        <!-- Error State -->
+        <div id="errorState" class="hidden" style="text-align: center; padding: 50px 20px;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ff6b6b; margin-bottom: 15px;"></i>
+            <h4>Unable to Load Receipt</h4>
+            <p id="errorMessage">Transaction not found</p>
+        </div>
+        
+        <!-- Receipt Content -->
+        <div id="receiptContent" class="hidden">
+            <!-- Header -->
+            <div class="header">
+                <div class="company-info">
+                    <div class="logo-container">
+                        <!-- Add your logo here -->
+                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo">
+                    </div>
+                    <div>
+                        <h1 class="company-name">Creda Flux E-Wallet</h1>
+                        <p class="tagline">Secure E-Wallet Solution</p>
+                    </div>
+                </div>
+                <h2 class="receipt-title">TRANSACTION RECEIPT</h2>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                <!-- Transaction Details -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-receipt"></i>
+                        TRANSACTION DETAILS
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-row">
+                            <span class="label">Transaction ID:</span>
+                            <span class="value" id="transactionId">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Reference No:</span>
+                            <span class="value" id="referenceNo">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Date & Time:</span>
+                            <span class="value" id="transactionDate">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Status:</span>
+                            <span class="status-badge" id="transactionStatus">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Parties -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-users"></i>
+                        PARTIES INVOLVED
+                    </div>
+                    <div class="parties">
+                        <!-- Sender -->
+                        <div class="party-card">
+                            <div class="party-title">
+                                <i class="fas fa-user"></i>
+                                SENDER
+                            </div>
+                            <div class="party-name" id="senderName">-</div>
+                            <div class="party-detail" id="senderAccount">Account: -</div>
+                            <div class="party-detail" id="senderBank">Bank: Creda Flux E-Wallet</div>
+                        </div>
+                        
+                        <!-- Receiver -->
+                        <div class="party-card">
+                            <div class="party-title">
+                                <i class="fas fa-user-friends"></i>
+                                RECEIVER
+                            </div>
+                            <div class="party-name" id="receiverName">-</div>
+                            <div class="party-detail" id="receiverAccount">Account: -</div>
+                            <div class="party-detail" id="receiverBank">Bank: Creda Flux E-Wallet</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Amount -->
+                <div class="amount-section">
+                    <div class="amount-label">Amount Transferred</div>
+                    <div class="amount" id="amount">0.00</div>
+                    <div class="currency" id="currency">USD</div>
+                </div>
+                
+                <!-- Fee Breakdown -->
+                <div class="section">
+                    <div class="section-title">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        FEE BREAKDOWN
+                    </div>
+                    <div class="fee-breakdown">
+                        <div class="fee-row">
+                            <span class="fee-label">Transaction Amount:</span>
+                            <span class="fee-value" id="transactionAmount">0.00 USD</span>
+                        </div>
+                        <div class="fee-row">
+                            <span class="fee-label">VAT</span>
+                            <span class="fee-value" id="serviceCharge">EXTERNSL FEES</span>
+                        </div>
+                        <div class="fee-row" style="border-top: 1px solid rgba(20, 203, 244, 0.2); padding-top: 10px; margin-top: 8px; font-weight: 700;">
+                            <span class="fee-label">Total Amount:</span>
+                            <span class="fee-value" id="totalAmount">0.00 USD</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security -->
+                <div class="security">
+                    <div class="security-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>256-bit Encryption</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified Transaction</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure Transfer</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <p class="footer-note">
+                    This is an official receipt from Creda Flux E-Wallet. Please keep it for your records.
+                </p>
+                <div class="actions">
+                    <button onclick="window.print()" class="btn btn-primary">
+                        <i class="fas fa-print"></i>
+                        Print
+                    </button>
+                    <button onclick="closeReceipt()" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
+        
+        // Get transaction ID from URL
+        function getTransactionId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Format currency
+        function formatCurrency(amount, currency = 'USD') {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency
+            }).format(amount);
+        }
+        
+        // Load transaction data
+        async function loadTransaction() {
+            const transactionId = getTransactionId();
+            
+            if (!transactionId) {
+                showError('No transaction ID provided');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        displayReceipt(data.receipt || data.transaction || data);
+                    } else {
+                        showError(data.message || 'Failed to load receipt');
+                    }
+                } else {
+                    showError('Transaction not found');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Network error. Please try again.');
+            }
+        }
+        
+        // Display receipt data
+        function displayReceipt(transaction) {
+            document.getElementById('transactionId').textContent = transaction.transaction_id || transaction.id || 'N/A';
+            document.getElementById('referenceNo').textContent = transaction.reference_number || `TRW-${transaction.id || 'N/A'}`;
+            document.getElementById('transactionDate').textContent = formatDate(transaction.created_at);
+            
+            // Set status with appropriate styling
+            const statusElement = document.getElementById('transactionStatus');
+            const status = transaction.status || 'Completed';
+            statusElement.textContent = status;
+            statusElement.className = 'status-badge';
+            
+            // Apply appropriate status class
+            if (status.toLowerCase() === 'completed' || status.toLowerCase() === 'success') {
+                statusElement.classList.add('completed');
+            } else if (status.toLowerCase() === 'failed' || status.toLowerCase() === 'error') {
+                statusElement.classList.add('failed');
+            } else if (status.toLowerCase() === 'pending') {
+                statusElement.classList.add('pending');
+            } else {
+                statusElement.classList.add('completed'); // Default to completed
+            }
+            
+            document.getElementById('senderName').textContent = transaction.sender_name || transaction.sender?.name || 'Unknown';
+            document.getElementById('senderAccount').textContent = `Account: ${transaction.sender_account || transaction.sender?.account_number || 'N/A'}`;
+            
+            document.getElementById('receiverName').textContent = transaction.receiver_name || transaction.receiver?.name || 'Unknown';
+            document.getElementById('receiverAccount').textContent = `Account: ${transaction.receiver_account || transaction.receiver?.account_number || 'N/A'}`;
+            
+            const amount = parseFloat(transaction.amount || 0);
+            const currency = transaction.currency || 'USD';
+            document.getElementById('amount').textContent = amount.toFixed(2);
+            document.getElementById('currency').textContent = currency;
+            
+            // Display fees as "INCLUDED" instead of calculated values
+            document.getElementById('transactionAmount').textContent = formatCurrency(amount, currency);
+            document.getElementById('externalFees').textContent = 'INCLUDED';
+            document.getElementById('serviceCharge').textContent = 'INCLUDED';
+            document.getElementById('totalAmount').textContent = formatCurrency(amount, currency);
+            
+            // Show receipt content
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('receiptContent').classList.remove('hidden');
+        }
+        
+        // Show error
+        function showError(message) {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+        
+        // Close receipt
+        function closeReceipt() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.close();
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTransaction();
+        });
+    </script>
+</body>  
+</html>
