@@ -559,6 +559,28 @@
             opacity: 0.5;
         }
 
+        /* Receipt Button Styles */
+        .receipt-btn {
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+
+        .receipt-btn:hover {
+            background: rgba(20, 203, 244, 0.2);
+            transform: translateY(-1px);
+            color: var(--light-color);
+        }
+
         /* Modern Modal */
         .modal-content {
             border-radius: 24px;
@@ -1547,7 +1569,7 @@
         }
     }
 
-    // Display transactions
+    // Display transactions with receipt buttons
     function displayTransactions(transactions) {
         const container = document.getElementById('transactionsList');
         
@@ -1565,6 +1587,7 @@
         container.innerHTML = transactions.map(transaction => {
             const isSender = transaction.sender_id === userData.id;
             const isReceiver = transaction.receiver_id === userData.id;
+            const transactionId = transaction.transaction_id || transaction.id;
             
             let transactionType, amountDisplay, amountClass;
             
@@ -1600,11 +1623,20 @@
                         <span class="status-badge status-${(transaction.status || 'completed').toLowerCase()}">
                             ${transaction.status || 'Completed'}
                         </span>
+                        <button class="receipt-btn" onclick="viewReceipt('${transactionId}')" title="View Receipt">
+                            <i class="fas fa-receipt"></i>
+                            Receipt
+                        </button>
                     </div>
                 </div>
             </div>
             `;
         }).join('');
+    }
+
+    // View receipt function
+    function viewReceipt(transactionId) {
+        window.open(`receipt.html?id=${transactionId}`, '_blank', 'width=500,height=800');
     }
 
     // Show error message
