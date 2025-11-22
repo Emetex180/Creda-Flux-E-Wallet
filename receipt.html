@@ -388,9 +388,27 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Debug info */
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 300px;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Debug Info Panel -->
+    <div class="debug-info" id="debugInfo"></div>
+
     <div class="receipt-container">
         <!-- Watermark -->
         <div class="watermark">Creda Flux E-Wallet</div>
@@ -406,6 +424,12 @@
             <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ff6b6b; margin-bottom: 15px;"></i>
             <h4>Unable to Load Receipt</h4>
             <p id="errorMessage">Transaction not found</p>
+            <button onclick="retryLoading()" class="btn btn-primary" style="margin-top: 15px;">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+            <button onclick="goToDashboard()" class="btn btn-secondary" style="margin-top: 15px;">
+                <i class="fas fa-home"></i> Back to Dashboard
+            </button>
         </div>
         
         <!-- Receipt Content -->
@@ -415,7 +439,7 @@
                 <div class="company-info">
                     <div class="logo-container">
                         <!-- Add your logo here -->
-                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo">
+                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\"logo-placeholder\"><i class=\"fas fa-wallet\"></i></div>';">
                     </div>
                     <div>
                         <h1 class="company-name">Creda Flux E-Wallet</h1>
@@ -544,6 +568,10 @@
                         <i class="fas fa-times"></i>
                         Close
                     </button>
+                    <button onclick="toggleDebug()" class="btn btn-secondary" style="background: #666; color: white;">
+                        <i class="fas fa-bug"></i>
+                        Debug
+                    </button>
                 </div>
             </div>
         </div>
@@ -551,32 +579,45 @@
 
     <script>
         const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
+        let debugMode = false;
         
         // Get transaction ID from URL
         function getTransactionId() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id');
+            const id = urlParams.get('id');
+            logDebug('Transaction ID from URL:', id);
+            return id;
         }
         
         // Format date
         function formatDate(dateString) {
             if (!dateString) return '-';
-            const date = new Date(dateString);
-            return date.toLocaleString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (error) {
+                logDebug('Date formatting error:', error);
+                return dateString || '-';
+            }
         }
         
         // Format currency
         function formatCurrency(amount, currency = 'USD') {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: currency
-            }).format(amount);
+            try {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: currency
+                }).format(amount);
+            } catch (error) {
+                logDebug('Currency formatting error:', error);
+                return `${amount} ${currency}`;
+            }
         }
         
         // Load transaction data
@@ -584,34 +625,54 @@
             const transactionId = getTransactionId();
             
             if (!transactionId) {
-                showError('No transaction ID provided');
+                showError('No transaction ID provided in URL');
                 return;
             }
             
+            logDebug('Loading transaction with ID:', transactionId);
+            
             try {
                 const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 });
+                
+                logDebug('Response status:', response.status);
+                logDebug('Response headers:', Object.fromEntries(response.headers.entries()));
                 
                 if (response.ok) {
                     const data = await response.json();
+                    logDebug('Received data:', data);
                     
                     if (data.success) {
                         displayReceipt(data.receipt || data.transaction || data);
                     } else {
-                        showError(data.message || 'Failed to load receipt');
+                        showError(data.message || 'Failed to load receipt: API returned unsuccessful');
                     }
                 } else {
-                    showError('Transaction not found');
+                    const errorText = await response.text();
+                    logDebug('Error response:', errorText);
+                    showError(`Transaction not found (Status: ${response.status}). Please check the transaction ID.`);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showError('Network error. Please try again.');
+                logDebug('Network error details:', error);
+                showError('Network error. Please check your connection and try again.');
             }
         }
         
         // Display receipt data
         function displayReceipt(transaction) {
+            logDebug('Displaying receipt for transaction:', transaction);
+            
+            if (!transaction) {
+                showError('No transaction data received');
+                return;
+            }
+            
             // Safely set text content with null checks
             const safeSetText = (elementId, text) => {
                 const element = document.getElementById(elementId);
@@ -620,9 +681,17 @@
                 }
             };
             
-            safeSetText('transactionId', transaction.transaction_id || transaction.id || 'N/A');
-            safeSetText('referenceNo', transaction.reference_number || `TRW-${transaction.id || 'N/A'}`);
-            safeSetText('transactionDate', formatDate(transaction.created_at));
+            // Try multiple possible fields for transaction ID
+            const transactionId = transaction.transaction_id || transaction.id || transaction.transactionId || 'N/A';
+            safeSetText('transactionId', transactionId);
+            
+            // Try multiple possible fields for reference number
+            const referenceNo = transaction.reference_number || transaction.reference_no || transaction.reference || `TRW-${transactionId}`;
+            safeSetText('referenceNo', referenceNo);
+            
+            // Try multiple possible fields for date
+            const transactionDate = transaction.created_at || transaction.date || transaction.timestamp || transaction.created_date;
+            safeSetText('transactionDate', formatDate(transactionDate));
             
             // Set status with appropriate styling
             const statusElement = document.getElementById('transactionStatus');
@@ -632,24 +701,32 @@
                 statusElement.className = 'status-badge';
                 
                 // Apply appropriate status class
-                if (status.toLowerCase() === 'completed' || status.toLowerCase() === 'success') {
+                if (status.toLowerCase() === 'completed' || status.toLowerCase() === 'success' || status.toLowerCase() === 'successful') {
                     statusElement.classList.add('completed');
-                } else if (status.toLowerCase() === 'failed' || status.toLowerCase() === 'error') {
+                } else if (status.toLowerCase() === 'failed' || status.toLowerCase() === 'error' || status.toLowerCase() === 'rejected') {
                     statusElement.classList.add('failed');
-                } else if (status.toLowerCase() === 'pending') {
+                } else if (status.toLowerCase() === 'pending' || status.toLowerCase() === 'processing') {
                     statusElement.classList.add('pending');
                 } else {
                     statusElement.classList.add('completed'); // Default to completed
                 }
             }
             
-            safeSetText('senderName', transaction.sender_name || transaction.sender?.name || 'Unknown');
-            safeSetText('senderAccount', `Account: ${transaction.sender_account || transaction.sender?.account_number || 'N/A'}`);
+            // Sender information - try multiple field names
+            const senderName = transaction.sender_name || transaction.sender?.name || transaction.sender_name || transaction.from_name || 'Unknown';
+            const senderAccount = transaction.sender_account || transaction.sender?.account_number || transaction.sender_account_number || transaction.from_account || 'N/A';
             
-            safeSetText('receiverName', transaction.receiver_name || transaction.receiver?.name || 'Unknown');
-            safeSetText('receiverAccount', `Account: ${transaction.receiver_account || transaction.receiver?.account_number || 'N/A'}`);
+            safeSetText('senderName', senderName);
+            safeSetText('senderAccount', `Account: ${senderAccount}`);
             
-            const amount = parseFloat(transaction.amount || 0);
+            // Receiver information - try multiple field names
+            const receiverName = transaction.receiver_name || transaction.receiver?.name || transaction.recipient_name || transaction.to_name || 'Unknown';
+            const receiverAccount = transaction.receiver_account || transaction.receiver?.account_number || transaction.recipient_account || transaction.to_account || 'N/A';
+            
+            safeSetText('receiverName', receiverName);
+            safeSetText('receiverAccount', `Account: ${receiverAccount}`);
+            
+            const amount = parseFloat(transaction.amount || transaction.transaction_amount || 0);
             const currency = transaction.currency || 'USD';
             safeSetText('amount', amount.toFixed(2));
             safeSetText('currency', currency);
@@ -662,10 +739,14 @@
             // Show receipt content
             document.getElementById('loadingState').classList.add('hidden');
             document.getElementById('receiptContent').classList.remove('hidden');
+            
+            logDebug('Receipt displayed successfully');
         }
         
         // Show error
         function showError(message) {
+            console.error('Error loading receipt:', message);
+            logDebug('Error occurred:', message);
             document.getElementById('loadingState').classList.add('hidden');
             document.getElementById('errorState').classList.remove('hidden');
             document.getElementById('errorMessage').textContent = message;
@@ -679,10 +760,67 @@
                 window.close();
             }
         }
+        
+        // Retry loading
+        function retryLoading() {
+            document.getElementById('errorState').classList.add('hidden');
+            document.getElementById('loadingState').classList.remove('hidden');
+            loadTransaction();
+        }
+        
+        // Go to dashboard
+        function goToDashboard() {
+            window.location.href = 'user_dashboard.html';
+        }
+        
+        // Debug functions
+        function logDebug(...args) {
+            if (debugMode) {
+                console.log('[Receipt Debug]', ...args);
+                const debugInfo = document.getElementById('debugInfo');
+                const message = args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ');
+                debugInfo.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+                debugInfo.scrollTop = debugInfo.scrollHeight;
+            }
+        }
+        
+        function toggleDebug() {
+            debugMode = !debugMode;
+            const debugInfo = document.getElementById('debugInfo');
+            debugInfo.style.display = debugMode ? 'block' : 'none';
+            logDebug('Debug mode:', debugMode ? 'enabled' : 'disabled');
+        }
        
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Receipt page loaded');
+            logDebug('Page initialized');
+            
+            // Check if we're in a popup or iframe
+            if (window.self !== window.top) {
+                logDebug('Running in iframe/popup');
+            }
+            
+            // Check URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            logDebug('All URL parameters:', Object.fromEntries(urlParams.entries()));
+            
             loadTransaction();
+            
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'd') {
+                    e.preventDefault();
+                    toggleDebug();
+                }
+            });
+        });
+
+        // Handle page visibility (for popups)
+        document.addEventListener('visibilitychange', function() {
+            logDebug('Visibility changed:', document.hidden ? 'hidden' : 'visible');
         });
     </script>
 </body>  
