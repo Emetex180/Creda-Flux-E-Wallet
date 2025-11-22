@@ -3,776 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Receipt - Creda Flux E-Wallet</title>
+    <title>Transaction Processing - Creda Flux E-Wallet</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
     <style>
+        :root {
+            --dark-bg: #010711;
+            --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
+            --accent-color: #14cbf4;
+            --light-color: #eeeff0;
+            --success-color: #14cbf4;
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            --gradient-dark: linear-gradient(135deg, var(--secondary-color), var(--dark-bg));
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #ffffff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            color: #000000;
-            margin: 0;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--dark-bg) 100%);
             min-height: 100vh;
+            color: var(--light-color);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        
-        .receipt-container {
-            max-width: 400px;
+
+        .process-container {
+            max-width: 500px;
             width: 100%;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
+            background: rgba(1, 7, 17, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(20, 203, 244, 0.15);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            backdrop-filter: blur(10px);
             overflow: hidden;
-            position: relative;
         }
-        
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 80px;
-            font-weight: 900;
-            color: rgba(0, 0, 0, 0.03);
-            white-space: nowrap;
-            z-index: 0;
-        }
-        
-        .header {
-            background: #f8f8f8;
-            padding: 20px;
+
+        .process-header {
+            background: var(--gradient-dark);
+            padding: 2rem;
             text-align: center;
-            border-bottom: 2px solid #000;
-            position: relative;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
         }
-        
-        .company-info {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-        
-        .logo-container {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px solid #ddd;
-        }
-        
-        .logo {
-            max-width: 100%;
-            max-height: 100%;
-        }
-        
-        .logo-placeholder {
-            color: #000;
-            font-size: 24px;
-        }
-        
-        .company-name {
-            font-size: 22px;
+
+        .process-header h1 {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #000;
-            margin: 0;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        
-        .tagline {
-            color: #555;
-            font-size: 14px;
-            margin: 0;
+
+        .process-header p {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.9rem;
         }
-        
-        .receipt-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #000;
-            margin: 15px 0 0 0;
-            text-transform: uppercase;
+
+        .process-content {
+            padding: 2rem;
         }
-        
-        .content {
-            padding: 25px;
-            position: relative;
-            z-index: 1;
+
+        /* PIN Section Styles */
+        .pin-section {
+            margin-bottom: 1rem;
         }
-        
-        .section {
-            margin-bottom: 24px;
-            padding: 15px;
-            background: #f8f8f8;
-            border-radius: 6px;
-            border: 1px solid #ddd;
+
+        .transaction-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(12, 44, 71, 0.3);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.1);
         }
-        
-        .section-title {
-            font-size: 14px;
+
+        .transaction-label {
+            color: rgba(238, 239, 240, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .transaction-type {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #000;
-            margin-bottom: 12px;
+            color: var(--light-color);
+        }
+
+        .pin-display {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #aaa;
-            padding-bottom: 8px;
-        }
-        
-        .info-grid {
-            display: grid;
-            gap: 12px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        
-        .label {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-        
-        .value {
-            font-weight: 600;
-            color: #000;
-            font-size: 14px;
-            text-align: right;
-        }
-        
-        .parties {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            justify-content: center;
             gap: 15px;
+            margin-bottom: 2rem;
         }
-        
-        .party-card {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-        
-        .party-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .party-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 5px;
-        }
-        
-        .party-detail {
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 3px;
-        }
-        
-        .amount-section {
-            text-align: center;
-            padding: 20px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            border: 2px dashed #aaa;
-            margin: 20px 0;
-        }
-        
-        .amount-label {
-            font-size: 14px;
-            color: #333;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-        
-        .amount {
-            font-size: 32px;
-            font-weight: 800;
-            color: #000;
-            line-height: 1;
-        }
-        
-        .currency {
-            font-size: 14px;
-            color: #000;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-        
-        .fee-breakdown {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 15px;
-        }
-        
-        .fee-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        
-        .fee-label {
-            color: #333;
-        }
-        
-        .fee-value {
-            font-weight: 600;
-            color: #000;
-        }
-        
-        .security {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            padding: 12px 15px;
-            background: #f0f0f0;
-            border-radius: 6px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-        }
-        
-        .security-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #000;
-            font-weight: 600;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #ddd;
-            margin-top: 20px;
-        }
-        
-        .footer-note {
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-        
-        .actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
+
+        .pin-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(20, 203, 244, 0.2);
+            border: 2px solid rgba(20, 203, 244, 0.3);
             transition: all 0.3s ease;
         }
-        
-        .btn-primary {
-            background: #333;
-            color: #fff;
+
+        .pin-dot.filled {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+            transform: scale(1.1);
         }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #000;
-            border: 1px solid #aaa;
+
+        .pin-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 1rem;
         }
-        
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+
+        .pin-key {
+            background: rgba(12, 44, 71, 0.5);
+            border: 2px solid rgba(20, 203, 244, 0.2);
+            border-radius: 12px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             font-weight: 600;
+            color: var(--light-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
         }
-        
-        .status-badge.completed {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
+
+        .pin-key:hover {
+            background: rgba(20, 203, 244, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
         }
-        
-        .status-badge.failed {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
+
+        .pin-key:active {
+            transform: translateY(0);
+            background: var(--gradient-primary);
         }
-        
-        .status-badge.pending {
-            background: #fff3e0;
-            color: #ef6c00;
-            border: 1px solid #ffe0b2;
+
+        .pin-key.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
         }
-        
-        .hidden {
+
+        .pin-key.empty:hover {
+            background: transparent;
+            border: none;
+            transform: none;
+        }
+
+        .pin-key.backspace {
+            background: rgba(220, 53, 69, 0.2);
+            border-color: rgba(220, 53, 69, 0.3);
+        }
+
+        .pin-key.backspace:hover {
+            background: rgba(220, 53, 69, 0.3);
+            border-color: #dc3545;
+        }
+
+        .security-notice {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(20, 203, 244, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+
+        .security-notice i {
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        .security-notice span {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.8rem;
+        }
+
+        /* Processing Steps Styles */
+        .process-steps {
             display: none;
         }
-        
-        /* Print styles */
-        @media print {
-            body {
-                padding: 0;
-                background: white;
-            }
-            
-            .receipt-container {
-                box-shadow: none;
-                border: 1px solid #000;
-                margin: 0;
-                max-width: 100%;
-            }
-            
-            .actions {
-                display: none;
-            }
-            
-            .watermark {
-                color: rgba(0, 0, 0, 0.03);
-            }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(12, 44, 71, 0.3);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(20, 203, 244, 0.1);
+            transition: all 0.3s ease;
         }
-        
-        /* Loading states */
-        .loading {
-            text-align: center;
-            padding: 50px 20px;
+
+        .step.active {
+            border-color: var(--accent-color);
+            background: rgba(20, 203, 244, 0.1);
         }
-        
-        .spinner {
+
+        .step.completed {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .step.failed {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .step-icon {
             width: 40px;
             height: 40px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-top: 3px solid #000;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            background: rgba(20, 203, 244, 0.2);
+            border: 2px solid rgba(20, 203, 244, 0.3);
         }
-        
+
+        .step.active .step-icon {
+            background: var(--gradient-primary);
+            border-color: var(--accent-color);
+        }
+
+        .step.completed .step-icon {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-color: #28a745;
+        }
+
+        .step.failed .step-icon {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            border-color: #dc3545;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--light-color);
+            font-size: 0.9rem;
+        }
+
+        .step-description {
+            color: rgba(238, 239, 240, 0.7);
+            font-size: 0.8rem;
+        }
+
+        .step-status {
+            font-weight: 600;
+            margin-left: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .step.active .step-status {
+            color: var(--accent-color);
+        }
+
+        .step.completed .step-status {
+            color: #28a745;
+        }
+
+        .step.failed .step-status {
+            color: #dc3545;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(12, 44, 71, 0.5);
+            border-radius: 3px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Result Section Styles */
+        .result-section {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .failed .result-icon {
+            color: #dc3545;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .result-message {
+            color: rgba(238, 239, 240, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .support-section {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .support-section h4 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .contact-item i {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-support {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-support:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <div class="receipt-container">
-        <!-- Watermark -->
-        <div class="watermark">Creda Flux E-Wallet</div>
-        
-        <!-- Loading State -->
-        <div id="loadingState" class="loading">
-            <div class="spinner"></div>
-            <p>Loading receipt...</p>
+    <div class="process-container">
+        <div class="process-header">
+            <h1><i class="fas fa-lock me-2"></i>Secure Transaction</h1>
+            <p>Enter your PIN to authorize this transaction</p>
         </div>
-        
-        <!-- Error State -->
-        <div id="errorState" class="hidden" style="text-align: center; padding: 50px 20px;">
-            <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ff6b6b; margin-bottom: 15px;"></i>
-            <h4>Unable to Load Receipt</h4>
-            <p id="errorMessage">Transaction not found</p>
-            <button onclick="retryLoading()" class="btn btn-primary" style="margin-top: 15px;">
-                <i class="fas fa-redo"></i>
-                Try Again
-            </button>
-        </div>
-        
-        <!-- Receipt Content -->
-        <div id="receiptContent" class="hidden">
-            <!-- Header -->
-            <div class="header">
-                <div class="company-info">
-                    <div class="logo-container">
-                        <!-- Fallback if logo doesn't load -->
-                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\"logo-placeholder\"><i class=\"fas fa-wallet\"></i></div>';">
-                    </div>
-                    <div>
-                        <h1 class="company-name">Creda Flux E-Wallet</h1>
-                        <p class="tagline">Secure E-Wallet Solution</p>
+
+        <div class="process-content">
+            <!-- PIN Section -->
+            <div class="pin-section" id="pinSection">
+                <div class="transaction-info">
+                    <div class="transaction-label">Transaction Type</div>
+                    <div class="transaction-type">Fund Transfer</div>
+                </div>
+
+                <div class="pin-display">
+                    <div class="pin-dot" id="pinDot1"></div>
+                    <div class="pin-dot" id="pinDot2"></div>
+                    <div class="pin-dot" id="pinDot3"></div>
+                    <div class="pin-dot" id="pinDot4"></div>
+                </div>
+
+                <div class="pin-keypad">
+                    <div class="pin-key" data-key="1">1</div>
+                    <div class="pin-key" data-key="2">2</div>
+                    <div class="pin-key" data-key="3">3</div>
+                    <div class="pin-key" data-key="4">4</div>
+                    <div class="pin-key" data-key="5">5</div>
+                    <div class="pin-key" data-key="6">6</div>
+                    <div class="pin-key" data-key="7">7</div>
+                    <div class="pin-key" data-key="8">8</div>
+                    <div class="pin-key" data-key="9">9</div>
+                    <div class="pin-key empty"></div>
+                    <div class="pin-key" data-key="0">0</div>
+                    <div class="pin-key backspace" id="backspaceKey">
+                        <i class="fas fa-arrow-left"></i>
                     </div>
                 </div>
-                <h2 class="receipt-title">TRANSACTION RECEIPT</h2>
+
+                <div class="security-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Your PIN is encrypted and secure</span>
+                </div>
             </div>
-            
-            <!-- Content -->
-            <div class="content">
-                <!-- Transaction Details -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-receipt"></i>
-                        TRANSACTION DETAILS
-                    </div>
-                    <div class="info-grid">
-                        <div class="info-row">
-                            <span class="label">Transaction ID:</span>
-                            <span class="value" id="transactionId">-</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Reference No:</span>
-                            <span class="value" id="referenceNo">-</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Date & Time:</span>
-                            <span class="value" id="transactionDate">-</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Status:</span>
-                            <span class="status-badge" id="transactionStatus">-</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Parties -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-users"></i>
-                        PARTIES INVOLVED
-                    </div>
-                    <div class="parties">
-                        <!-- Sender -->
-                        <div class="party-card">
-                            <div class="party-title">
-                                <i class="fas fa-user"></i>
-                                SENDER
-                            </div>
-                            <div class="party-name" id="senderName">-</div>
-                            <div class="party-detail" id="senderAccount">Account: -</div>
-                            <div class="party-detail" id="senderBank">Bank: Creda Flux E-Wallet</div>
-                        </div>
-                        
-                        <!-- Receiver -->
-                        <div class="party-card">
-                            <div class="party-title">
-                                <i class="fas fa-user-friends"></i>
-                                RECEIVER
-                            </div>
-                            <div class="party-name" id="receiverName">-</div>
-                            <div class="party-detail" id="receiverAccount">Account: -</div>
-                            <div class="party-detail" id="receiverBank">Bank: Creda Flux E-Wallet</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Amount -->
-                <div class="amount-section">
-                    <div class="amount-label">Amount Transferred</div>
-                    <div class="amount" id="amount">0.00</div>
-                    <div class="currency" id="currency">USD</div>
-                </div>
-                
-                <!-- Fee Breakdown -->
-                <div class="section">
-                    <div class="section-title">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        FEE BREAKDOWN
-                    </div>
-                    <div class="fee-breakdown">
-                        <div class="fee-row">
-                            <span class="fee-label">Transaction Amount:</span>
-                            <span class="fee-value" id="transactionAmount">0.00 USD</span>
-                        </div>
-                        <div class="fee-row">
-                            <span class="fee-label">FEE:</span>
-                            <span class="fee-value" id="externalFees">SERVICE AND VAT EXTERNAL</span>
-                        </div>
-                        <div class="fee-row" style="border-top: 1px solid #aaa; padding-top: 10px; margin-top: 8px; font-weight: 700;">
-                            <span class="fee-label">Total Amount:</span>
-                            <span class="fee-value" id="totalAmount">0.00 USD</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Security -->
-                <div class="security">
-                    <div class="security-item">
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Process Steps -->
+            <div class="process-steps" id="processSteps">
+                <div class="step active" id="step1">
+                    <div class="step-icon">
                         <i class="fas fa-shield-alt"></i>
-                        <span>256-bit Encryption</span>
                     </div>
-                    <div class="security-item">
+                    <div class="step-content">
+                        <div class="step-title">Security Verification</div>
+                        <div class="step-description">Verifying your credentials and transaction security</div>
+                    </div>
+                    <div class="step-status">
+                        <span class="loading-spinner"></span>Processing
+                    </div>
+                </div>
+
+                <div class="step" id="step2">
+                    <div class="step-icon">
                         <i class="fas fa-check-circle"></i>
-                        <span>Verified Transaction</span>
                     </div>
-                    <div class="security-item">
-                        <i class="fas fa-lock"></i>
-                        <span>Secure Transfer</span>
+                    <div class="step-content">
+                        <div class="step-title">Funds Reservation</div>
+                        <div class="step-description">Reserving the transaction amount in your account</div>
                     </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step3">
+                    <div class="step-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Transaction Processing</div>
+                        <div class="step-description">Transferring funds to recipient account</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step4">
+                    <div class="step-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Database Update</div>
+                        <div class="step-description">Updating transaction records and balances</div>
+                    </div>
+                    <div class="step-status">Pending</div>
+                </div>
+
+                <div class="step" id="step5">
+                    <div class="step-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Confirmation</div>
+                        <div class="step-description">Sending transaction confirmation</div>
+                    </div>
+                    <div class="step-status">Pending</div>
                 </div>
             </div>
-            
-            <!-- Footer -->
-            <div class="footer">
-                <p class="footer-note">
-                    This is an official receipt from Creda Flux E-Wallet. Please keep it for your records.
-                </p>
-                <div class="actions">
-                    <button onclick="window.print()" class="btn btn-primary">
-                        <i class="fas fa-print"></i>
-                        Print
-                    </button>
-                    <button onclick="closeReceipt()" class="btn btn-secondary">
-                        <i class="fas fa-times"></i>
-                        Close
-                    </button>
-                    <button onclick="downloadReceipt()" class="btn btn-secondary">
-                        <i class="fas fa-download"></i>
-                        Download
-                    </button>
+
+            <!-- Failed Result Section -->
+            <div class="result-section failed" id="failedSection">
+                <div class="result-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
+                <div class="result-title">Transaction Failed</div>
+                <div class="result-message">
+                    We're sorry, but we were unable to process your transaction at this time. 
+                    This could be due to SERVICES & VAT EXTERNAL Contact our support team to help with this Transaction
+                    <br><br>
+                    <strong>Your funds are safe and have not been deducted from your account.</strong>
+                </div>
+                
+                <div class="support-section">
+                    <h4><i class="fas fa-headset me-2"></i>Need Help With This Transaction?</h4>
+                    <p>Our support team is available 24/7 to assist you with this issue.</p>
+                    
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>+1 579 391 9724</div>
+                            <small>24/7 Support Line</small>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>credafluxewallet@gmail.com</div>
+                            <small>Email Support</small>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <div>WhatsApp</div>
+                            <small>Instant Help</small>
+                        </div>
+                    </div>
+                    
+                    <a href="https://wa.me/15793919724" class="btn-support" target="_blank">
+                        <i class="fab fa-whatsapp me-2"></i>Contact Support Now via WhatsApp
+                    </a>
+                </div>
+
+                <button class="btn btn-primary" onclick="window.location.href='user_dashboard.html'">
+                    <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Try multiple possible API endpoints
-        const API_ENDPOINTS = [
-            'https://scbanking.pythonanywhere.com/api/transaction_receipt',
-            'https://scbanking.pythonanywhere.com/api/transactions',
-            '/api/transaction_receipt',
-            '/api/transactions'
+        let pin = '';
+        const maxPinLength = 4;
+
+        // Initialize pin dots
+        const pinDots = [
+            document.getElementById('pinDot1'),
+            document.getElementById('pinDot2'),
+            document.getElementById('pinDot3'),
+            document.getElementById('pinDot4')
         ];
-        
-        // Get transaction ID from URL
-        function getTransactionId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id') || urlParams.get('transaction_id') || urlParams.get('reference');
-        }
-        
-        // Format date
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-            } catch (e) {
-                return dateString || '-';
-            }
-        }
-        
-        // Format currency
-        function formatCurrency(amount, currency = 'USD') {
-            try {
-                return new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: currency
-                }).format(amount);
-            } catch (e) {
-                return `${parseFloat(amount || 0).toFixed(2)} ${currency}`;
-            }
-        }
-        
-        // Generate a reference number if none exists
-        function generateReference(transactionId) {
-            return transactionId ? `TRW-${transactionId}` : `TRW-${Date.now()}`;
-        }
-        
-        // Load transaction data with multiple fallbacks
-        async function loadTransaction() {
-            const transactionId = getTransactionId();
-            
-            if (!transactionId) {
-                showError('No transaction ID provided in URL');
-                return;
-            }
-            
-            // Try each API endpoint
-            for (const endpoint of API_ENDPOINTS) {
-                try {
-                    const url = endpoint.includes('://') ? 
-                        `${endpoint}/${transactionId}` : 
-                        `${window.location.origin}${endpoint}/${transactionId}`;
+
+        // Add click events to number keys
+        document.querySelectorAll('.pin-key[data-key]').forEach(key => {
+            key.addEventListener('click', () => {
+                if (pin.length < maxPinLength) {
+                    pin += key.getAttribute('data-key');
+                    updatePinDisplay();
                     
-                    console.log(`Trying API: ${url}`);
-                    
-                    const response = await fetch(url, {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        mode: 'cors'
-                    });
-                    
-                    if (response.ok) {
-                        const data = await response.json();
-                        
-                        if (data.success || data.receipt || data.transaction) {
-                            displayReceipt(data.receipt || data.transaction || data);
-                            return; // Success, exit the loop
-                        }
+                    // Auto-submit when PIN is complete
+                    if (pin.length === maxPinLength) {
+                        startProcessing();
                     }
-                } catch (error) {
-                    console.warn(`API endpoint failed: ${endpoint}`, error);
-                    // Continue to next endpoint
                 }
-            }
-            
-            // If all APIs fail, show demo data for testing
-            showDemoData(transactionId);
-        }
-        
-        // Show demo data for testing
-        function showDemoData(transactionId) {
-            console.log('Showing demo data for testing');
-            const demoData = {
-                transaction_id: transactionId,
-                reference_number: generateReference(transactionId),
-                created_at: new Date().toISOString(),
-                status: 'Completed',
-                sender_name: 'John Doe',
-                sender_account: 'ACC-001234',
-                receiver_name: 'Jane Smith',
-                receiver_account: 'ACC-005678',
-                amount: 1500.00,
-                currency: 'USD'
-            };
-            displayReceipt(demoData);
-        }
-        
-        // Display receipt data
-        function displayReceipt(transaction) {
-            if (!transaction) {
-                showError('No transaction data received');
-                return;
-            }
-            
-            // Safely set text content with null checks
-            const safeSetText = (elementId, text) => {
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.textContent = text || '-';
-                }
-            };
-            
-            // Set transaction details
-            safeSetText('transactionId', transaction.transaction_id || transaction.id || transaction._id || 'N/A');
-            safeSetText('referenceNo', transaction.reference_number || transaction.reference || generateReference(transaction.transaction_id));
-            safeSetText('transactionDate', formatDate(transaction.created_at || transaction.date || transaction.timestamp));
-            
-            // Set status with appropriate styling
-            const statusElement = document.getElementById('transactionStatus');
-            if (statusElement) {
-                const status = (transaction.status || 'Completed').toLowerCase();
-                statusElement.textContent = transaction.status || 'Completed';
-                statusElement.className = 'status-badge';
-                
-                // Apply appropriate status class
-                if (status === 'completed' || status === 'success' || status === 'successful') {
-                    statusElement.classList.add('completed');
-                } else if (status === 'failed' || status === 'error' || status === 'declined') {
-                    statusElement.classList.add('failed');
-                } else if (status === 'pending' || status === 'processing') {
-                    statusElement.classList.add('pending');
-                } else {
-                    statusElement.classList.add('completed'); // Default to completed
-                }
-            }
-            
-            // Set party information
-            safeSetText('senderName', transaction.sender_name || transaction.sender?.name || transaction.from_name || 'Unknown Sender');
-            safeSetText('senderAccount', `Account: ${transaction.sender_account || transaction.sender?.account_number || transaction.from_account || 'N/A'}`);
-            
-            safeSetText('receiverName', transaction.receiver_name || transaction.receiver?.name || transaction.to_name || 'Unknown Receiver');
-            safeSetText('receiverAccount', `Account: ${transaction.receiver_account || transaction.receiver?.account_number || transaction.to_account || 'N/A'}`);
-            
-            // Set amount information
-            const amount = parseFloat(transaction.amount || 0);
-            const currency = transaction.currency || 'USD';
-            safeSetText('amount', amount.toFixed(2));
-            safeSetText('currency', currency);
-            
-            // Display fees
-            safeSetText('transactionAmount', formatCurrency(amount, currency));
-            safeSetText('externalFees', transaction.fee_description || 'SERVICE AND VAT EXTERNAL');
-            
-            // Calculate total amount (including fees if available)
-            const fee = parseFloat(transaction.fee || 0);
-            const totalAmount = amount + fee;
-            safeSetText('totalAmount', formatCurrency(totalAmount, currency));
-            
-            // Show receipt content
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('receiptContent').classList.remove('hidden');
-            document.getElementById('errorState').classList.add('hidden');
-        }
-        
-        // Show error
-        function showError(message) {
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('errorState').classList.remove('hidden');
-            document.getElementById('errorMessage').textContent = message;
-            document.getElementById('receiptContent').classList.add('hidden');
-        }
-        
-        // Retry loading
-        function retryLoading() {
-            document.getElementById('errorState').classList.add('hidden');
-            document.getElementById('loadingState').classList.remove('hidden');
-            loadTransaction();
-        }
-        
-        // Close receipt
-        function closeReceipt() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.close();
-            }
-        }
-        
-        // Download receipt as PDF (basic implementation)
-        function downloadReceipt() {
-            window.print(); // For now, use print functionality
-            // In a real implementation, you would generate a PDF here
-        }
-       
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add a small delay to ensure everything is loaded
-            setTimeout(loadTransaction, 100);
+            });
         });
+
+        // Backspace functionality
+        document.getElementById('backspaceKey').addEventListener('click', () => {
+            if (pin.length > 0) {
+                pin = pin.slice(0, -1);
+                updatePinDisplay();
+            }
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9' && pin.length < maxPinLength) {
+                pin += e.key;
+                updatePinDisplay();
+                
+                if (pin.length === maxPinLength) {
+                    startProcessing();
+                }
+            } else if (e.key === 'Backspace') {
+                if (pin.length > 0) {
+                    pin = pin.slice(0, -1);
+                    updatePinDisplay();
+                }
+            }
+        });
+
+        function updatePinDisplay() {
+            pinDots.forEach((dot, index) => {
+                if (index < pin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function startProcessing() {
+            // Hide PIN section, show process steps and progress bar
+            document.getElementById('pinSection').style.display = 'none';
+            document.getElementById('processSteps').style.display = 'block';
+            document.getElementById('progressBar').style.display = 'block';
+            
+            // Start the process simulation
+            simulateProcess();
+        }
+
+        function simulateProcess() {
+            const steps = [
+                { id: 'step1', duration: 2000 },
+                { id: 'step2', duration: 3000 },
+                { id: 'step3', duration: 4000 },
+                { id: 'step4', duration: 2000 },
+                { id: 'step5', duration: 1500 }
+            ];
+
+            let currentStep = 0;
+            const progressFill = document.getElementById('progressFill');
+            const totalSteps = steps.length;
+
+            function processNextStep() {
+                if (currentStep >= totalSteps) {
+                    // All steps completed, show failed result
+                    showFailedResult();
+                    return;
+                }
+
+                const step = steps[currentStep];
+                const stepElement = document.getElementById(step.id);
+                
+                // Mark current step as active
+                stepElement.classList.add('active');
+                
+                // Simulate processing time
+                setTimeout(() => {
+                    // Always fail at step 3 for demonstration
+                    if (currentStep === 2) {
+                        stepElement.classList.remove('active');
+                        stepElement.classList.add('failed');
+                        stepElement.querySelector('.step-status').innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Failed';
+                        showFailedResult();
+                    } else {
+                        stepElement.classList.remove('active');
+                        stepElement.classList.add('completed');
+                        stepElement.querySelector('.step-status').innerHTML = '<i class="fas fa-check me-1"></i>Completed';
+                        
+                        // Update progress
+                        const progress = ((currentStep + 1) / totalSteps) * 100;
+                        progressFill.style.width = progress + '%';
+                        
+                        currentStep++;
+                        processNextStep();
+                    }
+                }, step.duration);
+            }
+
+            processNextStep();
+        }
+
+        function showFailedResult() {
+            document.getElementById('processSteps').style.display = 'none';
+            document.getElementById('failedSection').style.display = 'block';
+            document.getElementById('progressFill').style.width = '60%';
+            document.getElementById('progressFill').style.background = 'linear-gradient(135deg, #dc3545, #e83e8c)';
+        }
+
+        // Reset function (for demo purposes)
+        function resetProcess() {
+            pin = '';
+            updatePinDisplay();
+            document.getElementById('pinSection').style.display = 'block';
+            document.getElementById('processSteps').style.display = 'none';
+            document.getElementById('progressBar').style.display = 'none';
+            document.getElementById('failedSection').style.display = 'none';
+            
+            // Reset all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active', 'completed', 'failed');
+                step.querySelector('.step-status').innerHTML = 'Pending';
+            });
+            
+            // Reset progress bar
+            document.getElementById('progressFill').style.width = '0%';
+            document.getElementById('progressFill').style.background = 'var(--gradient-primary)';
+        }
     </script>
-</body>  
+</body>
 </html>
