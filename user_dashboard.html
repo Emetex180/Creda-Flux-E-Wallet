@@ -1486,6 +1486,15 @@
     let transferData = {};
     let userData = {};
 
+    // Frontend money formatting function
+    function formatMoneyFrontend(amount) {
+        if (amount === undefined || amount === null) return '0.00';
+        return parseFloat(amount).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+
     // Initialize dashboard
     document.addEventListener('DOMContentLoaded', function() {
         checkAuth();
@@ -1539,13 +1548,16 @@
     function updateUserInterface() {
         if (!userData) return;
         
-        document.getElementById('userBalance').textContent = userData.balance?.toFixed(2) || '0.00';
+        // Use formatted_balance if available, otherwise format it on the frontend
+        const balance = userData.formatted_balance || formatMoneyFrontend(userData.balance);
+        
+        document.getElementById('userBalance').textContent = balance;
         document.getElementById('userCurrency').textContent = userData.currency || 'USD';
         document.getElementById('userAccountNumber').textContent = userData.account_number || 'Loading...';
         document.getElementById('userBankName').textContent = userData.bank_name || 'Creda Flux E-Wallet Bank';
         document.getElementById('userCurrencyBadge').textContent = userData.currency || 'USD';
         document.getElementById('currency-label').textContent = userData.currency || 'USD';
-        document.getElementById('available-balance').textContent = userData.balance?.toFixed(2) || '0.00';
+        document.getElementById('available-balance').textContent = balance;
         document.getElementById('available-currency').textContent = userData.currency || 'USD';
         document.getElementById('confirm-fee-currency').textContent = userData.currency || 'USD';
     }
@@ -1591,19 +1603,22 @@
             const isReceiver = transaction.receiver_id === userData.id;
             const transactionId = transaction.transaction_id || transaction.id;
             
+            // Use formatted_amount if available, otherwise format on frontend
+            const amount = transaction.formatted_amount || formatMoneyFrontend(transaction.amount);
+            
             let transactionType, amountDisplay, amountClass;
             
             if (isSender) {
                 transactionType = `<i class="fas fa-arrow-up text-danger"></i>Sent to ${transaction.receiver_name || 'Unknown'}`;
-                amountDisplay = `-${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountDisplay = `-${amount} ${transaction.currency || 'USD'}`;
                 amountClass = 'amount-sent';
             } else if (isReceiver) {
                 transactionType = `<i class="fas fa-arrow-down text-success"></i>Received from ${transaction.sender_name || 'Unknown'}`;
-                amountDisplay = `+${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountDisplay = `+${amount} ${transaction.currency || 'USD'}`;
                 amountClass = 'amount-received';
             } else {
                 transactionType = `<i class="fas fa-exchange-alt text-warning"></i>Transaction`;
-                amountDisplay = `${parseFloat(transaction.amount || 0).toFixed(2)} ${transaction.currency || 'USD'}`;
+                amountDisplay = `${amount} ${transaction.currency || 'USD'}`;
                 amountClass = '';
             }
 
@@ -1781,12 +1796,15 @@
                 recipient_currency: document.getElementById('recipient-currency').textContent
             };
             
+            // Format amount for display
+            const formattedAmount = formatMoneyFrontend(amount);
+            
             // Update confirmation step
             document.getElementById('confirm-recipient-name').textContent = transferData.recipient_name;
             document.getElementById('confirm-recipient-account').textContent = transferData.recipient_account;
             document.getElementById('confirm-recipient-bank').textContent = transferData.recipient_bank;
-            document.getElementById('confirm-amount').textContent = `${parseFloat(transferData.amount).toFixed(2)} ${userData.currency || 'USD'}`;
-            document.getElementById('confirm-total').textContent = `${parseFloat(transferData.amount).toFixed(2)} ${userData.currency || 'USD'}`;
+            document.getElementById('confirm-amount').textContent = `${formattedAmount} ${userData.currency || 'USD'}`;
+            document.getElementById('confirm-total').textContent = `${formattedAmount} ${userData.currency || 'USD'}`;
             
             showStep(2);
         } else if (currentStep === 2) {
