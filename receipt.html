@@ -290,6 +290,7 @@
             gap: 10px;
             justify-content: center;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -303,6 +304,7 @@
             gap: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
         }
         
         .btn-primary {
@@ -314,6 +316,11 @@
             background: #f0f0f0;
             color: #000;
             border: 1px solid #aaa;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: #fff;
         }
         
         .status-badge {
@@ -345,6 +352,52 @@
             display: none;
         }
         
+        /* Previous Receipts Section */
+        .previous-receipts {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .receipts-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        
+        .receipt-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .receipt-item:hover {
+            background-color: #e9e9e9;
+        }
+        
+        .receipt-item:last-child {
+            border-bottom: none;
+        }
+        
+        .receipt-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .receipt-amount {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .receipt-date {
+            font-size: 12px;
+            color: #666;
+        }
+        
         /* Print styles */
         @media print {
             body {
@@ -360,6 +413,10 @@
             }
             
             .actions {
+                display: none;
+            }
+            
+            .previous-receipts {
                 display: none;
             }
             
@@ -438,7 +495,6 @@
             <div class="header">
                 <div class="company-info">
                     <div class="logo-container">
-                        <!-- Add your logo here -->
                         <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\"logo-placeholder\"><i class=\"fas fa-wallet\"></i></div>';">
                     </div>
                     <div>
@@ -552,6 +608,20 @@
                         <span>Secure Transfer</span>
                     </div>
                 </div>
+
+                <!-- Previous Receipts Section -->
+                <div class="previous-receipts">
+                    <div class="section-title">
+                        <i class="fas fa-history"></i>
+                        PREVIOUS RECEIPTS
+                    </div>
+                    <div class="receipts-list" id="receiptsList">
+                        <div class="text-center" style="padding: 20px;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading previous receipts...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Footer -->
@@ -568,6 +638,10 @@
                         <i class="fas fa-times"></i>
                         Close
                     </button>
+                    <a href="user_dashboard.html" class="btn btn-success">
+                        <i class="fas fa-home"></i>
+                        Back to Dashboard
+                    </a>
                     <button onclick="toggleDebug()" class="btn btn-secondary" style="background: #666; color: white;">
                         <i class="fas fa-bug"></i>
                         Debug
@@ -580,6 +654,7 @@
     <script>
         const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
         let debugMode = false;
+        let userTransactions = [];
         
         // Get transaction ID from URL
         function getTransactionId() {
@@ -625,43 +700,138 @@
             const transactionId = getTransactionId();
             
             if (!transactionId) {
-                showError('No transaction ID provided in URL');
+                // If no specific transaction ID, try to load the latest transaction
+                await loadUserTransactions();
+                if (userTransactions.length > 0) {
+                    displayReceipt(userTransactions[0]);
+                    loadPreviousReceipts();
+                } else {
+                    showError('No transaction ID provided and no transactions found');
+                }
                 return;
             }
             
             logDebug('Loading transaction with ID:', transactionId);
             
             try {
-                const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
-                    credentials: 'include',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
+                // First try to get user transactions to find the specific one
+                await loadUserTransactions();
                 
-                logDebug('Response status:', response.status);
-                logDebug('Response headers:', Object.fromEntries(response.headers.entries()));
+                // Find the specific transaction
+                const transaction = userTransactions.find(t => 
+                    t.transaction_id === transactionId || 
+                    t.id === transactionId ||
+                    t.transactionId === transactionId
+                );
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    logDebug('Received data:', data);
-                    
-                    if (data.success) {
-                        displayReceipt(data.receipt || data.transaction || data);
-                    } else {
-                        showError(data.message || 'Failed to load receipt: API returned unsuccessful');
-                    }
+                if (transaction) {
+                    displayReceipt(transaction);
+                    loadPreviousReceipts();
                 } else {
-                    const errorText = await response.text();
-                    logDebug('Error response:', errorText);
-                    showError(`Transaction not found (Status: ${response.status}). Please check the transaction ID.`);
+                    // If not found in user transactions, try direct API call
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
+                            credentials: 'include',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.success) {
+                                displayReceipt(data.receipt || data.transaction || data);
+                                loadPreviousReceipts();
+                            } else {
+                                showError(data.message || 'Transaction not found');
+                            }
+                        } else {
+                            showError('Transaction not found. Please check the transaction ID.');
+                        }
+                    } catch (apiError) {
+                        logDebug('Direct API call failed:', apiError);
+                        showError('Transaction not found in your history.');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
                 logDebug('Network error details:', error);
                 showError('Network error. Please check your connection and try again.');
             }
+        }
+        
+        // Load user transactions
+        async function loadUserTransactions() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.transactions) {
+                        userTransactions = data.transactions;
+                        logDebug('Loaded user transactions:', userTransactions);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load user transactions:', error);
+                userTransactions = [];
+            }
+        }
+        
+        // Load previous receipts
+        function loadPreviousReceipts() {
+            const receiptsList = document.getElementById('receiptsList');
+            
+            if (!userTransactions || userTransactions.length === 0) {
+                receiptsList.innerHTML = '<div class="text-center" style="padding: 20px;"><p>No previous transactions found</p></div>';
+                return;
+            }
+            
+            // Show only last 5 transactions (excluding current one if viewing specific receipt)
+            const currentTransactionId = getTransactionId();
+            const previousTransactions = userTransactions
+                .filter(t => {
+                    const tId = t.transaction_id || t.id || t.transactionId;
+                    return !currentTransactionId || tId !== currentTransactionId;
+                })
+                .slice(0, 5);
+            
+            if (previousTransactions.length === 0) {
+                receiptsList.innerHTML = '<div class="text-center" style="padding: 20px;"><p>No other transactions found</p></div>';
+                return;
+            }
+            
+            receiptsList.innerHTML = previousTransactions.map(transaction => {
+                const transactionId = transaction.transaction_id || transaction.id || transaction.transactionId;
+                const amount = parseFloat(transaction.amount || 0);
+                const currency = transaction.currency || 'USD';
+                const date = formatDate(transaction.created_at || transaction.date);
+                const isSender = transaction.sender_id === (transaction.user_id || transaction.current_user_id);
+                
+                return `
+                    <div class="receipt-item" onclick="viewReceipt('${transactionId}')">
+                        <div class="receipt-summary">
+                            <div>
+                                <div style="font-weight: 600; font-size: 14px;">
+                                    ${isSender ? 'Sent to ' + (transaction.receiver_name || 'Unknown') : 'Received from ' + (transaction.sender_name || 'Unknown')}
+                                </div>
+                                <div class="receipt-date">${date}</div>
+                            </div>
+                            <div class="receipt-amount ${isSender ? 'amount-sent' : 'amount-received'}">
+                                ${isSender ? '-' : '+'}${formatCurrency(amount, currency)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // View specific receipt
+        function viewReceipt(transactionId) {
+            window.location.href = `receipt.html?id=${transactionId}`;
         }
         
         // Display receipt data
@@ -798,29 +968,7 @@
             console.log('Receipt page loaded');
             logDebug('Page initialized');
             
-            // Check if we're in a popup or iframe
-            if (window.self !== window.top) {
-                logDebug('Running in iframe/popup');
-            }
-            
-            // Check URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            logDebug('All URL parameters:', Object.fromEntries(urlParams.entries()));
-            
             loadTransaction();
-            
-            // Add keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key === 'd') {
-                    e.preventDefault();
-                    toggleDebug();
-                }
-            });
-        });
-
-        // Handle page visibility (for popups)
-        document.addEventListener('visibilitychange', function() {
-            logDebug('Visibility changed:', document.hidden ? 'hidden' : 'visible');
         });
     </script>
 </body>  
