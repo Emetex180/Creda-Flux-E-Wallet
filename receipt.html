@@ -12,7 +12,7 @@
         @media print {
             @page {
                 size: A4;
-                margin: 0.5cm;
+                margin: 0.3cm;
             }
             
             body {
@@ -21,6 +21,7 @@
                 background: white !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
+                font-size: 12px;
             }
             
             .receipt-container {
@@ -30,6 +31,7 @@
                 box-shadow: none !important;
                 border: none !important;
                 border-radius: 0 !important;
+                min-height: auto !important;
             }
             
             .actions,
@@ -37,6 +39,34 @@
             .debug-info,
             .watermark {
                 display: none !important;
+            }
+            
+            .section {
+                margin-bottom: 10px !important;
+                padding: 12px !important;
+            }
+            
+            .content {
+                padding: 15px !important;
+            }
+            
+            .header {
+                padding: 15px 20px !important;
+            }
+            
+            .footer {
+                padding: 15px 20px !important;
+                margin-top: 10px !important;
+            }
+            
+            .amount-section {
+                margin: 15px 0 !important;
+                padding: 15px !important;
+            }
+            
+            .security {
+                margin-top: 10px !important;
+                padding: 8px 10px !important;
             }
         }
 
@@ -46,7 +76,7 @@
                 font-family: 'Segoe UI', system-ui, sans-serif;
                 color: #000000;
                 margin: 0;
-                padding: 20px;
+                padding: 10px;
                 min-height: 100vh;
                 display: flex;
                 justify-content: center;
@@ -72,6 +102,7 @@
             background: #ffffff;
             position: relative;
             margin: 0 auto;
+            font-size: 13px;
         }
         
         .watermark {
@@ -79,7 +110,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 80px;
+            font-size: 60px;
             font-weight: 900;
             color: rgba(0, 0, 0, 0.03);
             white-space: nowrap;
@@ -88,9 +119,9 @@
         
         .header {
             background: #f8f8f8;
-            padding: 25px 30px;
+            padding: 15px 20px;
             text-align: center;
-            border-bottom: 3px solid #000;
+            border-bottom: 2px solid #000;
             position: relative;
         }
         
@@ -98,20 +129,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
         
         .logo-container {
-            width: 70px;
-            height: 70px;
-            border-radius: 8px;
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
             background: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 2px solid #ddd;
+            border: 1px solid #ddd;
         }
         
         .logo {
@@ -121,11 +152,11 @@
         
         .logo-placeholder {
             color: #000;
-            font-size: 28px;
+            font-size: 20px;
         }
         
         .company-name {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 800;
             color: #000;
             margin: 0;
@@ -134,56 +165,56 @@
         
         .tagline {
             color: #555;
-            font-size: 14px;
-            margin: 5px 0 0 0;
+            font-size: 12px;
+            margin: 3px 0 0 0;
             font-weight: 500;
         }
         
         .receipt-title {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 700;
             color: #000;
-            margin: 20px 0 0 0;
+            margin: 12px 0 0 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         
         .content {
-            padding: 30px;
+            padding: 15px;
             position: relative;
             z-index: 1;
         }
         
         .section {
-            margin-bottom: 20px;
-            padding: 20px;
+            margin-bottom: 12px;
+            padding: 12px;
             background: #f8f8f8;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #ddd;
         }
         
         .section-title {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
             color: #000;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid #aaa;
-            padding-bottom: 10px;
+            gap: 6px;
+            border-bottom: 1px solid #aaa;
+            padding-bottom: 6px;
         }
         
         .info-grid {
             display: grid;
-            gap: 12px;
+            gap: 8px;
         }
         
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #ddd;
         }
         
@@ -194,98 +225,98 @@
         .label {
             font-weight: 600;
             color: #333;
-            font-size: 14px;
+            font-size: 12px;
         }
         
         .value {
             font-weight: 600;
             color: #000;
-            font-size: 14px;
+            font-size: 12px;
             text-align: right;
         }
         
         .parties {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 12px;
         }
         
         .party-card {
             background: #f0f0f0;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 6px;
             border: 1px solid #ccc;
         }
         
         .party-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .party-name {
-            font-size: 16px;
+            font-size: 11px;
             font-weight: 700;
             color: #000;
             margin-bottom: 8px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .party-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 5px;
         }
         
         .party-detail {
-            font-size: 14px;
+            font-size: 11px;
             color: #333;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
         .amount-section {
             text-align: center;
-            padding: 30px 20px;
+            padding: 15px;
             background: #f0f0f0;
-            border-radius: 10px;
-            border: 3px dashed #aaa;
-            margin: 25px 0;
+            border-radius: 8px;
+            border: 2px dashed #aaa;
+            margin: 15px 0;
         }
         
         .amount-label {
-            font-size: 16px;
+            font-size: 13px;
             color: #333;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
             font-weight: 600;
         }
         
         .amount {
-            font-size: 42px;
+            font-size: 28px;
             font-weight: 900;
             color: #000;
             line-height: 1;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .currency {
-            font-size: 16px;
+            font-size: 13px;
             color: #000;
             font-weight: 700;
-            margin-top: 8px;
+            margin-top: 5px;
         }
         
         .fee-breakdown {
             background: #f0f0f0;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 12px;
         }
         
         .fee-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
-            font-size: 14px;
+            padding: 6px 0;
+            font-size: 12px;
         }
         
         .fee-label {
@@ -302,55 +333,55 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            padding: 15px 20px;
+            gap: 12px;
+            padding: 8px 10px;
             background: #f0f0f0;
-            border-radius: 8px;
-            margin-top: 25px;
+            border-radius: 6px;
+            margin-top: 15px;
             border: 1px solid #ccc;
         }
         
         .security-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
+            gap: 5px;
+            font-size: 10px;
             color: #000;
             font-weight: 600;
         }
         
         .footer {
             text-align: center;
-            padding: 25px 30px;
+            padding: 15px 20px;
             border-top: 1px solid #ddd;
-            margin-top: 20px;
+            margin-top: 12px;
             background: #f8f8f8;
         }
         
         .footer-note {
-            font-size: 12px;
+            font-size: 10px;
             color: #555;
-            margin-bottom: 12px;
-            line-height: 1.5;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
         
         .actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 18px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
         
         .btn {
-            padding: 12px 24px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 12px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -373,9 +404,9 @@
         }
         
         .status-badge {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -384,19 +415,19 @@
         .status-badge.completed {
             background: #e8f5e8;
             color: #2e7d32;
-            border: 2px solid #c8e6c9;
+            border: 1px solid #c8e6c9;
         }
         
         .status-badge.failed {
             background: #ffebee;
             color: #c62828;
-            border: 2px solid #ffcdd2;
+            border: 1px solid #ffcdd2;
         }
         
         .status-badge.pending {
             background: #fff3e0;
             color: #ef6c00;
-            border: 2px solid #ffe0b2;
+            border: 1px solid #ffe0b2;
         }
         
         .hidden {
@@ -406,17 +437,17 @@
         /* Loading states */
         .loading {
             text-align: center;
-            padding: 100px 20px;
+            padding: 50px 20px;
         }
         
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-top: 4px solid #000;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #000;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 30px;
+            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -427,13 +458,13 @@
         /* Error state */
         .error-state {
             text-align: center;
-            padding: 100px 30px;
+            padding: 50px 20px;
         }
         
         .error-icon {
-            font-size: 48px;
+            font-size: 36px;
             color: #ff6b6b;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         /* Remove previous receipts section for A4 fit */
@@ -448,11 +479,11 @@
             right: 10px;
             background: rgba(0,0,0,0.8);
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 10px;
             z-index: 1000;
-            max-width: 300px;
+            max-width: 250px;
             display: none;
         }
 
@@ -460,25 +491,6 @@
         @media print {
             .btn {
                 display: none !important;
-            }
-            
-            .security {
-                margin-top: 15px;
-                padding: 12px 15px;
-            }
-            
-            .content {
-                padding: 25px;
-            }
-            
-            .section {
-                margin-bottom: 15px;
-                padding: 15px;
-            }
-            
-            .amount-section {
-                margin: 20px 0;
-                padding: 25px 15px;
             }
         }
 
@@ -489,8 +501,8 @@
             }
             
             .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             }
         }
     </style>
@@ -506,14 +518,14 @@
         <!-- Loading State -->
         <div id="loadingState" class="loading">
             <div class="spinner"></div>
-            <p style="font-size: 16px; color: #666;">Loading receipt...</p>
+            <p style="font-size: 14px; color: #666;">Loading receipt...</p>
         </div>
         
         <!-- Error State -->
         <div id="errorState" class="hidden error-state">
             <i class="fas fa-exclamation-triangle error-icon"></i>
-            <h4 style="color: #333; margin-bottom: 15px;">Unable to Load Receipt</h4>
-            <p id="errorMessage" style="color: #666; margin-bottom: 25px;">Transaction not found</p>
+            <h4 style="color: #333; margin-bottom: 10px; font-size: 16px;">Unable to Load Receipt</h4>
+            <p id="errorMessage" style="color: #666; margin-bottom: 15px; font-size: 13px;">Transaction not found</p>
             <div class="actions">
                 <button onclick="retryLoading()" class="btn btn-primary">
                     <i class="fas fa-redo"></i> Try Again
@@ -530,7 +542,7 @@
             <div class="header">
                 <div class="company-info">
                     <div class="logo-container">
-                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\"logo-placeholder\"><i class=\"fas fa-wallet\"></i></div>
+                        <img src="./image/logo.jpeg" alt="Creda Flux E-Wallet Logo" class="logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\"logo-placeholder\"><i class=\"fas fa-wallet\"></i></div>'">
                     </div>
                     <div>
                         <h1 class="company-name">Creda Flux E-Wallet</h1>
@@ -621,7 +633,7 @@
                             <span class="fee-label">Processing Fees:</span>
                             <span class="fee-value" id="externalFees">SERVICES AND VAT EXTERNAL</span>
                         </div>
-                        <div class="fee-row" style="border-top: 2px solid #aaa; padding-top: 12px; margin-top: 10px; font-weight: 700; font-size: 15px;">
+                        <div class="fee-row" style="border-top: 1px solid #aaa; padding-top: 8px; margin-top: 8px; font-weight: 700; font-size: 13px;">
                             <span class="fee-label">Total Amount:</span>
                             <span class="fee-value" id="totalAmount">0.00 USD</span>
                         </div>
