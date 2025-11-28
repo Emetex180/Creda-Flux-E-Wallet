@@ -8,28 +8,70 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
     <style>
-        body {
-            background: #ffffff;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            color: #000000;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* A4 Page Size and Print Styles */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                background: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .receipt-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+            }
+            
+            .actions,
+            .previous-receipts,
+            .debug-info,
+            .watermark {
+                display: none !important;
+            }
         }
-        
+
+        @media screen {
+            body {
+                background: #f5f5f5;
+                font-family: 'Segoe UI', system-ui, sans-serif;
+                color: #000000;
+                margin: 0;
+                padding: 20px;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .receipt-container {
+                max-width: 21cm;
+                min-height: 29.7cm;
+                background: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                border: 1px solid #ddd;
+                overflow: hidden;
+                position: relative;
+            }
+        }
+
+        /* Common Styles for both screen and print */
         .receipt-container {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
+            width: 21cm;
+            min-height: 29.7cm;
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-            overflow: hidden;
             position: relative;
+            margin: 0 auto;
         }
         
         .watermark {
@@ -46,9 +88,9 @@
         
         .header {
             background: #f8f8f8;
-            padding: 20px;
+            padding: 25px 30px;
             text-align: center;
-            border-bottom: 2px solid #000;
+            border-bottom: 3px solid #000;
             position: relative;
         }
         
@@ -56,20 +98,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 10px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
         .logo-container {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 8px;
             background: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
         }
         
         .logo {
@@ -79,54 +121,57 @@
         
         .logo-placeholder {
             color: #000;
-            font-size: 24px;
+            font-size: 28px;
         }
         
         .company-name {
-            font-size: 22px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 800;
             color: #000;
             margin: 0;
+            letter-spacing: -0.5px;
         }
         
         .tagline {
             color: #555;
             font-size: 14px;
-            margin: 0;
+            margin: 5px 0 0 0;
+            font-weight: 500;
         }
         
         .receipt-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: #000;
-            margin: 15px 0 0 0;
+            margin: 20px 0 0 0;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .content {
-            padding: 25px;
+            padding: 30px;
             position: relative;
             z-index: 1;
         }
         
         .section {
-            margin-bottom: 24px;
-            padding: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
             background: #f8f8f8;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid #ddd;
         }
         
         .section-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: #000;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #aaa;
-            padding-bottom: 8px;
+            gap: 10px;
+            border-bottom: 2px solid #aaa;
+            padding-bottom: 10px;
         }
         
         .info-grid {
@@ -138,7 +183,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
         
@@ -162,87 +207,90 @@
         .parties {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
         
         .party-card {
             background: #f0f0f0;
-            padding: 15px;
-            border-radius: 6px;
+            padding: 20px;
+            border-radius: 8px;
             border: 1px solid #ccc;
         }
         
         .party-title {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #000;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .party-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
             color: #000;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
         
         .party-detail {
-            font-size: 13px;
+            font-size: 14px;
             color: #333;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         
         .amount-section {
             text-align: center;
-            padding: 20px;
+            padding: 30px 20px;
             background: #f0f0f0;
-            border-radius: 8px;
-            border: 2px dashed #aaa;
-            margin: 20px 0;
+            border-radius: 10px;
+            border: 3px dashed #aaa;
+            margin: 25px 0;
         }
         
         .amount-label {
-            font-size: 14px;
+            font-size: 16px;
             color: #333;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
         
         .amount {
-            font-size: 32px;
-            font-weight: 800;
+            font-size: 42px;
+            font-weight: 900;
             color: #000;
             line-height: 1;
+            margin: 10px 0;
         }
         
         .currency {
-            font-size: 14px;
+            font-size: 16px;
             color: #000;
-            font-weight: 600;
-            margin-top: 5px;
+            font-weight: 700;
+            margin-top: 8px;
         }
         
         .fee-breakdown {
             background: #f0f0f0;
-            padding: 15px;
-            border-radius: 6px;
-            margin-top: 15px;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
         }
         
         .fee-row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 10px 0;
             font-size: 14px;
         }
         
         .fee-label {
             color: #333;
+            font-weight: 500;
         }
         
         .fee-value {
@@ -254,18 +302,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            padding: 12px 15px;
+            gap: 20px;
+            padding: 15px 20px;
             background: #f0f0f0;
-            border-radius: 6px;
-            margin-top: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
             border: 1px solid #ccc;
         }
         
         .security-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             font-size: 12px;
             color: #000;
             font-weight: 600;
@@ -273,35 +321,36 @@
         
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 25px 30px;
             border-top: 1px solid #ddd;
             margin-top: 20px;
+            background: #f8f8f8;
         }
         
         .footer-note {
             font-size: 12px;
             color: #555;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             line-height: 1.5;
         }
         
         .actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
         
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -324,121 +373,50 @@
         }
         
         .status-badge {
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .status-badge.completed {
             background: #e8f5e8;
             color: #2e7d32;
-            border: 1px solid #c8e6c9;
+            border: 2px solid #c8e6c9;
         }
         
         .status-badge.failed {
             background: #ffebee;
             color: #c62828;
-            border: 1px solid #ffcdd2;
+            border: 2px solid #ffcdd2;
         }
         
         .status-badge.pending {
             background: #fff3e0;
             color: #ef6c00;
-            border: 1px solid #ffe0b2;
+            border: 2px solid #ffe0b2;
         }
         
         .hidden {
             display: none;
         }
         
-        /* Previous Receipts Section */
-        .previous-receipts {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f8f8;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-        }
-        
-        .receipts-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
-        
-        .receipt-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .receipt-item:hover {
-            background-color: #e9e9e9;
-        }
-        
-        .receipt-item:last-child {
-            border-bottom: none;
-        }
-        
-        .receipt-summary {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .receipt-amount {
-            font-weight: 600;
-            color: #000;
-        }
-        
-        .receipt-date {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        /* Print styles */
-        @media print {
-            body {
-                padding: 0;
-                background: white;
-            }
-            
-            .receipt-container {
-                box-shadow: none;
-                border: 1px solid #000;
-                margin: 0;
-                max-width: 100%;
-            }
-            
-            .actions {
-                display: none;
-            }
-            
-            .previous-receipts {
-                display: none;
-            }
-            
-            .watermark {
-                color: rgba(0, 0, 0, 0.03);
-            }
-        }
-        
         /* Loading states */
         .loading {
             text-align: center;
-            padding: 50px 20px;
+            padding: 100px 20px;
         }
         
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(0, 0, 0, 0.1);
-            border-top: 3px solid #000;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #000;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
         }
         
         @keyframes spin {
@@ -446,7 +424,24 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Debug info */
+        /* Error state */
+        .error-state {
+            text-align: center;
+            padding: 100px 30px;
+        }
+        
+        .error-icon {
+            font-size: 48px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+
+        /* Remove previous receipts section for A4 fit */
+        .previous-receipts {
+            display: none;
+        }
+
+        /* Debug info - only for screen */
         .debug-info {
             position: fixed;
             top: 10px;
@@ -460,10 +455,48 @@
             max-width: 300px;
             display: none;
         }
+
+        /* Print-specific optimizations */
+        @media print {
+            .btn {
+                display: none !important;
+            }
+            
+            .security {
+                margin-top: 15px;
+                padding: 12px 15px;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .section {
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            
+            .amount-section {
+                margin: 20px 0;
+                padding: 25px 15px;
+            }
+        }
+
+        /* Screen-specific adjustments */
+        @media screen {
+            .receipt-container {
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            }
+            
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Debug Info Panel -->
+    <!-- Debug Info Panel (Screen Only) -->
     <div class="debug-info" id="debugInfo"></div>
 
     <div class="receipt-container">
@@ -473,20 +506,22 @@
         <!-- Loading State -->
         <div id="loadingState" class="loading">
             <div class="spinner"></div>
-            <p>Loading receipt...</p>
+            <p style="font-size: 16px; color: #666;">Loading receipt...</p>
         </div>
         
         <!-- Error State -->
-        <div id="errorState" class="hidden" style="text-align: center; padding: 50px 20px;">
-            <i class="fas fa-exclamation-triangle" style="font-size: 40px; color: #ff6b6b; margin-bottom: 15px;"></i>
-            <h4>Unable to Load Receipt</h4>
-            <p id="errorMessage">Transaction not found</p>
-            <button onclick="retryLoading()" class="btn btn-primary" style="margin-top: 15px;">
-                <i class="fas fa-redo"></i> Try Again
-            </button>
-            <button onclick="goToDashboard()" class="btn btn-secondary" style="margin-top: 15px;">
-                <i class="fas fa-home"></i> Back to Dashboard
-            </button>
+        <div id="errorState" class="hidden error-state">
+            <i class="fas fa-exclamation-triangle error-icon"></i>
+            <h4 style="color: #333; margin-bottom: 15px;">Unable to Load Receipt</h4>
+            <p id="errorMessage" style="color: #666; margin-bottom: 25px;">Transaction not found</p>
+            <div class="actions">
+                <button onclick="retryLoading()" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+                <button onclick="goToDashboard()" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Back to Dashboard
+                </button>
+            </div>
         </div>
         
         <!-- Receipt Content -->
@@ -499,7 +534,7 @@
                     </div>
                     <div>
                         <h1 class="company-name">Creda Flux E-Wallet</h1>
-                        <p class="tagline">Secure E-Wallet Solution</p>
+                        <p class="tagline">Secure Digital Banking Solution</p>
                     </div>
                 </div>
                 <h2 class="receipt-title">TRANSACTION RECEIPT</h2>
@@ -557,7 +592,7 @@
                                 <i class="fas fa-user-friends"></i>
                                 RECEIVER
                             </div>
-                            <div class="party-name" id="receiverName">-</div>
+                            <div class="party-name" id="receivername">-</div>
                             <div class="party-detail" id="receiverAccount">Account: -</div>
                             <div class="party-detail" id="receiverBank">Bank: Creda Flux E-Wallet</div>
                         </div>
@@ -583,10 +618,10 @@
                             <span class="fee-value" id="transactionAmount">0.00 USD</span>
                         </div>
                         <div class="fee-row">
-                            <span class="fee-label">FEES:</span>
+                            <span class="fee-label">Processing Fees:</span>
                             <span class="fee-value" id="externalFees">SERVICES AND VAT EXTERNAL</span>
                         </div>
-                        <div class="fee-row" style="border-top: 1px solid #aaa; padding-top: 10px; margin-top: 8px; font-weight: 700;">
+                        <div class="fee-row" style="border-top: 2px solid #aaa; padding-top: 12px; margin-top: 10px; font-weight: 700; font-size: 15px;">
                             <span class="fee-label">Total Amount:</span>
                             <span class="fee-value" id="totalAmount">0.00 USD</span>
                         </div>
@@ -608,31 +643,18 @@
                         <span>Secure Transfer</span>
                     </div>
                 </div>
-
-                <!-- Previous Receipts Section -->
-                <div class="previous-receipts">
-                    <div class="section-title">
-                        <i class="fas fa-history"></i>
-                        PREVIOUS RECEIPTS
-                    </div>
-                    <div class="receipts-list" id="receiptsList">
-                        <div class="text-center" style="padding: 20px;">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Loading previous receipts...</p>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <!-- Footer -->
             <div class="footer">
                 <p class="footer-note">
-                    This is an official receipt from Creda Flux E-Wallet. Please keep it for your records.
+                    This is an official receipt from Creda Flux E-Wallet. Please keep this document for your records.<br>
+                    For any inquiries, contact support at credafluxewallet@gmail.com
                 </p>
                 <div class="actions">
                     <button onclick="window.print()" class="btn btn-primary">
                         <i class="fas fa-print"></i>
-                        Print
+                        Print Receipt
                     </button>
                     <button onclick="closeReceipt()" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
@@ -654,7 +676,6 @@
     <script>
         const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
         let debugMode = false;
-        let userTransactions = [];
         
         // Get transaction ID from URL
         function getTransactionId() {
@@ -674,7 +695,8 @@
                     month: '2-digit',
                     day: '2-digit',
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    second: '2-digit'
                 });
             } catch (error) {
                 logDebug('Date formatting error:', error);
@@ -691,7 +713,7 @@
                 }).format(amount);
             } catch (error) {
                 logDebug('Currency formatting error:', error);
-                return `${amount} ${currency}`;
+                return `${parseFloat(amount).toFixed(2)} ${currency}`;
             }
         }
         
@@ -700,140 +722,36 @@
             const transactionId = getTransactionId();
             
             if (!transactionId) {
-                // If no specific transaction ID, try to load the latest transaction
-                await loadUserTransactions();
-                if (userTransactions.length > 0) {
-                    displayReceipt(userTransactions[0]);
-                    loadPreviousReceipts();
-                } else {
-                    showError('No transaction ID provided and no transactions found');
-                }
+                showError('No transaction ID provided');
                 return;
             }
             
             logDebug('Loading transaction with ID:', transactionId);
             
             try {
-                // First try to get user transactions to find the specific one
-                await loadUserTransactions();
-                
-                // Find the specific transaction
-                const transaction = userTransactions.find(t => 
-                    t.transaction_id === transactionId || 
-                    t.id === transactionId ||
-                    t.transactionId === transactionId
-                );
-                
-                if (transaction) {
-                    displayReceipt(transaction);
-                    loadPreviousReceipts();
-                } else {
-                    // If not found in user transactions, try direct API call
-                    try {
-                        const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
-                            credentials: 'include',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            const data = await response.json();
-                            if (data.success) {
-                                displayReceipt(data.receipt || data.transaction || data);
-                                loadPreviousReceipts();
-                            } else {
-                                showError(data.message || 'Transaction not found');
-                            }
-                        } else {
-                            showError('Transaction not found. Please check the transaction ID.');
-                        }
-                    } catch (apiError) {
-                        logDebug('Direct API call failed:', apiError);
-                        showError('Transaction not found in your history.');
+                const response = await fetch(`${API_BASE_URL}/transaction_receipt/${transactionId}`, {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        displayReceipt(data.receipt || data.transaction || data);
+                    } else {
+                        showError(data.message || 'Transaction not found');
+                    }
+                } else {
+                    showError('Transaction not found. Please check the transaction ID.');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 logDebug('Network error details:', error);
                 showError('Network error. Please check your connection and try again.');
             }
-        }
-        
-        // Load user transactions
-        async function loadUserTransactions() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/user/dashboard`, {
-                    credentials: 'include'
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.transactions) {
-                        userTransactions = data.transactions;
-                        logDebug('Loaded user transactions:', userTransactions);
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to load user transactions:', error);
-                userTransactions = [];
-            }
-        }
-        
-        // Load previous receipts
-        function loadPreviousReceipts() {
-            const receiptsList = document.getElementById('receiptsList');
-            
-            if (!userTransactions || userTransactions.length === 0) {
-                receiptsList.innerHTML = '<div class="text-center" style="padding: 20px;"><p>No previous transactions found</p></div>';
-                return;
-            }
-            
-            // Show only last 5 transactions (excluding current one if viewing specific receipt)
-            const currentTransactionId = getTransactionId();
-            const previousTransactions = userTransactions
-                .filter(t => {
-                    const tId = t.transaction_id || t.id || t.transactionId;
-                    return !currentTransactionId || tId !== currentTransactionId;
-                })
-                .slice(0, 5);
-            
-            if (previousTransactions.length === 0) {
-                receiptsList.innerHTML = '<div class="text-center" style="padding: 20px;"><p>No other transactions found</p></div>';
-                return;
-            }
-            
-            receiptsList.innerHTML = previousTransactions.map(transaction => {
-                const transactionId = transaction.transaction_id || transaction.id || transaction.transactionId;
-                const amount = parseFloat(transaction.amount || 0);
-                const currency = transaction.currency || 'USD';
-                const date = formatDate(transaction.created_at || transaction.date);
-                const isSender = transaction.sender_id === (transaction.user_id || transaction.current_user_id);
-                const status = transaction.status || 'Pending';
-                
-                return `
-                    <div class="receipt-item" onclick="viewReceipt('${transactionId}')">
-                        <div class="receipt-summary">
-                            <div>
-                                <div style="font-weight: 600; font-size: 14px;">
-                                    ${isSender ? 'Sent to ' + (transaction.receiver_name || 'Unknown') : 'Received from ' + (transaction.sender_name || 'Unknown')}
-                                </div>
-                                <div class="receipt-date">${date}</div>
-                                <div style="font-size: 11px; color: #666;">Status: ${status}</div>
-                            </div>
-                            <div class="receipt-amount ${isSender ? 'amount-sent' : 'amount-received'}">
-                                ${isSender ? '-' : '+'}${formatCurrency(amount, currency)}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
-        // View specific receipt
-        function viewReceipt(transactionId) {
-            window.location.href = `receipt.html?id=${transactionId}`;
         }
         
         // Display receipt data
@@ -895,7 +813,7 @@
             const receiverName = transaction.receiver_name || transaction.receiver?.name || transaction.recipient_name || transaction.to_name || 'Unknown';
             const receiverAccount = transaction.receiver_account || transaction.receiver?.account_number || transaction.recipient_account || transaction.to_account || 'N/A';
             
-            safeSetText('receiverName', receiverName);
+            safeSetText('receivername', receiverName);
             safeSetText('receiverAccount', `Account: ${receiverAccount}`);
             
             const amount = parseFloat(transaction.amount || transaction.transaction_amount || 0);
@@ -913,6 +831,14 @@
             document.getElementById('receiptContent').classList.remove('hidden');
             
             logDebug('Receipt displayed successfully');
+            
+            // Auto-print if specified in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('print') === 'true') {
+                setTimeout(() => {
+                    window.print();
+                }, 1000);
+            }
         }
         
         // Show error
@@ -967,10 +893,21 @@
        
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Receipt page loaded');
-            logDebug('Page initialized');
+            console.log('Receipt page loaded - A4 Optimized');
+            logDebug('Page initialized - A4 Format');
             
             loadTransaction();
+        });
+
+        // Add print event listener for better print experience
+        window.addEventListener('beforeprint', function() {
+            console.log('Preparing for print...');
+            document.body.classList.add('printing');
+        });
+
+        window.addEventListener('afterprint', function() {
+            console.log('Print completed');
+            document.body.classList.remove('printing');
         });
     </script>
 </body>  
