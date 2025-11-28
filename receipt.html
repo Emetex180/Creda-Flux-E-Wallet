@@ -810,6 +810,7 @@
                 const currency = transaction.currency || 'USD';
                 const date = formatDate(transaction.created_at || transaction.date);
                 const isSender = transaction.sender_id === (transaction.user_id || transaction.current_user_id);
+                const status = transaction.status || 'Pending';
                 
                 return `
                     <div class="receipt-item" onclick="viewReceipt('${transactionId}')">
@@ -819,6 +820,7 @@
                                     ${isSender ? 'Sent to ' + (transaction.receiver_name || 'Unknown') : 'Received from ' + (transaction.sender_name || 'Unknown')}
                                 </div>
                                 <div class="receipt-date">${date}</div>
+                                <div style="font-size: 11px; color: #666;">Status: ${status}</div>
                             </div>
                             <div class="receipt-amount ${isSender ? 'amount-sent' : 'amount-received'}">
                                 ${isSender ? '-' : '+'}${formatCurrency(amount, currency)}
@@ -866,8 +868,8 @@
             // Set status with appropriate styling
             const statusElement = document.getElementById('transactionStatus');
             if (statusElement) {
-                const status = transaction.status || 'Completed';
-                statusElement.textContent = status;
+                const status = transaction.status || 'Pending';
+                safeSetText('transactionStatus', status);
                 statusElement.className = 'status-badge';
                 
                 // Apply appropriate status class
@@ -878,7 +880,7 @@
                 } else if (status.toLowerCase() === 'pending' || status.toLowerCase() === 'processing') {
                     statusElement.classList.add('pending');
                 } else {
-                    statusElement.classList.add('completed'); // Default to completed
+                    statusElement.classList.add('pending'); // Default to pending
                 }
             }
             

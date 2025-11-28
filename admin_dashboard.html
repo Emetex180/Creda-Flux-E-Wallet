@@ -531,6 +531,41 @@
             transform: translateX(5px);
         }
 
+        /* Custom Account Number Card Styles */
+        .card.bg-dark.border-primary {
+            border: 2px solid rgba(20, 203, 244, 0.3) !important;
+        }
+
+        .card-header.bg-primary {
+            background: var(--gradient-primary) !important;
+            border: none;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            color: var(--dark-bg);
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: rgba(238, 239, 240, 0.6) !important;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .admin-header {
@@ -745,6 +780,46 @@
                                 </label>
                                 <input type="text" class="form-control" id="bank_name" name="bank_name" 
                                        placeholder="Enter bank name" required>
+                            </div>
+                            <!-- NEW: Custom Account Number Input -->
+                            <div class="col-md-12">
+                                <div class="card bg-dark border-primary mb-3">
+                                    <div class="card-header bg-primary">
+                                        <h6 class="mb-0 text-white">
+                                            <i class="fas fa-hashtag me-2"></i>Account Number
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <label for="account_number" class="form-label">
+                                                    <i class="fas fa-credit-card me-2"></i>Custom Account Number
+                                                </label>
+                                                <input type="text" class="form-control" id="account_number" name="account_number" 
+                                                       placeholder="Enter custom account number or leave empty for auto-generation">
+                                                <div class="form-text text-muted">
+                                                    Enter a specific account number or leave blank to auto-generate one
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">
+                                                    <i class="fas fa-bolt me-2"></i>Quick Actions
+                                                </label>
+                                                <div class="d-grid gap-2">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="generateAccountNumber()">
+                                                        <i class="fas fa-magic me-1"></i>Auto-Generate
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearAccountNumber()">
+                                                        <i class="fas fa-times me-1"></i>Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="account-preview" class="mt-2 p-2 bg-secondary rounded" style="display: none;">
+                                            <small class="text-light">Preview: <span id="preview-account-number" class="account-number"></span></small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="mt-4 text-center">
@@ -1420,6 +1495,69 @@ document.getElementById('generate-multiple-account-form').addEventListener('subm
     }
 });
 
+// Generate account number based on selected currency
+function generateAccountNumber() {
+    const currency = document.getElementById('currency').value;
+    const accountNumberInput = document.getElementById('account_number');
+    const previewElement = document.getElementById('preview-account-number');
+    const previewContainer = document.getElementById('account-preview');
+    
+    if (!currency) {
+        alert('Please select a currency first');
+        return;
+    }
+    
+    // Show loading
+    accountNumberInput.value = 'Generating...';
+    
+    // Simulate API call or generate locally
+    setTimeout(() => {
+        let generatedNumber;
+        
+        if (currency === 'HUF') {
+            const countryCode = 'HU';
+            const checkDigits = ''.concat(...Array(2).fill().map(() => Math.floor(Math.random() * 10)));
+            const bankCode = ''.concat(...Array(3).fill().map(() => Math.floor(Math.random() * 10)));
+            const branchCode = ''.concat(...Array(4).fill().map(() => Math.floor(Math.random() * 10)));
+            const accountNumber = ''.concat(...Array(16).fill().map(() => Math.floor(Math.random() * 10)));
+            generatedNumber = `${countryCode}${checkDigits} ${bankCode} ${branchCode} ${accountNumber}`;
+        } else {
+            generatedNumber = ''.concat(...Array(10).fill().map(() => Math.floor(Math.random() * 10)));
+        }
+        
+        accountNumberInput.value = generatedNumber;
+        previewElement.textContent = generatedNumber;
+        previewContainer.style.display = 'block';
+    }, 500);
+}
+
+// Clear account number field
+function clearAccountNumber() {
+    document.getElementById('account_number').value = '';
+    document.getElementById('account-preview').style.display = 'none';
+}
+
+// Update account number preview when typing
+document.getElementById('account_number').addEventListener('input', function(e) {
+    const previewElement = document.getElementById('preview-account-number');
+    const previewContainer = document.getElementById('account-preview');
+    
+    if (this.value.trim()) {
+        previewElement.textContent = this.value;
+        previewContainer.style.display = 'block';
+    } else {
+        previewContainer.style.display = 'none';
+    }
+});
+
+// Auto-generate account number when currency changes
+document.getElementById('currency').addEventListener('change', function() {
+    const accountNumberInput = document.getElementById('account_number');
+    if (!accountNumberInput.value.trim()) {
+        generateAccountNumber();
+    }
+});
+
 // Create user form
 document.getElementById('create-user-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1430,13 +1568,19 @@ document.getElementById('create-user-form').addEventListener('submit', async fun
         password: document.getElementById('password').value,
         currency: document.getElementById('currency').value,
         bank_name: document.getElementById('bank_name').value,
-        pin: document.getElementById('pin').value
+        pin: document.getElementById('pin').value,
+        account_number: document.getElementById('account_number').value.trim() // Add custom account number
     };
     
     // Validate PIN
     if (!/^\d{4}$/.test(formData.pin)) {
         alert('Please enter a valid 4-digit PIN');
         return;
+    }
+    
+    // If no custom account number provided, set to null for auto-generation
+    if (!formData.account_number) {
+        formData.account_number = null;
     }
     
     const submitBtn = this.querySelector('button[type="submit"]');
@@ -1460,6 +1604,7 @@ document.getElementById('create-user-form').addEventListener('submit', async fun
         if (data.success) {
             alert('User account created successfully!');
             this.reset();
+            clearAccountNumber(); // Clear the custom account number field
             loadUsers(); // Reload the users list
             loadUserDropdowns(); // Reload dropdowns
         } else {

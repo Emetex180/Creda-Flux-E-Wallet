@@ -540,6 +540,12 @@
             border: 1px solid rgba(20, 203, 244, 0.3);
         }
 
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
         .status-processing {
             background: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
@@ -1311,7 +1317,7 @@
                             
                             <div class="alert alert-info border-0" style="background: rgba(20, 203, 244, 0.1); border: 1px solid rgba(20, 203, 244, 0.2);">
                                 <i class="fas fa-info-circle me-2"></i>
-                                Transactions are processed instantly. Cross-currency transfers use live exchange rates.
+                                Transactions require admin approval and will show as "Pending" until verified.
                             </div>
                         </form>
                     </div>
@@ -1350,7 +1356,7 @@
                         </div>
                         <div class="alert alert-warning border-0" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3);">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            Please review the details carefully before proceeding.
+                            This transaction will be marked as "Pending" until approved by admin.
                         </div>
                     </div>
 
@@ -1608,6 +1614,7 @@
             const isSender = transaction.sender_id === userData.id;
             const isReceiver = transaction.receiver_id === userData.id;
             const transactionId = transaction.transaction_id || transaction.id;
+            const status = transaction.status || 'Pending';
             
             // Use formatted_amount if available, otherwise format on frontend
             const amount = transaction.formatted_amount || formatMoneyFrontend(transaction.amount);
@@ -1643,8 +1650,8 @@
                         ${amountDisplay}
                     </span>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="status-badge status-${(transaction.status || 'completed').toLowerCase()}">
-                            ${transaction.status || 'Completed'}
+                        <span class="status-badge status-${status.toLowerCase()}">
+                            ${status}
                         </span>
                         <button class="receipt-btn" onclick="viewReceipt('${transactionId}')" title="View Receipt">
                             <i class="fas fa-receipt"></i>
@@ -1942,7 +1949,7 @@
                 await loadUserData();
                 await loadTransactions();
                 
-                alert('Transfer completed successfully!');
+                alert('Transfer initiated successfully! Status: Pending (Waiting for admin approval)');
             } else {
                 // Show appropriate error message with support option
                 if (data.message.includes('not found') || data.message.includes('Invalid') || data.message.includes('recipient')) {
