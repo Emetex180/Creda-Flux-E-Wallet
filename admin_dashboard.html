@@ -443,6 +443,94 @@
             background: linear-gradient(135deg, #14cbf4, #1c77a2) !important;
         }
 
+        .bg-warning {
+            background: linear-gradient(135deg, #ffc107, #ff8c00) !important;
+        }
+
+        .bg-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057) !important;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(20, 203, 244, 0.1);
+            color: #14cbf4;
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            margin: 0.1rem;
+        }
+
+        .btn-complete {
+            background: rgba(20, 203, 244, 0.2);
+            color: var(--light-color);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+        }
+
+        .btn-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--light-color);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-complete:hover {
+            background: rgba(20, 203, 244, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-pending:hover {
+            background: rgba(255, 193, 7, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Account Generation Styles */
+        .account-numbers-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .account-numbers-list .account-number {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background: rgba(20, 203, 244, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(20, 203, 244, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .account-numbers-list .account-number:hover {
+            background: rgba(20, 203, 244, 0.1);
+            transform: translateX(5px);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .admin-header {
@@ -669,6 +757,73 @@
                 </div>
             </div>
 
+            <!-- Account Number Generation Card -->
+            <div class="create-user-card">
+                <div class="create-user-header">
+                    <h2 class="create-user-title">
+                        <i class="fas fa-hashtag"></i>
+                        Generate Account Numbers
+                    </h2>
+                </div>
+                <div class="create-user-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="fund-action-card">
+                                <h4 class="text-success mb-3">
+                                    <i class="fas fa-plus-circle me-2"></i>Generate Single Account
+                                </h4>
+                                <form id="generate-single-account-form">
+                                    <div class="mb-3">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-select" id="single-currency" required>
+                                            <option value="HUF">HUF - Hungarian Forint</option>
+                                            <option value="USD">USD - US Dollar</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-hashtag me-2"></i>Generate Account Number
+                                    </button>
+                                </form>
+                                <div id="single-account-result" class="mt-3 p-3 bg-dark rounded" style="display: none;">
+                                    <h5 class="text-success">Generated Account Number:</h5>
+                                    <p id="single-account-number" class="account-number fs-5 mb-0"></p>
+                                    <small class="text-muted">Click to copy</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fund-action-card">
+                                <h4 class="text-warning mb-3">
+                                    <i class="fas fa-bulk me-2"></i>Generate Multiple Accounts
+                                </h4>
+                                <form id="generate-multiple-account-form">
+                                    <div class="mb-3">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-select" id="multiple-currency" required>
+                                            <option value="HUF">HUF - Hungarian Forint</option>
+                                            <option value="USD">USD - US Dollar</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Number of Accounts</label>
+                                        <input type="number" class="form-control" id="account-count" 
+                                               min="1" max="20" value="5" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        <i class="fas fa-hashtag me-2"></i>Generate Multiple Accounts
+                                    </button>
+                                </form>
+                                <div id="multiple-account-result" class="mt-3 p-3 bg-dark rounded" style="display: none;">
+                                    <h5 class="text-warning">Generated Account Numbers:</h5>
+                                    <div id="multiple-account-numbers" class="account-numbers-list"></div>
+                                    <small class="text-muted">Click any number to copy</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Fund Management Card -->
             <div class="create-user-card">
                 <div class="create-user-header">
@@ -735,6 +890,37 @@
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Management Card -->
+            <div class="users-table-card">
+                <div class="users-table-header">
+                    <h2 class="users-table-title">
+                        <i class="fas fa-exchange-alt"></i>
+                        Transaction Management
+                    </h2>
+                </div>
+                <div class="users-table-body">
+                    <div class="table-responsive">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Type</th>
+                                    <th>Sender</th>
+                                    <th>Receiver</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-transactions-table-body">
+                                <!-- All transactions will be loaded here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -828,6 +1014,7 @@ async function checkAuthentication() {
             loadUsers();
             loadUserDropdowns();
             loadAdminTransactions();
+            loadAllTransactions(); // Load all transactions for management
         } else {
             // Redirect to login if not authenticated or not admin
             console.log('Not authenticated as admin, redirecting...');
@@ -1008,6 +1195,231 @@ function displayTransactions(transactions) {
     });
 }
 
+// Load all transactions for management
+async function loadAllTransactions() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/all-transactions`, {
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayAllTransactions(data.transactions);
+        }
+    } catch (error) {
+        console.error('Error loading all transactions:', error);
+    }
+}
+
+// Display all transactions with status management
+function displayAllTransactions(transactions) {
+    const tbody = document.getElementById('all-transactions-table-body');
+    tbody.innerHTML = '';
+    
+    if (transactions.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-4 text-muted">
+                    <i class="fas fa-exchange-alt fa-2x mb-3"></i><br>
+                    No transactions found
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    transactions.forEach(transaction => {
+        const row = document.createElement('tr');
+        const statusClass = `status-${transaction.status.toLowerCase()}`;
+        const isPending = transaction.status === 'Pending';
+        const isCompleted = transaction.status === 'Completed';
+        
+        row.innerHTML = `
+            <td><small>${transaction.transaction_id}</small></td>
+            <td>${transaction.type}</td>
+            <td>${transaction.sender_name}</td>
+            <td>${transaction.receiver_name}</td>
+            <td><strong>${transaction.amount} ${transaction.currency}</strong></td>
+            <td><small>${new Date(transaction.created_at).toLocaleString()}</small></td>
+            <td>
+                <span class="status-badge ${statusClass}">
+                    ${transaction.status}
+                </span>
+            </td>
+            <td>
+                ${isPending ? `
+                    <button class="action-btn btn-complete" onclick="updateTransactionStatus(${transaction.id}, 'Completed')">
+                        <i class="fas fa-check"></i>Complete
+                    </button>
+                ` : ''}
+                ${isCompleted ? `
+                    <button class="action-btn btn-pending" onclick="updateTransactionStatus(${transaction.id}, 'Pending')">
+                        <i class="fas fa-clock"></i>Set Pending
+                    </button>
+                ` : ''}
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Update transaction status
+async function updateTransactionStatus(transactionId, newStatus) {
+    if (!confirm(`Are you sure you want to set this transaction to "${newStatus}"?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/update-transaction-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                transaction_id: transactionId,
+                status: newStatus
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert(`Transaction status updated to ${newStatus}`);
+            loadAllTransactions(); // Reload the transactions table
+            loadAdminTransactions(); // Reload admin transactions
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error updating transaction status: ' + error);
+    }
+}
+
+// Generate single account number
+document.getElementById('generate-single-account-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const currency = document.getElementById('single-currency').value;
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/generate-account`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                currency: currency,
+                count: 1
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const resultDiv = document.getElementById('single-account-result');
+            const accountNumberSpan = document.getElementById('single-account-number');
+            
+            accountNumberSpan.textContent = data.account_numbers[0];
+            resultDiv.style.display = 'block';
+            
+            // Copy to clipboard functionality
+            accountNumberSpan.onclick = function() {
+                navigator.clipboard.writeText(data.account_numbers[0]).then(() => {
+                    const originalText = accountNumberSpan.textContent;
+                    accountNumberSpan.textContent = '✓ Copied!';
+                    setTimeout(() => {
+                        accountNumberSpan.textContent = originalText;
+                    }, 2000);
+                });
+            };
+            
+            accountNumberSpan.style.cursor = 'pointer';
+            accountNumberSpan.title = 'Click to copy';
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error generating account number: ' + error);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Generate multiple account numbers
+document.getElementById('generate-multiple-account-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const currency = document.getElementById('multiple-currency').value;
+    const count = parseInt(document.getElementById('account-count').value);
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating...';
+    submitBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/generate-account`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                currency: currency,
+                count: count
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            const resultDiv = document.getElementById('multiple-account-result');
+            const accountsDiv = document.getElementById('multiple-account-numbers');
+            
+            accountsDiv.innerHTML = '';
+            data.account_numbers.forEach(accountNumber => {
+                const accountElement = document.createElement('div');
+                accountElement.className = 'account-number mb-2';
+                accountElement.textContent = accountNumber;
+                accountElement.style.cursor = 'pointer';
+                accountElement.title = 'Click to copy';
+                
+                accountElement.onclick = function() {
+                    navigator.clipboard.writeText(accountNumber).then(() => {
+                        const originalText = accountElement.textContent;
+                        accountElement.textContent = '✓ Copied!';
+                        setTimeout(() => {
+                            accountElement.textContent = originalText;
+                        }, 2000);
+                    });
+                };
+                
+                accountsDiv.appendChild(accountElement);
+            });
+            
+            resultDiv.style.display = 'block';
+        } else {
+            alert('Error: ' + data.message);
+        }
+    } catch (error) {
+        alert('Error generating account numbers: ' + error);
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
 // Create user form
 document.getElementById('create-user-form').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1165,6 +1577,7 @@ document.getElementById('deposit-form').addEventListener('submit', async functio
             loadUsers(); // Reload users to update balances
             loadUserDropdowns(); // Reload dropdowns with updated balances
             loadAdminTransactions(); // Reload transaction history
+            loadAllTransactions(); // Reload all transactions
         } else {
             alert('Error: ' + data.message);
         }
@@ -1217,6 +1630,7 @@ document.getElementById('withdraw-form').addEventListener('submit', async functi
             loadUsers(); // Reload users to update balances
             loadUserDropdowns(); // Reload dropdowns with updated balances
             loadAdminTransactions(); // Reload transaction history
+            loadAllTransactions(); // Reload all transactions
         } else {
             alert('Error: ' + data.message);
         }
