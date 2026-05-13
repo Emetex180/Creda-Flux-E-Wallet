@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Creda Flux E-Wallet E-wallet</title>
+    <title>Login - Creda Flux E-Wallet</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
@@ -268,10 +268,9 @@
             font-weight: 500;
             background: rgba(12, 44, 71, 0.5);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white !important; /* Ensures white text */
+            color: white !important;
         }
 
-        /* White placeholder text */
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.7) !important;
         }
@@ -282,14 +281,24 @@
             box-shadow: 0 0 0 4px rgba(20, 203, 244, 0.1);
             transform: translateY(-2px);
             background: rgba(12, 44, 71, 0.7);
-            color: white !important; /* Ensures white text on focus */
+            color: white !important;
         }
 
         .form-control:hover {
             border-color: rgba(20, 203, 244, 0.5);
             transform: translateY(-1px);
-            color: white !important; /* Ensures white text on hover */
-
+            color: white !important;
+        }
+        
+        .form-control.error {
+            border-color: #dc3545 !important;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
         
         .form-control:focus + .input-focus-border {
@@ -386,6 +395,12 @@
             transform: translateY(-1px);
         }
         
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .btn-content {
             display: flex;
             align-items: center;
@@ -468,7 +483,110 @@
             background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
         }
         
-        /* Mobile Optimizations */
+        /* Flash Messages */
+        .flash-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Test credentials panel */
+        .test-credentials {
+            background: rgba(20, 203, 244, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+        }
+        
+        .test-credentials h6 {
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .test-credential {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+        }
+        
+        .test-credential:last-child {
+            border-bottom: none;
+        }
+        
+        .credential-type {
+            color: rgba(238, 239, 240, 0.8);
+            font-size: 0.8rem;
+        }
+        
+        .credential-value {
+            color: var(--light-color);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .copy-btn {
+            background: rgba(20, 203, 244, 0.2);
+            border: none;
+            color: var(--light-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(20, 203, 244, 0.3);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(20, 203, 244, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            margin: 0 auto 1rem;
+            overflow: hidden;
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
         @media (max-width: 768px) {
             .login-container {
                 padding: 0.5rem;
@@ -540,274 +658,26 @@
                 padding: 1rem 2.25rem 1rem 1rem;
             }
         }
-        
-        /* High-resolution screens */
-        @media (min-width: 1400px) {
-            .login-wrapper {
-                max-width: 480px;
-            }
-            
-            .login-card {
-                padding: 4rem 3rem;
-            }
-        }
-        
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        
-        .logo {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-inner {
-            width: 100%;
-            height: 100%;
-            background: var(--primary-color);
-            position: relative;
-            text-indent: -9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* Pulse animation effect */
-        .logo-inner::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border: 2px solid var(--accent-color);
-            border-radius: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.05);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Flash Messages */
-        .flash-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .alert {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Test credentials panel */
-        .test-credentials {
-            background: rgba(20, 203, 244, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
-            border: 1px solid rgba(20, 203, 244, 0.2);
-        }
-
-        .test-credentials h6 {
-            color: var(--light-color);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .test-credential {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
-        }
-
-        .test-credential:last-child {
-            border-bottom: none;
-        }
-
-        .credential-type {
-            color: rgba(238, 239, 240, 0.8);
-            font-size: 0.8rem;
-        }
-
-        .credential-value {
-            color: var(--light-color);
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .copy-btn {
-            background: rgba(20, 203, 244, 0.2);
-            border: none;
-            color: var(--light-color);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background: rgba(20, 203, 244, 0.3);
-        }
-    .goog-te-gadget-simple {
-        border: 1px solid #358a9f !important;
-        border-radius: 6px !important;
-        padding: 8px 12px !important;
-        background: white !important;
-        font-family: 'Segoe UI', sans-serif !important;
-        font-size: 14px !important;
-        min-width: 140px !important;
-    }
-    .goog-te-gadget-simple:hover {
-        background: #f8f9fa !important;
-        border-color: #2f7a8f !important;
-    }
-    .goog-te-menu-value span {
-        color: #358a9f !important;
-        font-weight: 500 !important;
-    }
-    .goog-te-menu-value span:hover {
-        color: #2f2f30 !important;
-    }
-    .goog-te-banner-frame { 
-        display: none !important; 
-    }
-    body { 
-        top: 0px !important; 
-    }
-
-    /* Make dropdown cleaner */
-    .goog-te-menu-frame {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        border-radius: 8px !important;
-        border: 1px solid #ddd !important;
-        margin-top: 5px !important;
-    }
-
-    /* Style the dropdown options */
-    .goog-te-menu2 {
-        border-radius: 6px !important;
-        overflow: hidden !important;
-    }
-
-    .goog-te-menu2-item {
-        padding: 8px 12px !important;
-        border-bottom: 1px solid #f0f0f0 !important;
-    }
-
-    .goog-te-menu2-item:hover {
-        background: #358a9f !important;
-        color: white !important;
-    }
-
-    .goog-te-menu2-item div {
-        color: #2f2f30 !important;
-        font-family: 'Segoe UI', sans-serif !important;
-    }
-
-    .goog-te-menu2-item:hover div {
-        color: white !important;
-    }
-    .logo {
-    width: 80px;
-    height: 80px;
-    background: rgba(20, 203, 244, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(20, 203, 244, 0.3);
-    margin: 0 auto 1rem;
-    overflow: hidden;
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
     </style>
-    <!-- Your website content here -->
     
-    <!-- Google Translate Widget -->
-    <div id="google_translate_element" style="position: fixed; top: 100px; right: 20px; z-index: 1000; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px;"></div>
-
-    <!-- Google Translate Script -->
-    <script type="text/javascript">
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-        {
-            pageLanguage: 'en'
-        },
-        'google_translate_element'
-        );
-    }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- Flash Messages Container -->
     <div class="flash-container" id="flashContainer"></div>
 
     <div class="login-container">
-        <!-- Advanced Animated Background -->
-        <div class="animated-bg" id="animatedBg">
-            <!-- Floating cards will be generated by JavaScript -->
-        </div>
+        <div class="animated-bg" id="animatedBg"></div>
         
         <div class="login-wrapper">
             <div class="login-card">
-                <!-- Bank Header -->
                 <div class="bank-header">
                     <div class="logo-container">
-                    <div class="logo">
-                        <img src="./image/logo.jpeg" alt="TradeWavee Logo">
-                    </div>
+                        <div class="logo">
+                            <img src="./image/logo.jpeg" alt="CredaFlux Logo">
+                        </div>
                     </div>
                     <h1 class="bank-name">Creda Flux E-Wallet</h1>
                     <p class="bank-tagline">Secure E-Wallet Solution</p>
                 </div>
 
-                <!-- Login Form -->
                 <form class="login-form" id="loginForm">
                     <div class="form-group">
                         <label for="username" class="form-label">
@@ -824,11 +694,11 @@
                     <div class="form-group">
                         <label for="password" class="form-label">
                             <i class="fas fa-lock"></i>
-                            Passcode
+                            Password
                         </label>
                         <div class="input-container">
                             <input type="password" class="form-control" id="password" name="password" 
-                                   placeholder="Enter your passcode" required autocomplete="current-password">
+                                   placeholder="Enter your password" required autocomplete="current-password">
                             <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -842,11 +712,10 @@
                             <span>Access E-Wallet</span>
                         </div>
                     </button>
-                    <!-- Register Button -->
+                    
                     <button type="button" class="btn-login mt-3" id="registerBtn"
                         onclick="window.location.href='register.html'"
                         style="background: linear-gradient(135deg, #0c2c47, #14cbf4);">
-                        
                         <div class="btn-content">
                             <i class="fas fa-user-plus"></i>
                             <span>Create Account</span>
@@ -854,8 +723,8 @@
                     </button>
                 </form>
 
-                <!-- Test Credentials (Remove in production) -->
-                <!-- <div class="test-credentials">
+                <!-- Test Credentials (Uncomment for testing) -->
+                <div class="test-credentials">
                     <h6><i class="fas fa-vial me-2"></i>Test Credentials</h6>
                     <div class="test-credential">
                         <span class="credential-type">👑 Admin:</span>
@@ -865,15 +734,14 @@
                         </button>
                     </div>
                     <div class="test-credential">
-                        <span class="credential-type">👤 User:</span>
-                        <span class="credential-value">balázs_kovács / password123</span>
-                        <button class="copy-btn" onclick="fillCredentials('balázs_kovács', 'password123')">
+                        <span class="credential-type">👤 Regular User:</span>
+                        <span class="credential-value">balazs_kovacs / password123</span>
+                        <button class="copy-btn" onclick="fillCredentials('balazs_kovacs', 'password123')">
                             <i class="fas fa-copy"></i> Fill
                         </button>
                     </div>
-                </div> -->
+                </div>
 
-                <!-- Security Footer -->
                 <div class="login-footer">
                     <div class="security-features">
                         <div class="security-badge">
@@ -894,8 +762,11 @@
     </div>
 
     <script>
-        // FIXED: Use the correct PythonAnywhere URL
+        // API Configuration
         const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
+        
+        // Store user data
+        let currentUser = null;
 
         // Generate floating particles
         function createParticles() {
@@ -906,7 +777,6 @@
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
-                // Random properties
                 const size = Math.random() * 4 + 1;
                 const left = Math.random() * 100;
                 const delay = Math.random() * 6;
@@ -927,32 +797,22 @@
             const passwordToggle = document.getElementById('passwordToggle');
             const passwordInput = document.getElementById('password');
             
-            passwordToggle.addEventListener('click', function() {
-                const isPassword = passwordInput.type === 'password';
-                
-                // Toggle password visibility
-                passwordInput.type = isPassword ? 'text' : 'password';
-                
-                // Update icon and state
-                if (isPassword) {
-                    this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                    this.classList.add('active');
-                } else {
-                    this.innerHTML = '<i class="fas fa-eye"></i>';
-                    this.classList.remove('active');
-                }
-                
-                // Focus back on password input for better UX
-                passwordInput.focus();
-            });
-            
-            // Add keyboard support
-            passwordToggle.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
+            if (passwordToggle) {
+                passwordToggle.addEventListener('click', function() {
+                    const isPassword = passwordInput.type === 'password';
+                    passwordInput.type = isPassword ? 'text' : 'password';
+                    
+                    if (isPassword) {
+                        this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                        this.classList.add('active');
+                    } else {
+                        this.innerHTML = '<i class="fas fa-eye"></i>';
+                        this.classList.remove('active');
+                    }
+                    
+                    passwordInput.focus();
+                });
+            }
         }
 
         // Show flash message
@@ -965,8 +825,8 @@
             alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
             alertDiv.innerHTML = `
                 <i class="fas ${iconClass} me-2"></i>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong>${type === 'error' ? 'Error!' : 'Success!'}</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
             
             flashContainer.appendChild(alertDiv);
@@ -984,52 +844,135 @@
             document.getElementById('username').value = username;
             document.getElementById('password').value = password;
             showFlashMessage(`Credentials filled for: ${username}`, 'success');
+            
+            // Optional: Auto-submit after filling
+            // setTimeout(() => {
+            //     document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            // }, 500);
         }
 
-        // Enhanced login form submission with detailed error handling
+        // Test backend connection
+        async function testBackendConnection() {
+            try {
+                console.log('🧪 Testing backend connection...');
+                const response = await fetch(`${API_BASE_URL}/test`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                console.log('✅ Backend connection test:', data);
+                showFlashMessage('Connected to server successfully!', 'success');
+                return true;
+            } catch (error) {
+                console.error('❌ Backend connection test failed:', error);
+                showFlashMessage('Cannot connect to server. Please check your internet connection.', 'error');
+                return false;
+            }
+        }
+
+        // Check if user is already logged in
+        async function checkAuth() {
+            try {
+                console.log('🔍 Checking authentication status...');
+                const response = await fetch(`${API_BASE_URL}/check_auth`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                console.log('📡 Auth check status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('📦 Auth check data:', data);
+                    
+                    if (data.success && data.user) {
+                        console.log('✅ User already authenticated:', data.user.username);
+                        currentUser = data.user;
+                        
+                        // Store user data in localStorage
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        
+                        showFlashMessage(`Welcome back, ${data.user.name}! Redirecting...`, 'success');
+                        
+                        // Redirect after delay
+                        setTimeout(() => {
+                            if (data.user.is_admin) {
+                                window.location.href = 'admin_dashboard.html';
+                            } else {
+                                window.location.href = 'user_dashboard.html';
+                            }
+                        }, 1500);
+                    }
+                }
+            } catch (error) {
+                console.log('🔐 Not authenticated or auth check failed:', error.message);
+            }
+        }
+
+        // Login form submission
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            
+            // Remove error styling
+            usernameInput.classList.remove('error');
+            passwordInput.classList.remove('error');
             
             // Basic validation
-            if (!username || !password) {
-                showFlashMessage('Please enter both username and password', 'error');
+            if (!username) {
+                showFlashMessage('Please enter your username', 'error');
+                usernameInput.classList.add('error');
+                usernameInput.focus();
+                return;
+            }
+            
+            if (!password) {
+                showFlashMessage('Please enter your password', 'error');
+                passwordInput.classList.add('error');
+                passwordInput.focus();
                 return;
             }
             
             // Add loading state
+            loginBtn.disabled = true;
             loginBtn.classList.add('btn-loading');
             
             try {
-                console.log('🔍 Attempting login with:', { username });
+                console.log('🔍 Attempting login with username:', username);
                 console.log('🌐 Making request to:', `${API_BASE_URL}/login`);
                 
                 const response = await fetch(`${API_BASE_URL}/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                        'Accept': 'application/json'
                     },
-                    credentials: 'include', // CRITICAL for cross-domain sessions
+                    credentials: 'include',
                     body: JSON.stringify({ username, password })
                 });
                 
                 console.log('📡 Response status:', response.status);
-                console.log('🍪 Response cookies:', response.headers.get('set-cookie'));
                 
                 const data = await response.json();
                 console.log('📦 Response data:', data);
                 
-                if (data.success) {
-                    showFlashMessage('Login successful! Redirecting...', 'success');
+                if (data.success && data.user) {
+                    showFlashMessage(`Welcome back, ${data.user.name}! Redirecting...`, 'success');
                     loginBtn.classList.add('btn-success');
                     
-                    // Store user info briefly for debugging
+                    // Store user data
+                    currentUser = data.user;
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     sessionStorage.setItem('lastLogin', new Date().toISOString());
-                    sessionStorage.setItem('userType', data.user.is_admin ? 'admin' : 'user');
                     
                     // Redirect based on user type
                     setTimeout(() => {
@@ -1041,7 +984,13 @@
                     }, 1500);
                 } else {
                     showFlashMessage(data.message || 'Login failed. Please check your credentials.', 'error');
+                    loginBtn.disabled = false;
                     loginBtn.classList.remove('btn-loading');
+                    
+                    // Highlight the password field on failure
+                    passwordInput.classList.add('error');
+                    passwordInput.value = ''; // Clear password for security
+                    passwordInput.focus();
                 }
             } catch (error) {
                 console.error('❌ Login error details:', error);
@@ -1051,57 +1000,24 @@
                     showFlashMessage('Cannot connect to server. Please check your internet connection and try again.', 'error');
                 } else if (error.message.includes('Network request failed')) {
                     showFlashMessage('Network error. Please check your connection and try again.', 'error');
+                } else if (error.message.includes('JSON')) {
+                    showFlashMessage('Server returned an invalid response. Please try again later.', 'error');
                 } else {
                     showFlashMessage('Login failed: ' + error.message, 'error');
                 }
                 
+                loginBtn.disabled = false;
                 loginBtn.classList.remove('btn-loading');
             }
         });
 
-        // Check if user is already logged in
-        async function checkAuth() {
-            try {
-                console.log('🔍 Checking authentication status...');
-                const response = await fetch(`${API_BASE_URL}/check_auth`, {
-                    credentials: 'include' // CRITICAL for cross-domain sessions
-                });
-                
-                console.log('📡 Auth check status:', response.status);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('📦 Auth check data:', data);
-                    
-                    if (data.success) {
-                        console.log('✅ User already authenticated, redirecting...');
-                        // Redirect to appropriate dashboard
-                        if (data.user.is_admin) {
-                            window.location.href = 'admin_dashboard.html';
-                        } else {
-                            window.location.href = 'user_dashboard.html';
-                        }
-                    }
-                }
-            } catch (error) {
-                console.log('🔐 Not authenticated or auth check failed:', error.message);
-                // This is normal for first-time visitors
+        // Add enter key support for login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
             }
-        }
-
-        // Test backend connection
-        async function testBackendConnection() {
-            try {
-                console.log('🧪 Testing backend connection...');
-                const response = await fetch(`${API_BASE_URL}/test`);
-                const data = await response.json();
-                console.log('✅ Backend connection test:', data);
-                return true;
-            } catch (error) {
-                console.error('❌ Backend connection test failed:', error);
-                return false;
-            }
-        }
+        });
 
         // Initialize on load
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1120,13 +1036,17 @@
                 bg.appendChild(card);
             }
             
-            // Test backend connection on load
-            const isBackendConnected = await testBackendConnection();
-            if (!isBackendConnected) {
-                showFlashMessage('Warning: Cannot connect to server. Some features may not work.', 'error');
+            // Check for newly registered account
+            const newAccountNumber = sessionStorage.getItem('newAccountNumber');
+            if (newAccountNumber) {
+                showFlashMessage(`Account created successfully! Account Number: ${newAccountNumber}. Please login.`, 'success');
+                sessionStorage.removeItem('newAccountNumber');
             }
             
-            // Check authentication status
+            // Test backend connection
+            await testBackendConnection();
+            
+            // Check if user is already logged in
             await checkAuth();
         });
 
@@ -1140,10 +1060,9 @@
                 createParticles();
             }, 250);
         });
-
-        // Debug information
-        console.log('💡 Test credentials available in the form');
-        console.log('🔐 Remember: credentials: "include" is set for cross-domain sessions');
     </script>
+    
+    <!-- Bootstrap JS for alerts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
