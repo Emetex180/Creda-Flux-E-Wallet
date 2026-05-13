@@ -1,201 +1,238 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS
-from werkzeug.utils import secure_filename
-import os
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-app = Flask(__name__)
-CORS(app)
+    <title>CredaFlux Register</title>
 
-# =========================
-# CONFIG
-# =========================
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-UPLOAD_FOLDER = "uploads"
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+</head>
+<body>
 
-ALLOWED_EXTENSIONS = {
-    "png",
-    "jpg",
-    "jpeg",
-    "svg"
-}
+<div class="container">
 
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
+    <div class="left-panel">
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        <div>
+            <h1>Secure Wealth Infrastructure</h1>
 
-# =========================
-# HELPERS
-# =========================
+            <p>
+                Secure, fast and reliable transfers bill payment and top up anytime
+            </p>
+        </div>
 
-def allowed_file(filename):
+    </div>
 
-    return (
-        "." in filename and
-        filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-    )
+    <div class="right-panel">
 
-# =========================
-# PAGES
-# =========================
+        <h2>Create CredaFlux Account</h2>
 
-@app.route("/")
-def home():
+        <p class="subtitle">
+            Complete your secure onboarding process
+        </p>
 
-    return render_template("register.html")
+        <form id="registerForm" enctype="multipart/form-data">
 
-@app.route("/login")
-def login_page():
+            <div class="form-group">
+                <label>Full Legal Name</label>
 
-    return render_template("login.html")
+                <input
+                    type="text"
+                    name="fullLegalName"
+                    placeholder="e.g., Alexander Sterling"
+                    required
+                >
+            </div>
 
-# =========================
-# REGISTER API
-# =========================
+            <div class="grid">
 
-@app.route("/api/register", methods=["POST"])
-def register():
+                <div class="form-group">
+                    <label>Email Address</label>
 
-    try:
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="alexander@enterprise.com"
+                        required
+                    >
+                </div>
 
-        # FORM DATA
-        full_legal_name = request.form.get("fullLegalName")
-        email = request.form.get("email")
-        mobile_number = request.form.get("mobileNumber")
-        legal_gender = request.form.get("legalGender")
-        date_of_birth = request.form.get("dateOfBirth")
-        primary_occupation = request.form.get("primaryOccupation")
-        place_of_birth = request.form.get("placeOfBirth")
-        current_residence = request.form.get("currentResidence")
-        portfolio_type = request.form.get("portfolioType")
-        base_currency = request.form.get("baseCurrency")
-        master_password = request.form.get("masterPassword")
-        app_pin = request.form.get("appPin")
+                <div class="form-group">
+                    <label>Mobile Number</label>
 
-        # FILE
-        uploaded_file = request.files.get("governmentId")
+                    <input
+                        type="text"
+                        name="mobileNumber"
+                        placeholder="+1 212 555 0198"
+                    >
+                </div>
 
-        filename = None
+            </div>
 
-        # VALIDATION
-        if not full_legal_name or not email:
+            <div class="grid">
 
-            return jsonify({
-                "success": False,
-                "message": "Required fields missing"
-            }), 400
+                <div class="form-group">
+                    <label>Legal Gender</label>
 
-        # FILE VALIDATION
-        if uploaded_file and uploaded_file.filename != "":
+                    <select name="legalGender">
 
-            if not allowed_file(uploaded_file.filename):
+                        <option>Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
 
-                return jsonify({
-                    "success": False,
-                    "message": "Invalid file type"
-                }), 400
+                    </select>
+                </div>
 
-            # CHECK FILE SIZE
-            uploaded_file.seek(0, os.SEEK_END)
-            file_size = uploaded_file.tell()
-            uploaded_file.seek(0)
+                <div class="form-group">
+                    <label>Date of Birth</label>
 
-            if file_size > MAX_FILE_SIZE:
+                    <input
+                        type="date"
+                        name="dateOfBirth"
+                    >
+                </div>
 
-                return jsonify({
-                    "success": False,
-                    "message": "File exceeds 5MB limit"
-                }), 400
+            </div>
 
-            # SAVE FILE
-            filename = secure_filename(uploaded_file.filename)
+            <div class="grid">
 
-            save_path = os.path.join(
-                app.config["UPLOAD_FOLDER"],
-                filename
-            )
+                <div class="form-group">
+                    <label>Primary Occupation</label>
 
-            uploaded_file.save(save_path)
+                    <input
+                        type="text"
+                        name="primaryOccupation"
+                        placeholder="e.g., Managing Director"
+                    >
+                </div>
 
-        # PRINT DATA
-        print({
-            "full_legal_name": full_legal_name,
-            "email": email,
-            "mobile_number": mobile_number,
-            "legal_gender": legal_gender,
-            "date_of_birth": date_of_birth,
-            "primary_occupation": primary_occupation,
-            "place_of_birth": place_of_birth,
-            "current_residence": current_residence,
-            "portfolio_type": portfolio_type,
-            "base_currency": base_currency,
-            "master_password": master_password,
-            "app_pin": app_pin,
-            "uploaded_file": filename
-        })
+                <div class="form-group">
+                    <label>Place of Birth</label>
 
-        return jsonify({
-            "success": True,
-            "message": "Vault Initialized Successfully"
-        })
+                    <input
+                        type="text"
+                        name="placeOfBirth"
+                        placeholder="e.g., Geneva, Switzerland"
+                    >
+                </div>
 
-    except Exception as e:
+            </div>
 
-        print(e)
+            <div class="form-group">
+                <label>Current Residence</label>
 
-        return jsonify({
-            "success": False,
-            "message": "Server Error"
-        }), 500
+                <input
+                    type="text"
+                    name="currentResidence"
+                    placeholder="e.g., London, UK"
+                >
+            </div>
 
-# =========================
-# LOGIN API
-# =========================
+            <div class="grid">
 
-@app.route("/api/login", methods=["POST"])
-def login():
+                <div class="form-group">
+                    <label>Portfolio Type</label>
 
-    try:
+                    <select name="portfolioType">
 
-        data = request.get_json()
+                        <option>Select Account Type</option>
+                        <option>Personal</option>
+                        <option>Business</option>
+                        <option>Private Wealth</option>
 
-        email = data.get("email")
-        password = data.get("password")
+                    </select>
+                </div>
 
-        # DEMO LOGIN
-        if (
-            email == "admin@credaflux.online"
-            and password == "123456"
-        ):
+                <div class="form-group">
+                    <label>Base Currency</label>
 
-            return jsonify({
-                "success": True,
-                "message": "Login Successful"
-            })
+                    <select name="baseCurrency">
 
-        return jsonify({
-            "success": False,
-            "message": "Invalid Credentials"
-        }), 401
+                        <option>US Dollar (USD)</option>
+                        <option>HUF (HUF)</option>
 
-    except Exception as e:
+                    </select>
+                </div>
 
-        print(e)
+            </div>
 
-        return jsonify({
-            "success": False,
-            "message": "Login Failed"
-        }), 500
+            <div class="grid">
 
-# =========================
-# START SERVER
-# =========================
+                <div class="form-group">
+                    <label>Master Password</label>
 
-if __name__ == "__main__":
+                    <input
+                        type="password"
+                        name="masterPassword"
+                        placeholder="••••••••"
+                    >
+                </div>
 
-    app.run(
-        debug=True,
-        host="0.0.0.0",
-        port=5000
-    )
+                <div class="form-group">
+                    <label>4-Digit App PIN</label>
+
+                    <input
+                        type="password"
+                        name="appPin"
+                        maxlength="4"
+                        placeholder="••••"
+                    >
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Confirm App PIN</label>
+
+                <input
+                    type="password"
+                    name="confirmPin"
+                    maxlength="4"
+                    placeholder="••••"
+                >
+            </div>
+
+            <div class="form-group">
+
+                <label>Government ID / Profile Photo</label>
+
+                <div class="upload-box">
+
+                    <input
+                        type="file"
+                        name="governmentId"
+                        accept=".jpg,.jpeg,.png,.svg"
+                    >
+
+                    <p>Click to upload securely</p>
+
+                    <span>
+                        SVG, PNG, JPG (Max. 5MB)
+                    </span>
+
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Initialize Vault
+            </button>
+
+            <div class="bottom-text">
+                Already have an account?
+                <a href="https://credaflux.online/login.html">Sign In</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
