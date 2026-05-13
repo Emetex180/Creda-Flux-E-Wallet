@@ -247,18 +247,18 @@ button:hover{
     <div class="grid">
         <div class="form-group">
             <label>Password</label>
-            <input type="password" name="masterPassword">
+            <input type="password" name="masterPassword" required>
         </div>
 
         <div class="form-group">
             <label>PIN</label>
-            <input type="password" name="appPin" maxlength="4">
+            <input type="password" name="appPin" maxlength="4" required>
         </div>
     </div>
 
     <div class="form-group">
         <label>Confirm PIN</label>
-        <input type="password" name="confirmPin" maxlength="4">
+        <input type="password" name="confirmPin" maxlength="4" required>
     </div>
 
     <div class="form-group">
@@ -270,10 +270,10 @@ button:hover{
         </div>
     </div>
 
-    <button type="submit">Initialize Vault</button>
+    <button type="submit" id="submitBtn">Initialize Vault</button>
 
     <div class="bottom-text">
-        Already have an account? <a href="/login.html">Sign In</a>
+        Already have an account? <a href="login.html">Sign In</a>
     </div>
 
 </form>
@@ -282,12 +282,14 @@ button:hover{
 </div>
 
 <script>
+const API_BASE_URL = "https://scbanking.pythonanywhere.com/api";
+
 const registerForm = document.getElementById("registerForm");
+const btn = document.getElementById("submitBtn");
 
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const btn = registerForm.querySelector("button");
     btn.innerText = "Creating...";
     btn.disabled = true;
 
@@ -296,41 +298,50 @@ registerForm.addEventListener("submit", async (e) => {
     const pin = formData.get("appPin");
     const confirmPin = formData.get("confirmPin");
 
+    // VALIDATION
     if (pin !== confirmPin) {
         alert("PIN does not match");
-        btn.innerText = "Initialize Vault";
-        btn.disabled = false;
+        resetBtn();
         return;
     }
 
     if (pin.length !== 4) {
         alert("PIN must be 4 digits");
-        btn.innerText = "Initialize Vault";
-        btn.disabled = false;
+        resetBtn();
         return;
     }
 
     try {
-        const res = await fetch("/api/register", {
+        const res = await fetch(`${API_BASE_URL}/register`, {
             method: "POST",
-            body: formData
+            body: formData,
+            credentials: "include"
         });
 
         const data = await res.json();
 
         if (data.success) {
-            alert("Account created successfully");
-            registerForm.reset();
+            alert("Account created successfully!");
+
+            // redirect to login
+            window.location.href = "login.html";
+
         } else {
-            alert(data.message || "Failed");
+            alert(data.message || "Registration failed");
         }
+
     } catch (err) {
-        alert("Server error");
+        console.log(err);
+        alert("Server error. Try again later.");
     }
 
+    resetBtn();
+});
+
+function resetBtn() {
     btn.innerText = "Initialize Vault";
     btn.disabled = false;
-});
+}
 </script>
 
 </body>
