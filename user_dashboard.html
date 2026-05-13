@@ -114,6 +114,104 @@
             transform: translateY(-2px);
         }
 
+        /* Notification Banner */
+        .notification-banner {
+            background: linear-gradient(135deg, rgba(20, 203, 244, 0.15), rgba(28, 119, 162, 0.1));
+            border-left: 4px solid var(--accent-color);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(20, 203, 244, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-icon i {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-message {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .notification-close {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+        }
+
+        /* Advertisement Cards */
+        .ad-card {
+            background: linear-gradient(135deg, rgba(1, 7, 17, 0.9), rgba(12, 44, 71, 0.8));
+            border-radius: 20px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.15);
+        }
+
+        .ad-title {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .ad-description {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .ad-offer {
+            font-size: 0.8rem;
+            color: #f59e0b;
+            margin-top: 0.5rem;
+        }
+
         /* Main Content */
         .dashboard-content {
             padding: 2rem 0;
@@ -215,10 +313,16 @@
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .transaction-item:hover {
             background: rgba(20, 203, 244, 0.05);
+        }
+
+        .transaction-info {
+            flex: 1;
         }
 
         .transaction-type {
@@ -229,6 +333,13 @@
         .transaction-date {
             font-size: 0.85rem;
             opacity: 0.7;
+        }
+
+        .transaction-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .transaction-amount {
@@ -259,6 +370,22 @@
         .status-pending {
             background: rgba(245, 158, 11, 0.1);
             color: #f59e0b;
+        }
+
+        .receipt-btn {
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--light-color);
+        }
+
+        .receipt-btn:hover {
+            background: rgba(20, 203, 244, 0.2);
+            transform: translateY(-1px);
         }
 
         .no-transactions {
@@ -409,6 +536,53 @@
             box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
         }
 
+        /* Receipt Modal */
+        .receipt-content {
+            text-align: center;
+        }
+
+        .receipt-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .receipt-logo {
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 203, 244, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .receipt-details {
+            background: rgba(20, 203, 244, 0.05);
+            border-radius: 16px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        .receipt-value {
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .balance-amount {
                 font-size: 2rem;
@@ -417,7 +591,11 @@
             .transaction-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.5rem;
+            }
+            
+            .transaction-details {
+                width: 100%;
+                justify-content: space-between;
             }
             
             .user-menu {
@@ -467,6 +645,27 @@
         <!-- Main Content -->
         <div class="dashboard-content">
             <div class="container">
+                <!-- Notification Banner -->
+                <div id="notificationBanner" class="notification-banner" style="display: none;">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title" id="notificationTitle">Bank Notification</div>
+                        <div class="notification-message" id="notificationMessage"></div>
+                    </div>
+                    <div class="notification-close" onclick="closeNotification()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <!-- Advertisement Carousel -->
+                <div id="adCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="adContainer">
+                        <!-- Ads will be dynamically inserted -->
+                    </div>
+                </div>
+
                 <!-- Account Summary -->
                 <div class="row g-4">
                     <div class="col-lg-8">
@@ -589,6 +788,68 @@
         </div>
     </div>
 
+    <!-- Receipt Modal -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-receipt me-2"></i>Transaction Receipt
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="receipt-content">
+                        <div class="receipt-header">
+                            <div class="receipt-logo">
+                                <i class="fas fa-wallet fa-2x" style="color: var(--accent-color);"></i>
+                            </div>
+                            <h6>Creda Flux E-Wallet</h6>
+                            <small>Transaction Receipt</small>
+                        </div>
+                        <div class="receipt-details">
+                            <div class="receipt-row">
+                                <span class="receipt-label">Transaction ID:</span>
+                                <span class="receipt-value" id="receiptTxId">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Date:</span>
+                                <span class="receipt-value" id="receiptDate">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Type:</span>
+                                <span class="receipt-value" id="receiptType">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">From:</span>
+                                <span class="receipt-value" id="receiptFrom">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">To:</span>
+                                <span class="receipt-value" id="receiptTo">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Amount:</span>
+                                <span class="receipt-value" id="receiptAmount">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Status:</span>
+                                <span class="receipt-value" id="receiptStatus">-</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="opacity-50">Thank you for banking with us</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Support Modal -->
     <div class="modal fade" id="supportModal" tabindex="-1">
         <div class="modal-dialog">
@@ -644,6 +905,7 @@
         let currentStep = 1;
         let transferData = {};
         let userData = null;
+        let allTransactions = [];
 
         // Format money
         function formatMoney(amount) {
@@ -652,6 +914,103 @@
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+        }
+
+        // Advertisement data
+        const advertisements = [
+            {
+                title: "🏦 Special Offer",
+                message: "Get 5% cashback on all transfers this month!",
+                offer: "Use code: CASHBACK5",
+                icon: "fa-gift"
+            },
+            {
+                title: "📈 Investment Opportunity",
+                message: "Start investing with as low as $100!",
+                offer: "Get 8% guaranteed returns",
+                icon: "fa-chart-line"
+            },
+            {
+                title: "💳 New Credit Card",
+                message: "Apply for our premium credit card today!",
+                offer: "0% interest for 6 months",
+                icon: "fa-credit-card"
+            },
+            {
+                title: "🎉 Referral Bonus",
+                message: "Refer a friend and earn $50 bonus!",
+                offer: "Unlimited referrals",
+                icon: "fa-users"
+            },
+            {
+                title: "🔒 Security Tip",
+                message: "Enable 2FA for extra security!",
+                offer: "Get $10 reward",
+                icon: "fa-shield-alt"
+            }
+        ];
+
+        // Banking notifications
+        const notifications = [
+            "🔔 New: Instant transfers now available 24/7!",
+            "💡 Tip: Save more with our automatic savings plan",
+            "🎯 Goal: You're 80% towards your monthly savings target",
+            "⭐ New feature: Bill payments directly from your wallet",
+            "🔒 Security update: Your account is protected with 256-bit encryption"
+        ];
+
+        // Load advertisements
+        function loadAdvertisements() {
+            const container = document.getElementById('adContainer');
+            if (!container) return;
+            
+            container.innerHTML = advertisements.map((ad, index) => `
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <div class="ad-card" onclick="window.open('promotions.html', '_blank')">
+                        <div class="ad-title">
+                            <i class="fas ${ad.icon} me-2"></i>${ad.title}
+                        </div>
+                        <div class="ad-description">${ad.message}</div>
+                        <div class="ad-offer">🎯 ${ad.offer}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show random notification
+        let notificationInterval;
+        function showRandomNotification() {
+            const banner = document.getElementById('notificationBanner');
+            const messageEl = document.getElementById('notificationMessage');
+            const titleEl = document.getElementById('notificationTitle');
+            
+            if (!banner || !messageEl) return;
+            
+            const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
+            messageEl.textContent = randomNotif;
+            
+            if (randomNotif.includes('Security')) {
+                titleEl.innerHTML = '<i class="fas fa-shield-alt me-1"></i> Security Alert';
+            } else if (randomNotif.includes('Tip')) {
+                titleEl.innerHTML = '<i class="fas fa-lightbulb me-1"></i> Banking Tip';
+            } else if (randomNotif.includes('New')) {
+                titleEl.innerHTML = '<i class="fas fa-star me-1"></i> What\'s New';
+            } else {
+                titleEl.innerHTML = '<i class="fas fa-bell me-1"></i> Notification';
+            }
+            
+            banner.style.display = 'flex';
+            
+            // Auto hide after 8 seconds
+            setTimeout(() => {
+                if (banner.style.display === 'flex') {
+                    banner.style.display = 'none';
+                }
+            }, 8000);
+        }
+
+        function closeNotification() {
+            document.getElementById('notificationBanner').style.display = 'none';
         }
 
         // Check authentication
@@ -700,19 +1059,12 @@
         function updateUI() {
             if (!userData) return;
             
-            // Update user name
             document.getElementById('userName').textContent = userData.name || userData.username;
-            
-            // Update balance
             const balance = formatMoney(userData.balance);
             document.getElementById('userBalance').textContent = balance;
             document.getElementById('userCurrency').textContent = userData.currency || 'USD';
-            
-            // Update account details
             document.getElementById('userAccountNumber').textContent = userData.account_number || 'N/A';
             document.getElementById('userCurrencyBadge').innerHTML = `${userData.currency || 'USD'} Account`;
-            
-            // Update transfer modal
             document.getElementById('transferCurrency').textContent = userData.currency || 'USD';
             document.getElementById('availableBalance').textContent = formatMoney(userData.balance);
             document.getElementById('availableCurrency').textContent = userData.currency || 'USD';
@@ -728,7 +1080,8 @@
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success && data.transactions) {
-                        displayTransactions(data.transactions);
+                        allTransactions = data.transactions;
+                        displayTransactions(allTransactions);
                     } else {
                         displayTransactions([]);
                     }
@@ -739,7 +1092,7 @@
             }
         }
 
-        // Display transactions
+        // Display transactions with correct signs
         function displayTransactions(transactions) {
             const container = document.getElementById('transactionsList');
             
@@ -755,33 +1108,88 @@
             }
             
             container.innerHTML = transactions.map(t => {
-                const isSent = t.type === 'sent';
-                const amountClass = isSent ? 'amount-sent' : 'amount-received';
-                const sign = isSent ? '-' : '+';
-                const typeText = isSent ? `Sent to ${t.receiver_name || 'Unknown'}` : `Received from ${t.sender_name || 'Unknown'}`;
+                // Determine if user is sender or receiver
+                const isSender = t.sender_id === userData?.id;
+                const isReceiver = t.receiver_id === userData?.id;
+                
+                let amountClass, sign, typeText, icon, otherParty;
+                
+                if (isSender) {
+                    amountClass = 'amount-sent';
+                    sign = '-';
+                    icon = 'fa-arrow-up';
+                    otherParty = t.receiver_name || 'Unknown';
+                    typeText = `Sent to ${otherParty}`;
+                } else if (isReceiver) {
+                    amountClass = 'amount-received';
+                    sign = '+';
+                    icon = 'fa-arrow-down';
+                    otherParty = t.sender_name || 'Unknown';
+                    typeText = `Received from ${otherParty}`;
+                } else {
+                    amountClass = '';
+                    sign = '';
+                    icon = 'fa-exchange-alt';
+                    typeText = 'Transaction';
+                }
+                
+                const amountDisplay = sign ? `${sign} ${formatMoney(t.amount)} ${t.currency || 'USD'}` : `${formatMoney(t.amount)} ${t.currency || 'USD'}`;
+                const status = t.status || 'Pending';
+                const txId = t.transaction_id || t.id;
                 
                 return `
                     <div class="transaction-item">
-                        <div>
+                        <div class="transaction-info">
                             <div class="transaction-type">
-                                <i class="fas ${isSent ? 'fa-arrow-up' : 'fa-arrow-down'} me-2"></i>
+                                <i class="fas ${icon} me-2"></i>
                                 ${typeText}
                             </div>
                             <div class="transaction-date">${new Date(t.created_at).toLocaleString()}</div>
                         </div>
-                        <div>
+                        <div class="transaction-details">
                             <div class="transaction-amount ${amountClass}">
-                                ${sign} ${formatMoney(t.amount)} ${t.currency || 'USD'}
+                                ${amountDisplay}
                             </div>
-                            <div class="text-end">
-                                <span class="status-badge status-${(t.status || 'pending').toLowerCase()}">
-                                    ${t.status || 'Pending'}
-                                </span>
-                            </div>
+                            <span class="status-badge status-${status.toLowerCase()}">
+                                ${status}
+                            </span>
+                            <button class="receipt-btn" onclick="viewReceipt('${txId}')">
+                                <i class="fas fa-receipt"></i> Receipt
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // View receipt function
+        async function viewReceipt(transactionId) {
+            try {
+                // Find transaction from local data
+                const transaction = allTransactions.find(t => (t.transaction_id === transactionId || t.id == transactionId));
+                
+                if (!transaction) {
+                    alert('Transaction details not found');
+                    return;
+                }
+                
+                // Populate receipt modal
+                document.getElementById('receiptTxId').textContent = transaction.transaction_id || transaction.id;
+                document.getElementById('receiptDate').textContent = new Date(transaction.created_at).toLocaleString();
+                document.getElementById('receiptType').textContent = transaction.sender_id === userData?.id ? 'Debit (Sent)' : 'Credit (Received)';
+                document.getElementById('receiptFrom').textContent = transaction.sender_name || 'Creda Flux Bank';
+                document.getElementById('receiptTo').textContent = transaction.receiver_name || 'Creda Flux Bank';
+                document.getElementById('receiptAmount').textContent = `${formatMoney(transaction.amount)} ${transaction.currency || 'USD'}`;
+                document.getElementById('receiptStatus').textContent = transaction.status || 'Pending';
+                
+                // Show receipt modal
+                const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+                receiptModal.show();
+                
+            } catch (error) {
+                console.error('Error viewing receipt:', error);
+                alert('Could not load receipt details');
+            }
         }
 
         // Search recipients
@@ -808,7 +1216,7 @@
                         
                         if (accounts && accounts.length > 0) {
                             searchResults.innerHTML = accounts.map(acc => `
-                                <div class="search-result-item" onclick="selectRecipient(${acc.id}, '${acc.name}', '${acc.account_number}', '${acc.bank_name}')">
+                                <div class="search-result-item" onclick="selectRecipient(${acc.id}, '${acc.name.replace(/'/g, "\\'")}', '${acc.account_number}', '${acc.bank_name.replace(/'/g, "\\'")}')">
                                     <strong>${acc.name}</strong><br>
                                     <small>${acc.account_number} - ${acc.bank_name}</small>
                                 </div>
@@ -838,7 +1246,7 @@
 
         // Close search results on click outside
         document.addEventListener('click', function(e) {
-            if (searchInput && !searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            if (searchInput && !searchInput.contains(e.target) && searchResults && !searchResults.contains(e.target)) {
                 searchResults.style.display = 'none';
             }
         });
@@ -892,16 +1300,23 @@
         }
         
         function showStep(step) {
-            document.getElementById('transferStep1').style.display = step === 1 ? 'block' : 'none';
-            document.getElementById('transferStep2').style.display = step === 2 ? 'block' : 'none';
-            document.getElementById('transferStep3').style.display = step === 3 ? 'block' : 'none';
-            document.getElementById('prevBtn').style.display = step > 1 ? 'inline-block' : 'none';
-            
+            const step1 = document.getElementById('transferStep1');
+            const step2 = document.getElementById('transferStep2');
+            const step3 = document.getElementById('transferStep3');
+            const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            if (step === 3) {
-                nextBtn.innerHTML = '<i class="fas fa-check"></i> Confirm';
-            } else {
-                nextBtn.innerHTML = 'Continue';
+            
+            if (step1) step1.style.display = step === 1 ? 'block' : 'none';
+            if (step2) step2.style.display = step === 2 ? 'block' : 'none';
+            if (step3) step3.style.display = step === 3 ? 'block' : 'none';
+            if (prevBtn) prevBtn.style.display = step > 1 ? 'inline-block' : 'none';
+            
+            if (nextBtn) {
+                if (step === 3) {
+                    nextBtn.innerHTML = '<i class="fas fa-check"></i> Confirm';
+                } else {
+                    nextBtn.innerHTML = 'Continue';
+                }
             }
         }
         
@@ -950,12 +1365,12 @@
                     const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
                     modal.hide();
                     
-                    // Reset form
                     resetTransferModal();
-                    
-                    // Reload data
                     await loadUserData();
                     await loadTransactions();
+                    
+                    // Show success notification
+                    showRandomNotification();
                 } else {
                     alert('Error: ' + data.message);
                 }
@@ -972,12 +1387,19 @@
         function resetTransferModal() {
             currentStep = 1;
             showStep(1);
-            document.getElementById('recipientSearch').value = '';
-            document.getElementById('receiverId').value = '';
-            document.getElementById('amount').value = '';
-            document.getElementById('recipientInfo').style.display = 'none';
-            document.querySelectorAll('.pin-input').forEach(p => p.value = '');
-            document.getElementById('userPin').value = '';
+            const recipientSearch = document.getElementById('recipientSearch');
+            const receiverId = document.getElementById('receiverId');
+            const amount = document.getElementById('amount');
+            const recipientInfo = document.getElementById('recipientInfo');
+            const pinInputs = document.querySelectorAll('.pin-input');
+            const userPin = document.getElementById('userPin');
+            
+            if (recipientSearch) recipientSearch.value = '';
+            if (receiverId) receiverId.value = '';
+            if (amount) amount.value = '';
+            if (recipientInfo) recipientInfo.style.display = 'none';
+            if (pinInputs) pinInputs.forEach(p => p.value = '');
+            if (userPin) userPin.value = '';
             transferData = {};
         }
         
@@ -1011,6 +1433,18 @@
         
         // Initialize dashboard
         async function init() {
+            loadAdvertisements();
+            
+            // Show first notification after 3 seconds
+            setTimeout(() => {
+                showRandomNotification();
+            }, 3000);
+            
+            // Set interval for random notifications (every 45 seconds)
+            notificationInterval = setInterval(() => {
+                showRandomNotification();
+            }, 45000);
+            
             const authenticated = await checkAuth();
             if (authenticated) {
                 await loadUserData();
