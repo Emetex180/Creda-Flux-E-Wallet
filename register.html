@@ -47,25 +47,30 @@ body{
     font-size:48px;
     line-height:1.2;
     margin-bottom:20px;
+    font-weight:700;
 }
 
 .left-panel p{
     color:#dbeafe;
     line-height:1.8;
+    font-size:16px;
 }
 
 .right-panel{
     padding:50px;
+    background:white;
 }
 
-h2{
+.right-panel h2{
+    color:#0f172a;
     font-size:34px;
     margin-bottom:10px;
+    font-weight:700;
 }
 
 .subtitle{
     color:#64748b;
-    margin-bottom:30px;
+    margin-bottom:35px;
 }
 
 .form-group{
@@ -74,8 +79,10 @@ h2{
 
 label{
     display:block;
+    color:#334155;
     margin-bottom:8px;
     font-size:14px;
+    font-weight:500;
 }
 
 input,select{
@@ -85,17 +92,34 @@ input,select{
     border-radius:14px;
     background:#f8fafc;
     outline:none;
+    font-size:15px;
 }
 
 input:focus,select:focus{
     border-color:#2563eb;
-    background:#fff;
+    background:white;
 }
 
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:15px;
+    gap:18px;
+}
+
+.upload-box{
+    border:2px dashed #cbd5e1;
+    border-radius:16px;
+    padding:35px;
+    text-align:center;
+    position:relative;
+    background:#f8fafc;
+}
+
+.upload-box input{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
 }
 
 button{
@@ -105,8 +129,10 @@ button{
     border-radius:14px;
     background:#2563eb;
     color:white;
+    font-size:16px;
     font-weight:600;
     cursor:pointer;
+    margin-top:10px;
 }
 
 button:hover{
@@ -115,13 +141,14 @@ button:hover{
 
 .bottom-text{
     text-align:center;
-    margin-top:20px;
+    margin-top:25px;
     color:#64748b;
 }
 
 .bottom-text a{
     color:#2563eb;
     text-decoration:none;
+    font-weight:600;
 }
 
 @media(max-width:900px){
@@ -130,72 +157,128 @@ button:hover{
     .grid{grid-template-columns:1fr;}
 }
 </style>
-
 </head>
+
 <body>
 
 <div class="container">
 
-    <div class="left-panel">
-        <div>
-            <h1>Secure Wealth Infrastructure</h1>
-            <p>Secure, fast and reliable transfers anytime</p>
+<div class="left-panel">
+    <div>
+        <h1>Secure Wealth Infrastructure</h1>
+        <p>Secure, fast and reliable transfers, bill payment and top up anytime</p>
+    </div>
+</div>
+
+<div class="right-panel">
+
+<h2>Create CredaFlux Account</h2>
+<p class="subtitle">Complete your secure onboarding process</p>
+
+<form id="registerForm" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label>Full Legal Name</label>
+        <input type="text" name="fullLegalName" required>
+    </div>
+
+    <div class="grid">
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="text" name="mobileNumber">
         </div>
     </div>
 
-    <div class="right-panel">
+    <div class="grid">
+        <div class="form-group">
+            <label>Gender</label>
+            <select name="legalGender">
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+        </div>
 
-        <h2>Create Account</h2>
-        <p class="subtitle">Complete registration</p>
-
-        <form id="registerForm">
-
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="name" required>
-            </div>
-
-            <div class="grid">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div class="form-group">
-                    <label>Currency</label>
-                    <select name="currency">
-                        <option value="USD">USD</option>
-                        <option value="HUF">HUF</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Bank Name</label>
-                    <input type="text" name="bank_name">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>4-Digit PIN</label>
-                <input type="password" name="pin" maxlength="4" required>
-            </div>
-
-            <button type="submit">Initialize Vault</button>
-
-            <div class="bottom-text">
-                Already have account? <a href="/login.html">Sign In</a>
-            </div>
-
-        </form>
-
+        <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" name="dateOfBirth">
+        </div>
     </div>
+
+    <div class="grid">
+        <div class="form-group">
+            <label>Occupation</label>
+            <input type="text" name="primaryOccupation">
+        </div>
+
+        <div class="form-group">
+            <label>Place of Birth</label>
+            <input type="text" name="placeOfBirth">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Residence</label>
+        <input type="text" name="currentResidence">
+    </div>
+
+    <div class="grid">
+        <div class="form-group">
+            <label>Account Type</label>
+            <select name="portfolioType">
+                <option>Personal</option>
+                <option>Business</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Currency</label>
+            <select name="baseCurrency">
+                <option>USD</option>
+                <option>HUF</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="masterPassword">
+        </div>
+
+        <div class="form-group">
+            <label>PIN</label>
+            <input type="password" name="appPin" maxlength="4">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Confirm PIN</label>
+        <input type="password" name="confirmPin" maxlength="4">
+    </div>
+
+    <div class="form-group">
+        <label>Upload ID</label>
+        <div class="upload-box">
+            <input type="file" name="governmentId">
+            <p>Click to upload</p>
+            <span>PNG, JPG (Max 5MB)</span>
+        </div>
+    </div>
+
+    <button type="submit">Initialize Vault</button>
+
+    <div class="bottom-text">
+        Already have an account? <a href="/login.html">Sign In</a>
+    </div>
+
+</form>
+
+</div>
 </div>
 
 <script>
@@ -205,45 +288,48 @@ registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const btn = registerForm.querySelector("button");
-    btn.disabled = true;
     btn.innerText = "Creating...";
+    btn.disabled = true;
 
     const formData = new FormData(registerForm);
 
-    const data = {
-        name: formData.get("name"),
-        username: formData.get("username"),
-        password: formData.get("password"),
-        currency: formData.get("currency"),
-        bank_name: formData.get("bank_name"),
-        pin: formData.get("pin")
-    };
+    const pin = formData.get("appPin");
+    const confirmPin = formData.get("confirmPin");
+
+    if (pin !== confirmPin) {
+        alert("PIN does not match");
+        btn.innerText = "Initialize Vault";
+        btn.disabled = false;
+        return;
+    }
+
+    if (pin.length !== 4) {
+        alert("PIN must be 4 digits");
+        btn.innerText = "Initialize Vault";
+        btn.disabled = false;
+        return;
+    }
 
     try {
         const res = await fetch("/api/register", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data),
-            credentials: "include"
+            body: formData
         });
 
-        const result = await res.json();
+        const data = await res.json();
 
-        if (result.success) {
+        if (data.success) {
             alert("Account created successfully");
-            window.location.href = "/login.html";
+            registerForm.reset();
         } else {
-            alert(result.message);
+            alert(data.message || "Failed");
         }
-
     } catch (err) {
         alert("Server error");
     }
 
-    btn.disabled = false;
     btn.innerText = "Initialize Vault";
+    btn.disabled = false;
 });
 </script>
 
