@@ -177,6 +177,12 @@ button:hover{
 
 <form id="registerForm" enctype="multipart/form-data">
 
+    <!-- NEW USERNAME FIELD -->
+    <div class="form-group">
+        <label>Username (Login ID)</label>
+        <input type="text" name="username" required placeholder="Choose a unique username">
+    </div>
+
     <div class="form-group">
         <label>Full Legal Name</label>
         <input type="text" name="fullLegalName" required>
@@ -298,7 +304,6 @@ registerForm.addEventListener("submit", async (e) => {
     const pin = formData.get("appPin");
     const confirmPin = formData.get("confirmPin");
 
-    // VALIDATION
     if (pin !== confirmPin) {
         alert("PIN does not match");
         resetBtn();
@@ -323,7 +328,7 @@ registerForm.addEventListener("submit", async (e) => {
         if (data.success) {
             alert("Account created successfully!");
 
-            // redirect to login
+            // go to login page
             window.location.href = "login.html";
 
         } else {
