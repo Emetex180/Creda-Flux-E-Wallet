@@ -8,38 +8,32 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
+            --dark-bg: #010711;
             --primary-color: #1c77a2;
+            --secondary-color: #0c2c47;
             --accent-color: #14cbf4;
-            --light-bg: #f8f9fa;
-            --white: #ffffff;
-            --gray: #6c757d;
-            --dark: #212529;
+            --light-color: #eeeff0;
             --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--accent-color));
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: var(--light-bg);
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--dark-bg) 100%);
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            color: var(--dark);
+            color: var(--light-color);
             margin: 0;
             padding-bottom: 80px;
         }
 
         /* Dashboard Header */
         .dashboard-header {
-            background: var(--white);
+            background: rgba(1, 7, 17, 0.95);
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 4px 20px rgba(20, 203, 244, 0.15);
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
         .brand-container {
@@ -51,27 +45,31 @@
         .logo {
             width: 50px;
             height: 50px;
-            background: var(--gradient-primary);
+            background: rgba(20, 203, 244, 0.2);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid rgba(20, 203, 244, 0.3);
         }
 
         .logo i {
-            color: var(--white);
+            color: var(--accent-color);
             font-size: 1.5rem;
         }
 
         .brand-text h1 {
-            color: var(--primary-color);
+            color: var(--light-color);
             font-size: 1.5rem;
             font-weight: 700;
             margin: 0;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .brand-text p {
-            color: var(--gray);
+            color: rgba(238, 239, 240, 0.8);
             font-size: 0.85rem;
             margin: 0;
         }
@@ -84,25 +82,26 @@
         }
 
         .user-welcome {
-            background: #f0f7fa;
+            background: rgba(20, 203, 244, 0.1);
             padding: 0.5rem 1rem;
             border-radius: 12px;
+            border: 1px solid rgba(20, 203, 244, 0.2);
         }
 
         .user-welcome i {
-            color: var(--primary-color);
+            color: var(--accent-color);
             margin-right: 0.5rem;
         }
 
         .user-name {
             font-weight: 600;
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
 
         .logout-btn {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            color: var(--dark);
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
             padding: 0.5rem 1rem;
             border-radius: 12px;
             text-decoration: none;
@@ -111,13 +110,13 @@
         }
 
         .logout-btn:hover {
-            background: #e9ecef;
+            background: rgba(20, 203, 244, 0.3);
             transform: translateY(-2px);
         }
 
         /* Notification Banner */
         .notification-banner {
-            background: linear-gradient(135deg, #e8f4f8, #d1ecf1);
+            background: linear-gradient(135deg, rgba(20, 203, 244, 0.15), rgba(28, 119, 162, 0.1));
             border-left: 4px solid var(--accent-color);
             padding: 0.75rem 1rem;
             margin-bottom: 1rem;
@@ -142,7 +141,7 @@
         .notification-icon {
             width: 40px;
             height: 40px;
-            background: rgba(28, 119, 162, 0.1);
+            background: rgba(20, 203, 244, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -150,7 +149,7 @@
         }
 
         .notification-icon i {
-            color: var(--primary-color);
+            color: var(--accent-color);
             font-size: 1.2rem;
         }
 
@@ -162,19 +161,17 @@
             font-weight: 700;
             font-size: 0.9rem;
             margin-bottom: 0.25rem;
-            color: var(--primary-color);
         }
 
         .notification-message {
             font-size: 0.8rem;
-            color: var(--gray);
+            opacity: 0.8;
         }
 
         .notification-close {
             cursor: pointer;
             opacity: 0.6;
             transition: opacity 0.3s ease;
-            color: var(--gray);
         }
 
         .notification-close:hover {
@@ -183,31 +180,30 @@
 
         /* Advertisement Cards */
         .ad-card {
-            background: var(--white);
+            background: linear-gradient(135deg, rgba(1, 7, 17, 0.9), rgba(12, 44, 71, 0.8));
             border-radius: 20px;
             padding: 1rem;
             margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
+            border: 1px solid rgba(20, 203, 244, 0.2);
             transition: all 0.3s ease;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .ad-card:hover {
             transform: translateY(-3px);
             border-color: var(--accent-color);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.15);
         }
 
         .ad-title {
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--accent-color);
             margin-bottom: 0.5rem;
         }
 
         .ad-description {
             font-size: 0.85rem;
-            color: var(--gray);
+            opacity: 0.8;
         }
 
         .ad-offer {
@@ -223,17 +219,17 @@
 
         /* Balance Card */
         .balance-card {
-            background: var(--white);
+            background: rgba(1, 7, 17, 0.8);
             border-radius: 24px;
             padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e9ecef;
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            backdrop-filter: blur(10px);
             margin-bottom: 2rem;
         }
 
         .balance-label {
             font-size: 0.9rem;
-            color: var(--gray);
+            opacity: 0.8;
             margin-bottom: 0.5rem;
         }
 
@@ -244,11 +240,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1;
-        }
-
-        #userCurrency {
-            color: var(--gray);
-            font-size: 1rem;
         }
 
         .transfer-btn {
@@ -263,26 +254,25 @@
 
         .transfer-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(28, 119, 162, 0.3);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
         }
 
         /* Account Details Card */
         .account-details-card {
-            background: var(--white);
+            background: rgba(1, 7, 17, 0.8);
             border-radius: 20px;
             padding: 1.5rem;
-            border: 1px solid #e9ecef;
+            border: 1px solid rgba(20, 203, 244, 0.2);
             height: 100%;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .account-number {
             font-size: 1rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--accent-color);
             word-break: break-all;
-            background: #f0f7fa;
+            background: rgba(20, 203, 244, 0.1);
             padding: 0.5rem;
             border-radius: 8px;
             margin-top: 0.5rem;
@@ -294,34 +284,31 @@
             border-radius: 12px;
             display: inline-block;
             margin-top: 1rem;
-            color: white;
         }
 
         /* Transactions Section */
         .transactions-section {
-            background: var(--white);
+            background: rgba(1, 7, 17, 0.8);
             border-radius: 24px;
-            border: 1px solid #e9ecef;
+            border: 1px solid rgba(20, 203, 244, 0.2);
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .section-header {
-            background: #f8f9fa;
+            background: rgba(20, 203, 244, 0.1);
             padding: 1.5rem 2rem;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
         }
 
         .section-title {
             font-size: 1.3rem;
             font-weight: 700;
             margin: 0;
-            color: var(--dark);
         }
 
         .transaction-item {
             padding: 1.5rem 2rem;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -331,7 +318,7 @@
         }
 
         .transaction-item:hover {
-            background: #f8f9fa;
+            background: rgba(20, 203, 244, 0.05);
         }
 
         .transaction-info {
@@ -341,12 +328,11 @@
         .transaction-type {
             font-weight: 600;
             margin-bottom: 0.25rem;
-            color: var(--dark);
         }
 
         .transaction-date {
             font-size: 0.85rem;
-            color: var(--gray);
+            opacity: 0.7;
         }
 
         .transaction-details {
@@ -362,11 +348,11 @@
         }
 
         .amount-sent {
-            color: #dc3545;
+            color: #ef4444;
         }
 
         .amount-received {
-            color: #28a745;
+            color: var(--accent-color);
         }
 
         .status-badge {
@@ -377,35 +363,35 @@
         }
 
         .status-completed {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(20, 203, 244, 0.1);
+            color: var(--accent-color);
         }
 
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
         }
 
         .receipt-btn {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
+            background: rgba(20, 203, 244, 0.1);
+            border: 1px solid rgba(20, 203, 244, 0.3);
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--primary-color);
+            color: var(--light-color);
         }
 
         .receipt-btn:hover {
-            background: #e9ecef;
+            background: rgba(20, 203, 244, 0.2);
             transform: translateY(-1px);
         }
 
         .no-transactions {
             text-align: center;
             padding: 3rem;
-            color: var(--gray);
+            opacity: 0.7;
         }
 
         /* Footer Navigation */
@@ -414,10 +400,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--white);
-            border-top: 1px solid #e9ecef;
+            background: rgba(1, 7, 17, 0.95);
+            border-top: 1px solid rgba(20, 203, 244, 0.2);
             padding: 0.75rem 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
             z-index: 100;
         }
 
@@ -437,80 +423,83 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             cursor: pointer;
-            color: var(--gray);
+            color: var(--light-color);
         }
 
         .nav-item:hover {
-            background: #f8f9fa;
+            background: rgba(20, 203, 244, 0.1);
         }
 
         .nav-item.active .nav-icon {
-            color: var(--primary-color);
+            color: var(--accent-color);
             transform: translateY(-2px);
         }
 
         .nav-item.active .nav-text {
-            color: var(--primary-color);
+            color: var(--accent-color);
             font-weight: 600;
         }
 
         .nav-icon {
             font-size: 1.25rem;
             margin-bottom: 0.25rem;
+            opacity: 0.7;
         }
 
         .nav-text {
             font-size: 0.7rem;
+            opacity: 0.7;
         }
 
-        /* Modal Styles */
+        /* Modal Styles (for transfer modal - keeping dark) */
         .modal-content {
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            background: rgba(1, 7, 17, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(20, 203, 244, 0.2);
+            color: var(--light-color);
         }
 
         .modal-header {
-            background: var(--white);
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.2);
         }
 
         .form-control {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
+            background: rgba(12, 44, 71, 0.5);
+            border: 2px solid rgba(20, 203, 244, 0.3);
+            color: var(--light-color);
         }
 
         .form-control:focus {
+            background: rgba(12, 44, 71, 0.7);
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(28, 119, 162, 0.1);
+            color: var(--light-color);
         }
 
         .search-results {
-            background: var(--white);
-            border: 1px solid #e9ecef;
+            background: rgba(1, 7, 17, 0.95);
+            border: 1px solid rgba(20, 203, 244, 0.3);
             border-radius: 12px;
             max-height: 200px;
             overflow-y: auto;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .search-result-item {
             padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(20, 203, 244, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .search-result-item:hover {
-            background: #f8f9fa;
+            background: rgba(20, 203, 244, 0.1);
         }
 
         .recipient-info {
-            background: #f0f7fa;
+            background: rgba(20, 203, 244, 0.1);
             border-radius: 12px;
             padding: 1rem;
             margin: 1rem 0;
+            border: 1px solid rgba(20, 203, 244, 0.2);
         }
 
         .pin-input-container {
@@ -526,41 +515,64 @@
             text-align: center;
             font-size: 1.5rem;
             font-weight: 700;
-            border: 2px solid #e9ecef;
+            background: rgba(12, 44, 71, 0.5);
+            border: 2px solid rgba(20, 203, 244, 0.3);
             border-radius: 12px;
-            transition: all 0.3s ease;
+            color: var(--light-color);
         }
 
         .pin-input:focus {
             border-color: var(--accent-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(28, 119, 162, 0.1);
         }
 
         .btn-primary {
             background: var(--gradient-primary);
             border: none;
-            padding: 0.75rem 1.5rem;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(28, 119, 162, 0.3);
+            box-shadow: 0 8px 25px rgba(20, 203, 244, 0.3);
         }
 
-        /* Receipt Modal */
-        .receipt-content {
+        /* ============================================ */
+        /* RECEIPT MODAL - CLEAN WHITE BACKGROUND */
+        /* ============================================ */
+        #receiptModal .modal-content {
+            background: white;
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        #receiptModal .modal-header {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            color: #212529;
+        }
+
+        #receiptModal .modal-header .btn-close {
+            filter: none;
+            opacity: 0.7;
+        }
+
+        #receiptModal .modal-title {
+            color: #1c77a2;
+        }
+
+        #receiptModal .receipt-content {
             text-align: center;
         }
 
-        .receipt-header {
+        #receiptModal .receipt-header {
             margin-bottom: 1.5rem;
         }
 
-        .receipt-logo {
+        #receiptModal .receipt-logo {
             width: 60px;
             height: 60px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #1c77a2, #14cbf4);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -568,48 +580,71 @@
             margin: 0 auto 1rem;
         }
 
-        .receipt-logo i {
+        #receiptModal .receipt-logo i {
             color: white;
             font-size: 1.5rem;
         }
 
-        .receipt-details {
+        #receiptModal .receipt-header h6 {
+            color: #1c77a2;
+            margin-bottom: 0.25rem;
+        }
+
+        #receiptModal .receipt-header small {
+            color: #6c757d;
+        }
+
+        #receiptModal .receipt-details {
             background: #f8f9fa;
             border-radius: 16px;
             padding: 1rem;
             margin: 1rem 0;
         }
 
-        .receipt-row {
+        #receiptModal .receipt-row {
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
             border-bottom: 1px solid #e9ecef;
         }
 
-        .receipt-row:last-child {
+        #receiptModal .receipt-row:last-child {
             border-bottom: none;
         }
 
-        .receipt-label {
-            color: var(--gray);
+        #receiptModal .receipt-label {
+            color: #6c757d;
             font-size: 0.85rem;
         }
 
-        .receipt-value {
+        #receiptModal .receipt-value {
             font-weight: 600;
-            color: var(--dark);
+            color: #212529;
         }
 
-        .btn-outline-info {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+        #receiptModal .modal-footer {
+            border-top: 1px solid #e9ecef;
+            background: white;
         }
 
-        .btn-outline-info:hover {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
+        #receiptModal .btn-primary {
+            background: linear-gradient(135deg, #1c77a2, #14cbf4);
+            border: none;
+        }
+
+        #receiptModal .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(28, 119, 162, 0.3);
+        }
+
+        #receiptModal .btn-secondary {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            color: #212529;
+        }
+
+        #receiptModal .btn-secondary:hover {
+            background: #e9ecef;
         }
 
         @media (max-width: 768px) {
@@ -640,10 +675,577 @@
     </style>
 </head>
 <body>
-    <!-- The rest of the HTML body remains exactly the same as your working version -->
-    <!-- Keeping your working receipt functionality intact -->
-    
-    <!-- Same HTML structure as your previous working version -->
-    <!-- The only changes are in the CSS above (removed dark backgrounds, made everything light/white) -->
+    <!-- Everything below here is exactly the same as your original -->
+    <div class="user-dashboard">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="brand-container">
+                            <div class="logo">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="brand-text">
+                                <h1>Creda Flux E-Wallet</h1>
+                                <p>Secure E-Wallet Solution</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="user-menu">
+                            <div class="user-welcome">
+                                <i class="fas fa-user-circle"></i>
+                                Welcome, <span id="userName" class="user-name">Loading...</span>
+                            </div>
+                            <div class="logout-btn" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <div class="container">
+                <!-- Notification Banner -->
+                <div id="notificationBanner" class="notification-banner" style="display: none;">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title" id="notificationTitle">Bank Notification</div>
+                        <div class="notification-message" id="notificationMessage"></div>
+                    </div>
+                    <div class="notification-close" onclick="closeNotification()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+
+                <!-- Advertisement Carousel -->
+                <div id="adCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="adContainer">
+                        <!-- Ads will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <!-- Account Summary -->
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="balance-card">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="balance-label">
+                                        <i class="fas fa-wallet"></i> Available Balance
+                                    </div>
+                                    <div class="balance-amount" id="userBalance">0.00</div>
+                                    <div id="userCurrency">USD</div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <button class="transfer-btn" data-bs-toggle="modal" data-bs-target="#transferModal">
+                                        <i class="fas fa-paper-plane"></i> Transfer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="account-details-card">
+                            <i class="fas fa-credit-card fa-2x mb-2" style="color: var(--accent-color);"></i>
+                            <h6>Account Details</h6>
+                            <div class="account-number" id="userAccountNumber">Loading...</div>
+                            <div class="currency-badge" id="userCurrencyBadge">USD Account</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Button -->
+                <div class="text-center my-4">
+                    <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#supportModal">
+                        <i class="fas fa-headset"></i> Need Help? Contact Support
+                    </button>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-history"></i> Recent Transactions
+                        </h2>
+                    </div>
+                    <div class="transaction-list" id="transactionsList">
+                        <div class="no-transactions">
+                            <i class="fas fa-receipt fa-3x mb-3"></i>
+                            <p>Loading transactions...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal fade" id="transferModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-paper-plane me-2"></i>Transfer Money
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="transferStep1">
+                        <div class="mb-3">
+                            <label class="form-label">Recipient (Account Number or Name)</label>
+                            <input type="text" class="form-control" id="recipientSearch" placeholder="Search...">
+                            <div id="searchResults" class="search-results mt-2" style="display: none;"></div>
+                            <input type="hidden" id="receiverId">
+                        </div>
+                        <div id="recipientInfo" class="recipient-info" style="display: none;">
+                            <small>Recipient:</small>
+                            <strong><span id="recipientName"></span></strong><br>
+                            <small>Account: <span id="recipientAccount"></span></small><br>
+                            <small>Bank: <span id="recipientBank"></span></small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount (<span id="transferCurrency">USD</span>)</label>
+                            <input type="number" class="form-control" id="amount" step="0.01" min="0.01">
+                            <small class="text-muted">Available: <span id="availableBalance">0.00</span> <span id="availableCurrency">USD</span></small>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Transactions require admin approval
+                        </div>
+                    </div>
+                    
+                    <div id="transferStep2" style="display: none;">
+                        <div class="recipient-info">
+                            <h6>Confirm Transfer</h6>
+                            <hr>
+                            <div><strong>To:</strong> <span id="confirmName"></span></div>
+                            <div><strong>Account:</strong> <span id="confirmAccount"></span></div>
+                            <div><strong>Amount:</strong> <span id="confirmAmount"></span> <span id="confirmCurrency"></span></div>
+                        </div>
+                    </div>
+                    
+                    <div id="transferStep3" style="display: none;">
+                        <div class="text-center">
+                            <i class="fas fa-lock fa-3x mb-3" style="color: var(--accent-color);"></i>
+                            <h6>Enter your 4-digit PIN</h6>
+                            <div class="pin-input-container">
+                                <input type="password" class="pin-input" maxlength="1" onkeyup="moveToNext(this, 0)">
+                                <input type="password" class="pin-input" maxlength="1" onkeyup="moveToNext(this, 1)">
+                                <input type="password" class="pin-input" maxlength="1" onkeyup="moveToNext(this, 2)">
+                                <input type="password" class="pin-input" maxlength="1" onkeyup="moveToNext(this, 3)">
+                            </div>
+                            <input type="hidden" id="userPin">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="prevBtn" style="display: none;" onclick="prevStep()">Back</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal - CLEAN WHITE BACKGROUND -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-receipt me-2"></i>Transaction Receipt
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="receipt-content">
+                        <div class="receipt-header">
+                            <div class="receipt-logo">
+                                <i class="fas fa-wallet fa-2x"></i>
+                            </div>
+                            <h6>Creda Flux E-Wallet</h6>
+                            <small>Transaction Receipt</small>
+                        </div>
+                        <div class="receipt-details">
+                            <div class="receipt-row">
+                                <span class="receipt-label">Transaction ID:</span>
+                                <span class="receipt-value" id="receiptTxId">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Date:</span>
+                                <span class="receipt-value" id="receiptDate">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Type:</span>
+                                <span class="receipt-value" id="receiptType">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">From:</span>
+                                <span class="receipt-value" id="receiptFrom">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">To:</span>
+                                <span class="receipt-value" id="receiptTo">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Amount:</span>
+                                <span class="receipt-value" id="receiptAmount">-</span>
+                            </div>
+                            <div class="receipt-row">
+                                <span class="receipt-label">Status:</span>
+                                <span class="receipt-value" id="receiptStatus">-</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="opacity-50">Thank you for banking with us</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal fade" id="supportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-headset me-2"></i>Contact Support
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-life-ring fa-3x mb-3" style="color: var(--accent-color);"></i>
+                        <h5>How can we help you?</h5>
+                    </div>
+                    <div class="d-grid gap-3">
+                        <a href="mailto:credafluxewallet@gmail.com" class="btn btn-outline-info">
+                            <i class="fas fa-envelope"></i> Email Support
+                        </a>
+                        <a href="https://wa.me/15793919724" target="_blank" class="btn btn-outline-success">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Support
+                        </a>
+                        <a href="https://t.me/creda_flux" target="_blank" class="btn btn-outline-primary">
+                            <i class="fab fa-telegram"></i> Telegram Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="footer">
+        <div class="footer-nav">
+            <div class="nav-item active" onclick="setActive(this, 'home')">
+                <div class="nav-icon"><i class="fas fa-home"></i></div>
+                <div class="nav-text">Home</div>
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'transfer')" data-bs-toggle="modal" data-bs-target="#transferModal">
+                <div class="nav-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="nav-text">Transfer</div>
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'support')" data-bs-toggle="modal" data-bs-target="#supportModal">
+                <div class="nav-icon"><i class="fas fa-headset"></i></div>
+                <div class="nav-text">Support</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Your existing JavaScript remains exactly the same
+        const API_BASE_URL = 'https://scbanking.pythonanywhere.com/api';
+        let currentStep = 1;
+        let transferData = {};
+        let userData = null;
+        let allTransactions = [];
+
+        function formatMoney(amount) {
+            if (amount === undefined || amount === null) return '0.00';
+            return parseFloat(amount).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        const advertisements = [
+            { title: "🏦 Special Offer", message: "Get 5% cashback on all transfers this month!", offer: "Use code: CASHBACK5", icon: "fa-gift" },
+            { title: "📈 Investment Opportunity", message: "Start investing with as low as $100!", offer: "Get 8% guaranteed returns", icon: "fa-chart-line" },
+            { title: "💳 New Credit Card", message: "Apply for our premium credit card today!", offer: "0% interest for 6 months", icon: "fa-credit-card" },
+            { title: "🎉 Referral Bonus", message: "Refer a friend and earn $50 bonus!", offer: "Unlimited referrals", icon: "fa-users" },
+            { title: "🔒 Security Tip", message: "Enable 2FA for extra security!", offer: "Get $10 reward", icon: "fa-shield-alt" }
+        ];
+
+        const notifications = [
+            "🔔 New: Instant transfers now available 24/7!",
+            "💡 Tip: Save more with our automatic savings plan",
+            "🎯 Goal: You're 80% towards your monthly savings target",
+            "⭐ New feature: Bill payments directly from your wallet",
+            "🔒 Security update: Your account is protected with 256-bit encryption"
+        ];
+
+        function loadAdvertisements() {
+            const container = document.getElementById('adContainer');
+            if (!container) return;
+            container.innerHTML = advertisements.map((ad, index) => `
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <div class="ad-card" onclick="window.open('promotions.html', '_blank')">
+                        <div class="ad-title"><i class="fas ${ad.icon} me-2"></i>${ad.title}</div>
+                        <div class="ad-description">${ad.message}</div>
+                        <div class="ad-offer">🎯 ${ad.offer}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        let notificationInterval;
+        function showRandomNotification() {
+            const banner = document.getElementById('notificationBanner');
+            const messageEl = document.getElementById('notificationMessage');
+            const titleEl = document.getElementById('notificationTitle');
+            if (!banner || !messageEl) return;
+            const randomNotif = notifications[Math.floor(Math.random() * notifications.length)];
+            messageEl.textContent = randomNotif;
+            if (randomNotif.includes('Security')) {
+                titleEl.innerHTML = '<i class="fas fa-shield-alt me-1"></i> Security Alert';
+            } else if (randomNotif.includes('Tip')) {
+                titleEl.innerHTML = '<i class="fas fa-lightbulb me-1"></i> Banking Tip';
+            } else if (randomNotif.includes('New')) {
+                titleEl.innerHTML = '<i class="fas fa-star me-1"></i> What\'s New';
+            } else {
+                titleEl.innerHTML = '<i class="fas fa-bell me-1"></i> Notification';
+            }
+            banner.style.display = 'flex';
+            setTimeout(() => { if (banner.style.display === 'flex') banner.style.display = 'none'; }, 8000);
+        }
+
+        function closeNotification() { document.getElementById('notificationBanner').style.display = 'none'; }
+
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/check_auth`, { credentials: 'include' });
+                const data = await response.json();
+                if (!data.success) { window.location.href = 'login.html'; return false; }
+                return true;
+            } catch (error) { console.error('Auth error:', error); window.location.href = 'login.html'; return false; }
+        }
+
+        async function loadUserData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/dashboard`, { credentials: 'include' });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) { userData = data.user; updateUI(); return data; }
+                }
+                return null;
+            } catch (error) { console.error('Error loading user data:', error); return null; }
+        }
+
+        function updateUI() {
+            if (!userData) return;
+            document.getElementById('userName').textContent = userData.name || userData.username;
+            const balance = formatMoney(userData.balance);
+            document.getElementById('userBalance').textContent = balance;
+            document.getElementById('userCurrency').textContent = userData.currency || 'USD';
+            document.getElementById('userAccountNumber').textContent = userData.account_number || 'N/A';
+            document.getElementById('userCurrencyBadge').innerHTML = `${userData.currency || 'USD'} Account`;
+            document.getElementById('transferCurrency').textContent = userData.currency || 'USD';
+            document.getElementById('availableBalance').textContent = formatMoney(userData.balance);
+            document.getElementById('availableCurrency').textContent = userData.currency || 'USD';
+        }
+
+        async function loadTransactions() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/dashboard`, { credentials: 'include' });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.transactions) { allTransactions = data.transactions; displayTransactions(allTransactions); }
+                    else { displayTransactions([]); }
+                }
+            } catch (error) { console.error('Error loading transactions:', error); displayTransactions([]); }
+        }
+
+        function displayTransactions(transactions) {
+            const container = document.getElementById('transactionsList');
+            if (!transactions || transactions.length === 0) {
+                container.innerHTML = `<div class="no-transactions"><i class="fas fa-receipt fa-3x mb-3"></i><p>No transactions yet</p><small>Your transaction history will appear here</small></div>`;
+                return;
+            }
+            container.innerHTML = transactions.map(t => {
+                const isSender = t.sender_id === userData?.id;
+                const isReceiver = t.receiver_id === userData?.id;
+                let amountClass, sign, typeText, icon, otherParty;
+                if (isSender) { amountClass = 'amount-sent'; sign = '-'; icon = 'fa-arrow-up'; otherParty = t.receiver_name || 'Unknown'; typeText = `Sent to ${otherParty}`; }
+                else if (isReceiver) { amountClass = 'amount-received'; sign = '+'; icon = 'fa-arrow-down'; otherParty = t.sender_name || 'Unknown'; typeText = `Received from ${otherParty}`; }
+                else { amountClass = ''; sign = ''; icon = 'fa-exchange-alt'; typeText = 'Transaction'; }
+                const amountDisplay = sign ? `${sign} ${formatMoney(t.amount)} ${t.currency || 'USD'}` : `${formatMoney(t.amount)} ${t.currency || 'USD'}`;
+                const status = t.status || 'Pending';
+                const txId = t.transaction_id || t.id;
+                return `<div class="transaction-item"><div class="transaction-info"><div class="transaction-type"><i class="fas ${icon} me-2"></i>${typeText}</div><div class="transaction-date">${new Date(t.created_at).toLocaleString()}</div></div><div class="transaction-details"><div class="transaction-amount ${amountClass}">${amountDisplay}</div><span class="status-badge status-${status.toLowerCase()}">${status}</span><button class="receipt-btn" onclick="viewReceipt('${txId}')"><i class="fas fa-receipt"></i> Receipt</button></div></div>`;
+            }).join('');
+        }
+
+        async function viewReceipt(transactionId) {
+            try {
+                const transaction = allTransactions.find(t => (t.transaction_id === transactionId || t.id == transactionId));
+                if (!transaction) { alert('Transaction details not found'); return; }
+                document.getElementById('receiptTxId').textContent = transaction.transaction_id || transaction.id;
+                document.getElementById('receiptDate').textContent = new Date(transaction.created_at).toLocaleString();
+                document.getElementById('receiptType').textContent = transaction.sender_id === userData?.id ? 'Debit (Sent)' : 'Credit (Received)';
+                document.getElementById('receiptFrom').textContent = transaction.sender_name || 'Creda Flux Bank';
+                document.getElementById('receiptTo').textContent = transaction.receiver_name || 'Creda Flux Bank';
+                document.getElementById('receiptAmount').textContent = `${formatMoney(transaction.amount)} ${transaction.currency || 'USD'}`;
+                document.getElementById('receiptStatus').textContent = transaction.status || 'Pending';
+                const receiptModal = new bootstrap.Modal(document.getElementById('receiptModal'));
+                receiptModal.show();
+            } catch (error) { console.error('Error viewing receipt:', error); alert('Could not load receipt details'); }
+        }
+
+        let searchTimeout;
+        const searchInput = document.getElementById('recipientSearch');
+        const searchResults = document.getElementById('searchResults');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                if (query.length < 2) { searchResults.style.display = 'none'; return; }
+                searchTimeout = setTimeout(async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/search_accounts?q=${encodeURIComponent(query)}`, { credentials: 'include' });
+                        const accounts = await response.json();
+                        if (accounts && accounts.length > 0) {
+                            searchResults.innerHTML = accounts.map(acc => `<div class="search-result-item" onclick="selectRecipient(${acc.id}, '${acc.name.replace(/'/g, "\\'")}', '${acc.account_number}', '${acc.bank_name.replace(/'/g, "\\'")}')"><strong>${acc.name}</strong><br><small>${acc.account_number} - ${acc.bank_name}</small></div>`).join('');
+                            searchResults.style.display = 'block';
+                        } else { searchResults.innerHTML = '<div class="search-result-item">No accounts found</div>'; searchResults.style.display = 'block'; }
+                    } catch (error) { console.error('Search error:', error); }
+                }, 300);
+            });
+        }
+
+        function selectRecipient(id, name, account, bank) {
+            document.getElementById('receiverId').value = id;
+            document.getElementById('recipientSearch').value = account;
+            document.getElementById('recipientName').textContent = name;
+            document.getElementById('recipientAccount').textContent = account;
+            document.getElementById('recipientBank').textContent = bank;
+            document.getElementById('recipientInfo').style.display = 'block';
+            searchResults.style.display = 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            if (searchInput && !searchInput.contains(e.target) && searchResults && !searchResults.contains(e.target)) { searchResults.style.display = 'none'; }
+        });
+
+        function nextStep() {
+            if (currentStep === 1) {
+                const receiverId = document.getElementById('receiverId').value;
+                const amount = document.getElementById('amount').value;
+                if (!receiverId) { alert('Please select a recipient'); return; }
+                if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+                if (parseFloat(amount) > (userData?.balance || 0)) { alert('Insufficient balance'); return; }
+                transferData = { receiver_id: receiverId, amount: parseFloat(amount), name: document.getElementById('recipientName').textContent, account: document.getElementById('recipientAccount').textContent };
+                document.getElementById('confirmName').textContent = transferData.name;
+                document.getElementById('confirmAccount').textContent = transferData.account;
+                document.getElementById('confirmAmount').textContent = formatMoney(transferData.amount);
+                document.getElementById('confirmCurrency').textContent = userData?.currency || 'USD';
+                currentStep = 2; showStep(currentStep);
+            } else if (currentStep === 2) { currentStep = 3; showStep(currentStep); }
+            else if (currentStep === 3) { processTransfer(); }
+        }
+
+        function prevStep() { currentStep--; showStep(currentStep); }
+
+        function showStep(step) {
+            const step1 = document.getElementById('transferStep1');
+            const step2 = document.getElementById('transferStep2');
+            const step3 = document.getElementById('transferStep3');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            if (step1) step1.style.display = step === 1 ? 'block' : 'none';
+            if (step2) step2.style.display = step === 2 ? 'block' : 'none';
+            if (step3) step3.style.display = step === 3 ? 'block' : 'none';
+            if (prevBtn) prevBtn.style.display = step > 1 ? 'inline-block' : 'none';
+            if (nextBtn) { if (step === 3) { nextBtn.innerHTML = '<i class="fas fa-check"></i> Confirm'; } else { nextBtn.innerHTML = 'Continue'; } }
+        }
+
+        function moveToNext(input, index) {
+            const pinInputs = document.querySelectorAll('.pin-input');
+            if (input.value.length === 1 && index < 3) { pinInputs[index + 1].focus(); }
+            let pin = ''; pinInputs.forEach(p => pin += p.value);
+            document.getElementById('userPin').value = pin;
+        }
+
+        async function processTransfer() {
+            const pin = document.getElementById('userPin').value;
+            if (pin.length !== 4) { alert('Please enter your 4-digit PIN'); return; }
+            const btn = document.getElementById('nextBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+            try {
+                const response = await fetch(`${API_BASE_URL}/make_transaction`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ receiver_id: transferData.receiver_id, amount: transferData.amount, pin: pin }) });
+                const data = await response.json();
+                if (data.success) {
+                    alert('Transfer initiated! Status: Pending (Waiting for admin approval)');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
+                    modal.hide();
+                    resetTransferModal();
+                    await loadUserData();
+                    await loadTransactions();
+                    showRandomNotification();
+                } else { alert('Error: ' + data.message); }
+            } catch (error) { console.error('Transfer error:', error); alert('Network error. Please try again.'); }
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
+        }
+
+        function resetTransferModal() {
+            currentStep = 1; showStep(1);
+            const recipientSearch = document.getElementById('recipientSearch');
+            const receiverId = document.getElementById('receiverId');
+            const amount = document.getElementById('amount');
+            const recipientInfo = document.getElementById('recipientInfo');
+            const pinInputs = document.querySelectorAll('.pin-input');
+            const userPin = document.getElementById('userPin');
+            if (recipientSearch) recipientSearch.value = '';
+            if (receiverId) receiverId.value = '';
+            if (amount) amount.value = '';
+            if (recipientInfo) recipientInfo.style.display = 'none';
+            if (pinInputs) pinInputs.forEach(p => p.value = '');
+            if (userPin) userPin.value = '';
+            transferData = {};
+        }
+
+        const transferModal = document.getElementById('transferModal');
+        if (transferModal) { transferModal.addEventListener('hidden.bs.modal', resetTransferModal); }
+
+        async function logout() {
+            try { await fetch(`${API_BASE_URL}/logout`, { method: 'POST', credentials: 'include' }); window.location.href = 'login.html'; }
+            catch (error) { console.error('Logout error:', error); window.location.href = 'login.html'; }
+        }
+
+        function setActive(element, page) { document.querySelectorAll('.nav-item').forEach(item => { item.classList.remove('active'); }); element.classList.add('active'); }
+
+        async function init() {
+            loadAdvertisements();
+            setTimeout(() => { showRandomNotification(); }, 3000);
+            notificationInterval = setInterval(() => { showRandomNotification(); }, 45000);
+            const authenticated = await checkAuth();
+            if (authenticated) { await loadUserData(); await loadTransactions(); }
+        }
+        init();
+    </script>
 </body>
 </html>
