@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CredaFlux Register</title>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -85,6 +87,11 @@ label{
     font-weight:500;
 }
 
+label .required{
+    color:#ef4444;
+    margin-left:4px;
+}
+
 input,select{
     width:100%;
     padding:15px;
@@ -93,11 +100,25 @@ input,select{
     background:#f8fafc;
     outline:none;
     font-size:15px;
+    transition:all 0.3s ease;
 }
 
 input:focus,select:focus{
     border-color:#2563eb;
     background:white;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
+
+input.error, select.error{
+    border-color:#ef4444;
+    background:#fef2f2;
+}
+
+.error-message{
+    color:#ef4444;
+    font-size:12px;
+    margin-top:5px;
+    display:none;
 }
 
 .grid{
@@ -113,6 +134,12 @@ input:focus,select:focus{
     text-align:center;
     position:relative;
     background:#f8fafc;
+    transition:all 0.3s ease;
+}
+
+.upload-box:hover{
+    border-color:#2563eb;
+    background:#eff6ff;
 }
 
 .upload-box input{
@@ -133,10 +160,18 @@ button{
     font-weight:600;
     cursor:pointer;
     margin-top:10px;
+    transition:all 0.3s ease;
 }
 
 button:hover{
     background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+button:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+    transform:none;
 }
 
 .bottom-text{
@@ -151,15 +186,47 @@ button:hover{
     font-weight:600;
 }
 
+.bottom-text a:hover{
+    text-decoration:underline;
+}
+
+.flash-container{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:1000;
+    max-width:400px;
+}
+
+.alert{
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    animation:slideIn 0.3s ease;
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(100%);
+        opacity:0;
+    }
+    to{
+        transform:translateX(0);
+        opacity:1;
+    }
+}
+
 @media(max-width:900px){
     .container{grid-template-columns:1fr;}
     .left-panel{display:none;}
     .grid{grid-template-columns:1fr;}
+    .flash-container{left:20px;right:20px;max-width:none;}
 }
 </style>
 </head>
 
 <body>
+
+<div class="flash-container" id="flashContainer"></div>
 
 <div class="container">
 
@@ -175,28 +242,30 @@ button:hover{
 <h2>Create CredaFlux Account</h2>
 <p class="subtitle">Complete your secure onboarding process</p>
 
-<form id="registerForm" enctype="multipart/form-data">
-
-    <!-- NEW USERNAME FIELD -->
+<form id="registerForm">
+    <!-- USERNAME FIELD -->
     <div class="form-group">
-        <label>Username (Login ID)</label>
+        <label>Username (Login ID)<span class="required">*</span></label>
         <input type="text" name="username" required placeholder="Choose a unique username">
+        <div class="error-message" id="usernameError"></div>
     </div>
 
     <div class="form-group">
-        <label>Full Legal Name</label>
+        <label>Full Legal Name<span class="required">*</span></label>
         <input type="text" name="fullLegalName" required>
+        <div class="error-message" id="nameError"></div>
     </div>
 
     <div class="grid">
         <div class="form-group">
-            <label>Email Address</label>
+            <label>Email Address<span class="required">*</span></label>
             <input type="email" name="email" required>
+            <div class="error-message" id="emailError"></div>
         </div>
 
         <div class="form-group">
             <label>Mobile Number</label>
-            <input type="text" name="mobileNumber">
+            <input type="tel" name="mobileNumber">
         </div>
     </div>
 
@@ -204,8 +273,10 @@ button:hover{
         <div class="form-group">
             <label>Gender</label>
             <select name="legalGender">
+                <option>Prefer not to say</option>
                 <option>Male</option>
                 <option>Female</option>
+                <option>Other</option>
             </select>
         </div>
 
@@ -242,41 +313,50 @@ button:hover{
         </div>
 
         <div class="form-group">
-            <label>Currency</label>
-            <select name="baseCurrency">
-                <option>USD</option>
-                <option>HUF</option>
+            <label>Currency<span class="required">*</span></label>
+            <select name="baseCurrency" required>
+                <option value="USD">USD - US Dollar</option>
+                <option value="HUF">HUF - Hungarian Forint</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
             </select>
         </div>
     </div>
 
     <div class="grid">
         <div class="form-group">
-            <label>Password</label>
+            <label>Password<span class="required">*</span></label>
             <input type="password" name="masterPassword" required>
+            <div class="error-message" id="passwordError"></div>
+            <small style="color:#64748b;font-size:12px;">Minimum 6 characters</small>
         </div>
 
         <div class="form-group">
-            <label>PIN</label>
-            <input type="password" name="appPin" maxlength="4" required>
+            <label>PIN (4 digits)<span class="required">*</span></label>
+            <input type="password" name="appPin" maxlength="4" required pattern="\d{4}">
+            <div class="error-message" id="pinError"></div>
         </div>
     </div>
 
     <div class="form-group">
-        <label>Confirm PIN</label>
+        <label>Confirm PIN<span class="required">*</span></label>
         <input type="password" name="confirmPin" maxlength="4" required>
+        <div class="error-message" id="confirmPinError"></div>
     </div>
 
     <div class="form-group">
-        <label>Upload ID</label>
+        <label>Upload ID (Optional)</label>
         <div class="upload-box">
-            <input type="file" name="governmentId">
-            <p>Click to upload</p>
+            <input type="file" name="governmentId" accept="image/*">
+            <i class="fas fa-cloud-upload-alt" style="font-size:32px;color:#2563eb;margin-bottom:10px;"></i>
+            <p>Click or drag to upload</p>
             <span>PNG, JPG (Max 5MB)</span>
         </div>
     </div>
 
-    <button type="submit" id="submitBtn">Initialize Vault</button>
+    <button type="submit" id="submitBtn">
+        <i class="fas fa-user-shield"></i> Initialize Vault
+    </button>
 
     <div class="bottom-text">
         Already have an account? <a href="login.html">Sign In</a>
@@ -288,65 +368,244 @@ button:hover{
 </div>
 
 <script>
+// API Configuration
 const API_BASE_URL = "https://scbanking.pythonanywhere.com/api";
 
+// Get form elements
 const registerForm = document.getElementById("registerForm");
 const btn = document.getElementById("submitBtn");
 
+// Show flash message
+function showFlashMessage(message, type = 'success') {
+    const flashContainer = document.getElementById('flashContainer');
+    const alertClass = type === 'error' ? 'alert-danger' : 'alert-success';
+    const iconClass = type === 'error' ? 'fa-exclamation-triangle' : 'fa-check-circle';
+    
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert ${alertClass} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        <i class="fas ${iconClass} me-2"></i>
+        <strong>${type === 'error' ? 'Error!' : 'Success!'}</strong> ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    `;
+    
+    flashContainer.appendChild(alertDiv);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentElement) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+
+// Clear all error messages
+function clearErrors() {
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+        el.textContent = '';
+    });
+    document.querySelectorAll('input, select').forEach(el => {
+        el.classList.remove('error');
+    });
+}
+
+// Show field error
+function showFieldError(fieldName, message) {
+    const errorElement = document.getElementById(fieldName + 'Error');
+    const inputElement = document.querySelector(`[name="${fieldName}"]`);
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+    if (inputElement) {
+        inputElement.classList.add('error');
+    }
+}
+
+// Validate form fields
+function validateForm(data) {
+    let isValid = true;
+    clearErrors();
+    
+    // Validate username
+    if (!data.username || data.username.length < 3) {
+        showFieldError('username', 'Username must be at least 3 characters');
+        isValid = false;
+    }
+    
+    // Validate name
+    if (!data.fullLegalName || data.fullLegalName.length < 2) {
+        showFieldError('name', 'Please enter your full name');
+        isValid = false;
+    }
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email || !emailRegex.test(data.email)) {
+        showFieldError('email', 'Please enter a valid email address');
+        isValid = false;
+    }
+    
+    // Validate password
+    if (!data.masterPassword || data.masterPassword.length < 6) {
+        showFieldError('password', 'Password must be at least 6 characters');
+        isValid = false;
+    }
+    
+    // Validate PIN
+    if (!data.appPin || !/^\d{4}$/.test(data.appPin)) {
+        showFieldError('pin', 'PIN must be exactly 4 digits');
+        isValid = false;
+    }
+    
+    // Validate PIN match
+    if (data.appPin !== data.confirmPin) {
+        showFieldError('confirmPin', 'PINs do not match');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+// Test backend connection
+async function testBackendConnection() {
+    try {
+        console.log('🧪 Testing backend connection...');
+        const response = await fetch(`${API_BASE_URL}/test`, {
+            method: 'GET',
+            mode: 'cors',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        console.log('✅ Backend connection test:', data);
+        return true;
+    } catch (error) {
+        console.error('❌ Backend connection test failed:', error);
+        showFlashMessage('Cannot connect to server. Please check your internet connection.', 'error');
+        return false;
+    }
+}
+
+// Register form submission
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    btn.innerText = "Creating...";
+    
+    // Get form data
+    const formData = {
+        username: document.querySelector('input[name="username"]').value.trim(),
+        fullLegalName: document.querySelector('input[name="fullLegalName"]').value.trim(),
+        email: document.querySelector('input[name="email"]').value.trim(),
+        mobileNumber: document.querySelector('input[name="mobileNumber"]').value.trim(),
+        masterPassword: document.querySelector('input[name="masterPassword"]').value,
+        appPin: document.querySelector('input[name="appPin"]').value,
+        confirmPin: document.querySelector('input[name="confirmPin"]').value,
+        baseCurrency: document.querySelector('select[name="baseCurrency"]').value,
+        legalGender: document.querySelector('select[name="legalGender"]').value,
+        dateOfBirth: document.querySelector('input[name="dateOfBirth"]').value,
+        primaryOccupation: document.querySelector('input[name="primaryOccupation"]').value,
+        placeOfBirth: document.querySelector('input[name="placeOfBirth"]').value,
+        currentResidence: document.querySelector('input[name="currentResidence"]').value,
+        portfolioType: document.querySelector('select[name="portfolioType"]').value
+    };
+    
+    // Validate form
+    if (!validateForm(formData)) {
+        return;
+    }
+    
+    // Disable button and show loading
     btn.disabled = true;
-
-    const formData = new FormData(registerForm);
-
-    const pin = formData.get("appPin");
-    const confirmPin = formData.get("confirmPin");
-
-    if (pin !== confirmPin) {
-        alert("PIN does not match");
-        resetBtn();
-        return;
-    }
-
-    if (pin.length !== 4) {
-        alert("PIN must be 4 digits");
-        resetBtn();
-        return;
-    }
-
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+    
     try {
-        const res = await fetch(`${API_BASE_URL}/register`, {
+        console.log("📤 Sending registration data:", {
+            username: formData.username,
+            email: formData.email,
+            currency: formData.baseCurrency
+        });
+        
+        const response = await fetch(`${API_BASE_URL}/register`, {
             method: "POST",
-            body: formData,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(formData),
             credentials: "include"
         });
-
-        const data = await res.json();
-
+        
+        const data = await response.json();
+        console.log("📥 Registration response:", data);
+        
         if (data.success) {
-            alert("Account created successfully!");
-
-            // go to login page
-            window.location.href = "login.html";
-
+            showFlashMessage(
+                `Account created successfully! Account Number: ${data.account_number}. Redirecting to login...`,
+                'success'
+            );
+            
+            // Store account number temporarily
+            sessionStorage.setItem('newAccountNumber', data.account_number);
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2000);
         } else {
-            alert(data.message || "Registration failed");
+            showFlashMessage(data.message || "Registration failed. Please try again.", 'error');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-user-shield"></i> Initialize Vault';
         }
-
+        
     } catch (err) {
-        console.log(err);
-        alert("Server error. Try again later.");
+        console.error("❌ Registration error:", err);
+        showFlashMessage("Server error. Please try again later.\n\nError: " + err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-user-shield"></i> Initialize Vault';
     }
-
-    resetBtn();
 });
 
-function resetBtn() {
-    btn.innerText = "Initialize Vault";
-    btn.disabled = false;
-}
+// Real-time validation
+document.querySelector('input[name="appPin"]').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+});
+
+document.querySelector('input[name="confirmPin"]').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
+});
+
+document.querySelector('input[name="masterPassword"]').addEventListener('input', function(e) {
+    const password = this.value;
+    const passwordError = document.getElementById('passwordError');
+    if (password.length > 0 && password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters';
+        passwordError.style.display = 'block';
+        this.classList.add('error');
+    } else {
+        passwordError.style.display = 'none';
+        this.classList.remove('error');
+    }
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 Registration page initialized');
+    console.log('🔗 API Base URL:', API_BASE_URL);
+    
+    // Test backend connection
+    await testBackendConnection();
+    
+    // Check if user came from logout
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        showFlashMessage('Registration successful! Please login with your credentials.', 'success');
+    }
+});
+
+// Add Bootstrap JS for alerts
+const bootstrapScript = document.createElement('script');
+bootstrapScript.src = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js";
+document.head.appendChild(bootstrapScript);
 </script>
 
 </body>
